@@ -1,0 +1,48 @@
+import { NavLink } from 'react-router-dom';
+import { C } from '../constants/theme';
+
+const NAV_LINKS = [
+  { to: '/',        label: 'Home'            },
+  { to: '/pitch',   label: 'Pitch Deck'      },
+  { to: '/roadmap', label: 'Roadmap'         },
+  { to: '/model',   label: 'Financial Model' },
+];
+
+export default function NavBar() {
+  return (
+    <nav style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: 24,
+      padding: '10px 20px',
+      background: '#0b0b0f',
+      borderBottom: `1px solid ${C.border}`,
+      fontFamily: 'monospace',
+      fontSize: 10,
+      letterSpacing: 2,
+      position: 'sticky',
+      top: 0,
+      zIndex: 100,
+    }}>
+      <span style={{ color: C.gold, fontWeight: 700, fontSize: 13, marginRight: 8, letterSpacing: 3 }}>
+        AEXS
+      </span>
+      {NAV_LINKS.map(({ to, label }) => (
+        <NavLink
+          key={to}
+          to={to}
+          end={to === '/'}
+          style={({ isActive }) => ({
+            color: isActive ? C.gold : C.dim,
+            textDecoration: 'none',
+            textTransform: 'uppercase',
+            borderBottom: isActive ? `1px solid ${C.gold}` : '1px solid transparent',
+            paddingBottom: 2,
+          })}
+        >
+          {label}
+        </NavLink>
+      ))}
+    </nav>
+  );
+}

@@ -1,58 +1,29 @@
-import { NavLink, Routes, Route, Navigate } from 'react-router-dom';
-import PitchDeck from './pages/PitchDeck';
-import Roadmap from './pages/Roadmap';
-import FinancialModel from './pages/FinancialModel';
-import { C } from './constants/theme';
+import { lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import AppLayout from './components/AppLayout';
+import PageShell from './components/PageShell';
 
-const NAV_LINKS = [
-  { to: '/pitch',   label: 'Pitch Deck'      },
-  { to: '/roadmap', label: 'Roadmap'          },
-  { to: '/model',   label: 'Financial Model'  },
-];
+// Route-level code splitting.
+// Each page loads its own chunk on first navigation — recharts is only
+// fetched when /pitch or /model is visited, not on initial load.
+const Home          = lazy(() => import('./pages/Home'));
+const PitchDeck     = lazy(() => import('./pages/PitchDeck'));
+const Roadmap       = lazy(() => import('./pages/Roadmap'));
+const FinancialModel = lazy(() => import('./pages/FinancialModel'));
+
+const fallback = <PageShell loading />;
 
 export default function App() {
   return (
-    <div style={{ background: C.dark, minHeight: '100vh' }}>
-      <nav style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 24,
-        padding: '10px 20px',
-        background: '#0b0b0f',
-        borderBottom: `1px solid ${C.border}`,
-        fontFamily: 'monospace',
-        fontSize: 10,
-        letterSpacing: 2,
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-      }}>
-        <span style={{ color: C.gold, fontWeight: 700, fontSize: 13, marginRight: 8 }}>
-          AEXS
-        </span>
-        {NAV_LINKS.map(({ to, label }) => (
-          <NavLink
-            key={to}
-            to={to}
-            style={({ isActive }) => ({
-              color: isActive ? C.gold : C.dim,
-              textDecoration: 'none',
-              textTransform: 'uppercase',
-              borderBottom: isActive ? `1px solid ${C.gold}` : '1px solid transparent',
-              paddingBottom: 2,
-            })}
-          >
-            {label}
-          </NavLink>
-        ))}
-      </nav>
-
-      <Routes>
-        <Route path="/"        element={<Navigate to="/pitch" replace />} />
-        <Route path="/pitch"   element={<PitchDeck />} />
-        <Route path="/roadmap" element={<Roadmap />} />
-        <Route path="/model"   element={<FinancialModel />} />
-      </Routes>
-    </div>
+    <AppLayout>
+      <Suspense fallback={fallback}>
+        <Routes>
+          <Route path="/"        element={<Home />} />
+          <Route path="/pitch"   element={<PitchDeck />} />
+          <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/model"   element={<FinancialModel />} />
+        </Routes>
+      </Suspense>
+    </AppLayout>
   );
 }
