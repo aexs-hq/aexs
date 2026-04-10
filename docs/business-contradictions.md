@@ -1,9 +1,22 @@
 # AEXS — Business Contradictions
-*Last verified: 2026-04-09 against actual source files*
+*Original audit: 2026-04-09. Post-approval audit: 2026-04-10. Suite rebuild: 2026-04-10.*
 
 This file documents factual contradictions found between the source files in this repository.
-**No values have been changed.** Every item listed here exists exactly as written in the code.
-Each item requires a human decision before this demo is shared with investors.
+
+## Resolution Status (suite-tier rebuild 2026-04-10)
+
+| ID | Status | Summary |
+|----|--------|---------|
+| BC-001 | ✅ Resolved | Suite prices 499/1999/8500 in `suiteDefaults` in `src/utils/suiteCalc.js` |
+| BC-002 | ✅ Resolved | `FinancialModel.jsx` rebuilt as single suite-tier revenue stream; `calcSuite()` replaces per-product logic |
+| BC-003 | ✅ Resolved | Single `cashBalance = 1_500_000` in `calcSuite()`; no triple-counting |
+| BC-004 | ✅ Resolved | `C.purple` used throughout including Roadmap.jsx |
+| BC-005 | ✅ Resolved | Q2 2026 `done: false`; Q1 2026 `done: true` confirmed |
+| BC-006 | ✅ Resolved | ARR revised to $32.2M (verified from suite model); pitch updated at all locations |
+
+See `docs/post-approval-audit-status.md` for full rebuild detail.
+
+---
 
 ---
 

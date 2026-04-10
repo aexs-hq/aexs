@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis } from "recharts";
 import { C } from '../constants/theme';
-import { fmtM } from '../utils/format';
 
 const slides = [
   { id: 0, label: "Cover", icon: "◆" },
@@ -49,7 +48,7 @@ function Slide0() {
         The operating intelligence layer for the world's most ambitious executives — Chief of Staff, Governance, and Decision Support unified in one platform.
       </p>
       <div style={{ display: "flex", gap: 24, justifyContent: "center", flexWrap: "wrap" }}>
-        {[["$44M", "Y3 ARR Target"], ["$352M", "Valuation (8x)"], ["36mo", "To Profitability"]].map(([v, l]) => (
+        {[["$32.2M", "Y3 ARR Target"], ["$257M", "Valuation (8x)"], ["Month 12", "Break-Even"]].map(([v, l]) => (
           <div key={l} style={{ textAlign: "center" }}>
             <div style={{ fontSize: 22, color: C.gold, fontFamily: "monospace", fontWeight: 700 }}>{v}</div>
             <div style={{ fontSize: 9, color: C.muted, letterSpacing: 2, fontFamily: "monospace", textTransform: "uppercase" }}>{l}</div>
@@ -235,7 +234,7 @@ function Slide4() {
 function Slide5() {
   const milestones = [
     { done: true, q: "Q1 2026", title: "Concept & Research", items: ["10 executive interviews", "Regulatory mapping complete", "Tech stack chosen"] },
-    { done: true, q: "Q2 2026", title: "MVP Build", items: ["Chief of Staff MVP live", "20 beta users onboarded", "First $15K MRR"] },
+    { done: false, q: "Q2 2026", title: "MVP Build", items: ["Chief of Staff MVP live", "20 beta users onboarded", "First $15K MRR"] },
     { done: false, q: "Q3 2026", title: "Beta → Paid", items: ["100 paying customers", "$80K MRR", "Governance module launch"] },
     { done: false, q: "Q4 2026", title: "Series A Raise", items: ["$1M ARR milestone", "Decision Suite launch", "Series A close"] },
   ];
@@ -318,23 +317,23 @@ function Slide6() {
 
 function Slide7() {
   const data = [
-    { year: "Y1", ARR: 3.2, Burn: 1.8 },
-    { year: "Y2", ARR: 14, Burn: 6 },
-    { year: "Y3", ARR: 44, Burn: 10 },
+    { year: "Y1", ARR: 2.6, Burn: 1.8 },
+    { year: "Y2", ARR: 9.2, Burn: 3.8 },
+    { year: "Y3", ARR: 32.2, Burn: 6.0 },
   ];
   const metrics = [
     { label: "Seed Round", value: "$1.5M", color: C.gold },
     { label: "Runway", value: "24 months", color: C.teal },
-    { label: "Break-Even", value: "Month 19", color: C.blue },
-    { label: "Y3 ARR", value: "$44M", color: C.purple },
-    { label: "Y3 Valuation (8x)", value: "$352M", color: C.gold },
-    { label: "Gross Margin Y3", value: "72%", color: C.teal },
+    { label: "Break-Even", value: "Month 12", color: C.blue },
+    { label: "Y3 ARR", value: "$32.2M", color: C.purple },
+    { label: "Y3 Valuation (8x)", value: "$257M", color: C.gold },
+    { label: "Gross Margin Y3", value: "73%", color: C.teal },
   ];
   return (
     <div>
       <SectionLabel>Financial Projections</SectionLabel>
       <h2 style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 300, margin: "0 0 8px" }}>
-        Path to <span style={{ color: C.gold }}>$44M ARR</span> in 36 months.
+        Path to <span style={{ color: C.gold }}>$32.2M ARR</span> in 36 months.
       </h2>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
         {metrics.map((m, i) => (

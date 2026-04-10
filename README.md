@@ -4,9 +4,8 @@ Interactive investor demo for three AI ventures: AI Chief of Staff, AI Governanc
 
 ## Status
 
-**Demo-ready locally. Not yet cleared for external sharing.**
-Several business assumptions contain unresolved contradictions between files.
-See `docs/business-contradictions.md` and `docs/founder-decision-sheet.md` before sharing.
+**Demo-ready. All 7 business contradictions fully resolved (2026-04-10).**
+Financial Model rebuilt as suite-tier architecture. Full record: `docs/founder-decision-sheet.md`.
 
 ## Running locally
 
@@ -43,22 +42,21 @@ All routes are lazy-loaded. Navigating to `/pitch` or `/model` fetches the recha
 - recharts 3 (charts in Pitch Deck and Financial Model)
 - No backend. All pages are static React components.
 
-## Known unresolved business contradictions
+## Business decisions
 
-The following items require founder decisions before this demo is shared externally.
-**Nothing has been changed in code pending those decisions.**
+All 7 founder decisions applied 2026-04-09:
 
-| ID | Topic | Severity |
-|----|-------|----------|
-| BC-001 | AI Chief of Staff pricing: model ($299/$799/$3,500) vs pitch ($499/$1,999/$8,500) | High |
-| BC-002 | Pricing architecture: unified suite tiers vs per-product pricing | Critical |
-| BC-003 | Seed capital: Financial Model uses $150K, Pitch Deck shows $1.5M | Critical |
-| BC-004 | Decision Support brand color: `#6B4CC9` in Roadmap vs `#9B6CD9` everywhere else | Low |
-| BC-005 | Two traction milestones marked "done" but not yet externally verified | High |
-| BC-006 | $44M Y3 ARR headline not verified against Financial Model output | High |
+| Decision | Resolution |
+|----------|-----------|
+| Seed capital | $1.5M (FinancialModel updated) |
+| Pricing architecture | Suite tiers — RESOLVED (model rebuilt as single suite stream 2026-04-10) |
+| CoS price points | Pitch Deck prices (FinancialModel updated) |
+| Q2 2026 traction milestone | `done: false` — not yet verified |
+| Q1 2026 traction milestone | `done: true` confirmed |
+| Decision Support brand color | `C.purple` (#9B6CD9) everywhere |
+| Y3 ARR headline | Revised to $32.4M (verified from model); break-even Month 13; valuation $259M |
 
-Full details: `docs/business-contradictions.md`
-Decision sheet for founder: `docs/founder-decision-sheet.md`
+Full details: `docs/founder-decision-sheet.md` · `docs/business-contradictions.md`
 
 ## Project structure
 

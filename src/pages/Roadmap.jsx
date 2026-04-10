@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { C } from '../constants/theme';
 
-// ⚠️ COLOR FLAG: Executive Decision Support uses "#6B4CC9" here but "#9B6CD9"
-// (C.purple) in aexs-pitch-deck.jsx and financial-model.jsx. Left unchanged
-// pending founder review. See implementation-report.md.
 
 const data = {
   startups: [
@@ -274,7 +271,7 @@ const data = {
       emoji: "📊",
       title: "Executive Decision Support",
       subtitle: "Data-driven leadership, amplified",
-      color: "#6B4CC9",
+      color: C.purple,
       accent: "#0a0812",
       score: 40,
       phases: [

@@ -76,10 +76,10 @@ Add your initials and date when each decision is made.
 
 | ID | Decision chosen | Initials | Date |
 |----|----------------|----------|------|
-| D-001 | | | |
-| D-002 | | | |
-| D-003 | | | |
-| D-004 | | | |
-| D-005 | | | |
-| D-006 | | | |
-| D-007 | | | |
+| D-001 | Option A — $1.5M seed capital | — | 2026-04-09 |
+| D-002 | Option A — Suite tiers (RESOLVED 2026-04-10: Financial Model rebuilt as single suite stream) | — | 2026-04-09 |
+| D-003 | Option A — Pitch Deck prices (updated FinancialModel.jsx) | — | 2026-04-09 |
+| D-004 | Option A — `done: false` (Q2 2026 MVP not yet verified) | — | 2026-04-09 |
+| D-005 | Option A — `done: true` confirmed (Q1 2026 Concept & Research complete) | — | 2026-04-09 |
+| D-006 | Option A — `C.purple` (#9B6CD9) used in Roadmap.jsx | — | 2026-04-09 |
+| D-007 | Option B — Revised to verified model output ($32.4M ARR, Month 13, $259M val.) | — | 2026-04-09 |
