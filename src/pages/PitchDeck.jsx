@@ -323,7 +323,6 @@ function Slide7() {
   ];
   const metrics = [
     { label: "Seed Round", value: "$1.5M", color: C.gold },
-    { label: "Runway", value: "24 months", color: C.teal },
     { label: "Break-Even", value: "Month 12", color: C.blue },
     { label: "Y3 ARR", value: "$32.2M", color: C.purple },
     { label: "Y3 Valuation (8x)", value: "$257M", color: C.gold },
@@ -508,7 +507,7 @@ function Slide11() {
       <h2 style={{ fontSize: "clamp(20px,5vw,34px)", fontWeight: 300, margin: "0 0 8px", lineHeight: 1.2 }}>
         Raising <span style={{ color: C.gold }}>$1.5M Seed</span><br />to reach $1M ARR.
       </h2>
-      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 24px", lineHeight: 1.7 }}>24 months of runway. 100 enterprise customers. Series A ready.</p>
+      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 24px", lineHeight: 1.7 }}>Break-even at Month 12. 100 enterprise customers. Series A ready.</p>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
         <div style={{ background: C.card, border: `1px solid ${C.gold}44`, borderRadius: 6, padding: "20px" }}>
