@@ -22,7 +22,21 @@ App runs at `http://localhost:5173`.
 npm run build
 ```
 
-Output goes to `dist/`. Build currently passes with 0 errors and 0 warnings.
+Output goes to `dist/`.
+
+## Testing
+
+Run the unit tests (18 tests, pure Node — no browser required):
+
+```bash
+npm run test
+```
+
+Run lint + tests + build in sequence (use before committing):
+
+```bash
+npm run check
+``` Build currently passes with 0 errors and 0 warnings.
 
 ## Routes
 
