@@ -26,7 +26,7 @@ Output goes to `dist/`.
 
 ## Testing
 
-Run the unit tests (18 tests, pure Node — no browser required):
+Run the unit tests (20 tests, pure Node — no browser required):
 
 ```bash
 npm run test
@@ -36,7 +36,16 @@ Run lint + tests + build in sequence (use before committing):
 
 ```bash
 npm run check
-``` Build currently passes with 0 errors and 0 warnings.
+```
+
+Build currently passes with 0 errors and 0 warnings.
+
+To preview the production build locally before a demo (serves `dist/` at `http://localhost:4173`):
+
+```bash
+npm run build
+npm run preview
+```
 
 ## Routes
 
@@ -93,6 +102,7 @@ src/
     └── suiteCalc.test.js — Vitest tests for calcSuite and formatters
 
 docs/
-├── business-contradictions.md  — detailed contradiction analysis
-└── founder-decision-sheet.md   — decision table for founder sign-off
+├── business-contradictions.md    — original audit: 6 contradictions found, all resolved
+├── founder-decision-sheet.md     — 7 founder decisions with sign-off record
+└── post-approval-audit-status.md — resolution verification and suite-model output summary
 ```
