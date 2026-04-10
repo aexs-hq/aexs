@@ -18,8 +18,6 @@ See `docs/post-approval-audit-status.md` for full rebuild detail.
 
 ---
 
----
-
 ## BC-001 — AI Chief of Staff pricing: Financial Model vs Pitch Deck
 
 **Files involved:**

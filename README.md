@@ -54,7 +54,7 @@ All 7 founder decisions applied 2026-04-09:
 | Q2 2026 traction milestone | `done: false` — not yet verified |
 | Q1 2026 traction milestone | `done: true` confirmed |
 | Decision Support brand color | `C.purple` (#9B6CD9) everywhere |
-| Y3 ARR headline | Revised to $32.4M (verified from model); break-even Month 13; valuation $259M |
+| Y3 ARR headline | Revised to $32.2M (suite model verified); break-even Month 12; valuation $257M |
 
 Full details: `docs/founder-decision-sheet.md` · `docs/business-contradictions.md`
 
@@ -74,7 +74,9 @@ src/
 │   ├── Roadmap.jsx     — execution playbook (/roadmap)
 │   └── FinancialModel.jsx — 36-month model (/model)
 └── utils/
-    └── format.js       — shared number formatters (fmtK, fmtM, fmtPct)
+    ├── format.js       — shared number formatters (fmtK, fmtM, fmtPct)
+    ├── suiteCalc.js    — suite-tier model logic (suiteDefaults + calcSuite)
+    └── suiteCalc.test.js — Vitest tests for calcSuite and formatters
 
 docs/
 ├── business-contradictions.md  — detailed contradiction analysis

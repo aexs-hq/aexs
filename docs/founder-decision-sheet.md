@@ -82,4 +82,4 @@ Add your initials and date when each decision is made.
 | D-004 | Option A — `done: false` (Q2 2026 MVP not yet verified) | — | 2026-04-09 |
 | D-005 | Option A — `done: true` confirmed (Q1 2026 Concept & Research complete) | — | 2026-04-09 |
 | D-006 | Option A — `C.purple` (#9B6CD9) used in Roadmap.jsx | — | 2026-04-09 |
-| D-007 | Option B — Revised to verified model output ($32.4M ARR, Month 13, $259M val.) | — | 2026-04-09 |
+| D-007 | Option B — Revised to suite model output ($32.2M ARR, Month 12, $257M val.) | — | 2026-04-10 |
