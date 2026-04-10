@@ -98,8 +98,13 @@ describe('fmtK', () => {
     expect(fmtK(32_200_000)).toBe('$32.2M');
   });
 
-  it('handles negative values', () => {
+  it('handles negative values in K range', () => {
     expect(fmtK(-50_000)).toBe('$-50K');
+    expect(fmtK(-999_000)).toBe('$-999K');
+  });
+
+  it('handles negative values in M range', () => {
+    expect(fmtK(-1_000_000)).toBe('$-1.0M');
   });
 });
 
