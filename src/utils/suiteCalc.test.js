@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { calcSuite, suiteDefaults } from './suiteCalc';
-import { fmtK, fmtPct } from './format';
+import { fmtK, fmtM, fmtPct } from './format';
 
 // ---------------------------------------------------------------------------
 // calcSuite — suite-tier projection
@@ -105,6 +105,18 @@ describe('fmtK', () => {
 
   it('handles negative values in M range', () => {
     expect(fmtK(-1_000_000)).toBe('$-1.0M');
+  });
+});
+
+describe('fmtM', () => {
+  it('formats sub-$1B values as whole millions', () => {
+    expect(fmtM(44)).toBe('$44M');
+    expect(fmtM(999)).toBe('$999M');
+  });
+
+  it('formats $1B+ as billions with one decimal place', () => {
+    expect(fmtM(1000)).toBe('$1.0B');
+    expect(fmtM(2500)).toBe('$2.5B');
   });
 });
 
