@@ -276,8 +276,8 @@ function Slide5() {
 
 function Slide6() {
   const tiers = [
-    { name: "Starter", price: "$499/mo", color: C.gold, target: "Solo executive", features: ["Chief of Staff core", "Daily briefings", "Email + calendar", "5 meeting summaries/mo"] },
-    { name: "Growth", price: "$1,999/mo", color: C.teal, target: "Leadership team (up to 5)", features: ["Full Chief of Staff", "Governance module", "Unlimited meetings", "Priority scoring engine"], highlight: true },
+    { name: "Starter", price: "$499/mo", color: C.gold, target: "Solo executive", features: ["AI executive assistant", "Daily briefings", "Email + calendar", "5 meeting summaries/mo"] },
+    { name: "Growth", price: "$1,999/mo", color: C.teal, target: "Leadership team (up to 5)", features: ["Full executive assistant", "Compliance & governance", "Unlimited meetings", "Priority scoring engine"], highlight: true },
     { name: "Enterprise", price: "$8,500/mo", color: C.purple, target: "Full C-suite + board", features: ["All 3 modules", "Decision intelligence", "White-glove onboarding", "Custom data feeds", "AI Compliance Cert"] },
   ];
   return (
