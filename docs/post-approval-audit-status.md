@@ -96,23 +96,29 @@ Covers:
 
 - `npm run build` — ✅ 0 errors, 0 warnings
 - `npm run test` — ✅ 17/17 tests pass
-- `npm run lint` on `src/` — ✅ 0 errors; 6 pre-existing `useMemo` warnings in root scaffold only
+- `npm run lint` — ✅ 0 errors, 0 warnings
 
 ---
 
 ## Remaining Gaps
 
-| Gap | Severity | Description |
-|-----|----------|-------------|
-| Root scaffold lint errors | Low | `aexs-pitch-deck.jsx`, `financial-model.jsx` at repo root are dead files (pre-refactor originals). 5 lint errors. Not compiled. |
-| Changes unstaged | — | All modified files are unstaged. Needs a commit. |
+*All gaps closed as of 2026-04-10.*
+
+| Gap | Status | Resolution |
+|-----|--------|------------|
+| Root scaffold lint errors | ✅ Resolved | `aexs-pitch-deck.jsx`, `ai-startup-roadmap.jsx`, `financial-model.jsx` deleted in T4 cleanup. Lint is now 0 errors, 0 warnings. |
+| Changes unstaged | ✅ Resolved | 6 commits applied. Working tree is clean. |
 
 ---
 
-## Next 5 Recommended Tasks
+## Completed Tasks (originally listed as recommended)
 
-1. **Commit the full change set** — All modified and new files are unstaged. Commit with message referencing D-002 suite rebuild and founder sign-off 2026-04-09.
-2. **Delete root scaffold files** — `aexs-pitch-deck.jsx`, `financial-model.jsx`, `ai-startup-roadmap.jsx` at repo root are dead. Deleting them clears 5 persistent lint errors. They are preserved in git history.
-3. **Slide 6 footnote** — PitchDeck.jsx Slide 6 currently shows suite tier features per-tier. Consider a small note: "Revenue modeled as unified suite — see Financial Model for projections." Not required, optional polish.
-4. **Vitest config in vite.config.js** — If needed for CI, add `test: { environment: 'node' }` to `vite.config.js`. Currently Vitest runs with defaults, which works for pure JS utils.
-5. **Re-verify Slide 11 runway claim** — Slide 11 says "24 months of runway." With $1.5M seed and $141K/month burn, pure burn runway is ~10 months. The model shows break-even at Month 12 with revenue, so the company doesn't run out — but "24 months runway" may mislead an investor who interprets it as cash-on-hand duration. Consider changing to "Runway to break-even: Month 12" or leaving as-is with understanding it is revenue-dependent.
+All 5 tasks from the original recommended list are now done.
+
+| Task | Status | Resolution |
+|------|--------|------------|
+| Commit the full change set | ✅ Done | 6 commits applied to `main`. Working tree clean. |
+| Delete root scaffold files | ✅ Done | `aexs-pitch-deck.jsx`, `ai-startup-roadmap.jsx`, `financial-model.jsx` deleted in T4 cleanup (commit `8f88d33`). |
+| Slide 6 wording | ✅ Done | Product-name feature labels (`"Chief of Staff core"`, `"Full Chief of Staff"`, `"Governance module"`) replaced with capability descriptions. |
+| Vitest config in `vite.config.js` | ✅ Done | `test: { environment: 'node' }` added explicitly (commit `8d88c29`). |
+| Slide 11 runway claim | ✅ Done | "24 months of runway" removed. Slide 11 now reads "Break-even at Month 12." Cover and Slide 7 KPIs updated to match. |
