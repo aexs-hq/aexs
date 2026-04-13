@@ -400,7 +400,7 @@ const data = {
   ]
 };
 
-export default function App() {
+export default function Roadmap() {
   const [activeStartup, setActiveStartup] = useState(0);
   const [activePhase, setActivePhase] = useState(0);
   const [activeStep, setActiveStep] = useState(null);
@@ -410,11 +410,8 @@ export default function App() {
 
   return (
     <div style={{
-      minHeight: "100vh",
-      background: "#0c0c0f",
       fontFamily: "'Georgia', 'Times New Roman', serif",
       color: "#e8e4dc",
-      padding: "0"
     }}>
       {/* Header */}
       <div style={{

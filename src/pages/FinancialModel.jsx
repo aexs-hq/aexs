@@ -73,7 +73,7 @@ export default function FinancialModel() {
   const set = (key, val) => setCfg(p => ({ ...p, [key]: val }));
 
   return (
-    <div style={{ minHeight: "100vh", background: "#09090c", color: "#e8e4dc", fontFamily: "'Georgia', serif", padding: 0 }}>
+    <div style={{ color: "#e8e4dc", fontFamily: "'Georgia', serif" }}>
 
       {/* Header */}
       <div style={{ background: "#0d0d10", borderBottom: "1px solid #1e1e24", padding: "20px 20px 20px" }}>

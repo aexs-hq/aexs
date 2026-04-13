@@ -29,6 +29,11 @@ a {
   transition: color 0.15s;
 }
 
+/* Hide scrollbar on the sticky nav when it overflows on narrow screens. */
+nav::-webkit-scrollbar {
+  display: none;
+}
+
 /* Reset browser default paragraph margin.
    All <p> elements in the app use explicit inline margin styles. */
 p {

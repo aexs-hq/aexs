@@ -13,7 +13,7 @@ export default function NavBar() {
     <nav style={{
       display: 'flex',
       alignItems: 'center',
-      gap: 24,
+      gap: 20,
       padding: '10px 20px',
       background: '#0b0b0f',
       borderBottom: `1px solid ${C.border}`,
@@ -23,6 +23,8 @@ export default function NavBar() {
       position: 'sticky',
       top: 0,
       zIndex: 100,
+      overflowX: 'auto',
+      scrollbarWidth: 'none',   /* Firefox */
     }}>
       <span style={{ color: C.gold, fontWeight: 700, fontSize: 13, marginRight: 8, letterSpacing: 3 }}>
         AEXS

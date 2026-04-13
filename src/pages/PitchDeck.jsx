@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { C } from '../constants/theme';
 
 const slides = [
@@ -556,7 +556,7 @@ function Slide11() {
 
 const SLIDE_COMPONENTS = [Slide0, Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8, Slide9, Slide10, Slide11];
 
-export default function App() {
+export default function PitchDeck() {
   const [current, setCurrent] = useState(0);
   const SlideComp = SLIDE_COMPONENTS[current];
 
