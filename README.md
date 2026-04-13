@@ -40,6 +40,18 @@ npm run check
 
 Build currently passes with 0 errors and 0 warnings.
 
+## CI
+
+CI runs on every push and pull request to `main` via `.github/workflows/ci.yml`.
+
+The single quality gate is:
+
+```bash
+npm run check
+```
+
+This runs lint, tests, build, and docs-sync verification in sequence.
+
 ## Generated docs
 
 `public/docs/` is **generated output** — it is gitignored and never committed.
