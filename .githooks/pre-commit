@@ -1,0 +1,4 @@
+#!/bin/sh
+# Verify that public/docs/ is in sync with docs/ before every commit.
+# Install: git config core.hooksPath .githooks
+npm run check-docs-sync
