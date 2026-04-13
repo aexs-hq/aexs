@@ -174,14 +174,12 @@ export default function Home() {
           Several business assumptions in this demo — including pricing tiers, seed capital
           figure, and one brand color — contain unresolved contradictions between files.
           None have been changed. See{' '}
-          <a
-            href="/docs/business-contradictions.md"
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            to="/contradictions"
             style={{ color: C.gold, fontFamily: 'monospace', textDecoration: 'underline' }}
           >
-            docs/business-contradictions.md
-          </a>{' '}
+            business-contradictions
+          </Link>{' '}
           for a full accounting before sharing externally.
         </p>
       </div>
