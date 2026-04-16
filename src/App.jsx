@@ -17,17 +17,25 @@ const fallback = <PageShell loading />;
 
 export default function App() {
   return (
-    <AppLayout>
-      <Suspense fallback={fallback}>
-        <Routes>
-          <Route path="/"        element={<Home />} />
-          <Route path="/pitch"   element={<PitchDeck />} />
-          <Route path="/roadmap" element={<Roadmap />} />
-          <Route path="/model"          element={<FinancialModel />} />
-          <Route path="/contradictions" element={<Contradictions />} />
-          <Route path="*"               element={<NotFound />} />
-        </Routes>
-      </Suspense>
-    </AppLayout>
+    <Suspense fallback={fallback}>
+      <Routes>
+        {/* PitchDeck owns its full-page layout (fixed nav + sidebar) */}
+        <Route path="/pitch" element={<PitchDeck />} />
+        {/* All other routes use the shared AppLayout */}
+        <Route path="/*" element={
+          <AppLayout>
+            <Suspense fallback={fallback}>
+              <Routes>
+                <Route path="/"               element={<Home />} />
+                <Route path="/roadmap"        element={<Roadmap />} />
+                <Route path="/model"          element={<FinancialModel />} />
+                <Route path="/contradictions" element={<Contradictions />} />
+                <Route path="*"              element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </AppLayout>
+        } />
+      </Routes>
+    </Suspense>
   );
 }

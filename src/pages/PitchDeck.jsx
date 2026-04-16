@@ -1,619 +1,1052 @@
-import { useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import { C } from '../constants/theme';
+import { useEffect, useRef, useState } from 'react';
 
-const slides = [
-  { id: 0, label: "Cover", icon: "◆" },
-  { id: 1, label: "Problem", icon: "!" },
-  { id: 2, label: "Solution", icon: "✦" },
-  { id: 3, label: "Product", icon: "⬡" },
-  { id: 4, label: "Market", icon: "◎" },
-  { id: 5, label: "Traction", icon: "↑" },
-  { id: 6, label: "Business Model", icon: "$" },
-  { id: 7, label: "Financials", icon: "∑" },
-  { id: 8, label: "Competition", icon: "⊕" },
-  { id: 9, label: "Go-To-Market", icon: "→" },
-  { id: 10, label: "Team", icon: "◈" },
-  { id: 11, label: "The Ask", icon: "★" },
+const SLIDES = [
+  { id: 'cover',       label: 'Cover',          icon: '◆', accent: '#C8A84B' },
+  { id: 'problem',     label: 'Problem',        icon: '⚠', accent: '#ef4444' },
+  { id: 'solution',    label: 'Solution',       icon: '✦', accent: '#C8A84B' },
+  { id: 'product',     label: 'Product',        icon: '⬡', accent: '#3b82f6' },
+  { id: 'market',      label: 'Market',         icon: '◎', accent: '#a855f7' },
+  { id: 'traction',    label: 'Traction',       icon: '▲', accent: '#22c55e' },
+  { id: 'model',       label: 'Business Model', icon: '◈', accent: '#C8A84B' },
+  { id: 'financials',  label: 'Financials',     icon: '↑', accent: '#22c55e' },
+  { id: 'competition', label: 'Competition',    icon: '⊕', accent: '#f97316' },
+  { id: 'gtm',         label: 'Go-To-Market',   icon: '→', accent: '#3b82f6' },
+  { id: 'team',        label: 'Team',           icon: '◉', accent: '#C8A84B' },
+  { id: 'ask',         label: 'The Ask',        icon: '★', accent: '#C8A84B' },
 ];
 
-function Tag({ children, color }) {
+/* ─── Financials slide as its own component to manage bar-animation observer ─── */
+function FinancialsSlide({ onRef }) {
+  const [animated, setAnimated] = useState(false);
+  const localRef = useRef(null);
+
+  const setRef = (el) => {
+    localRef.current = el;
+    onRef(el);
+  };
+
+  useEffect(() => {
+    const el = localRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setAnimated(true); },
+      { threshold: 0.25 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const bars = [
+    { label: 'Pre-Rev', arr: 0,    color: '#475569', pct: 2  },
+    { label: 'Y1 H1',  arr: 0.8,  color: '#C8A84B', pct: 5  },
+    { label: 'Y1',     arr: 2.6,  color: '#C8A84B', pct: 15 },
+    { label: 'Y2',     arr: 9.2,  color: '#22c55e', pct: 45 },
+    { label: 'Y3',     arr: 32.2, color: '#3b82f6', pct: 100 },
+  ];
+
   return (
-    <span style={{ display: "inline-block", padding: "3px 10px", background: `${color || C.gold}18`, border: `1px solid ${color || C.gold}44`, borderRadius: 2, fontSize: 9, color: color || C.gold, fontFamily: "monospace", letterSpacing: 2, textTransform: "uppercase" }}>
-      {children}
-    </span>
-  );
-}
+    <section ref={setRef} id="financials"
+      className="min-h-screen flex flex-col justify-center px-16 py-20"
+      style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
 
-function SectionLabel({ children }) {
-  return <p style={{ fontSize: 9, letterSpacing: 4, color: C.muted, fontFamily: "monospace", textTransform: "uppercase", margin: "0 0 10px" }}>{children}</p>;
-}
-
-function Slide0() {
-  return (
-    <div style={{ minHeight: 520, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 50% 40%, ${C.gold}11 0%, transparent 65%)`, pointerEvents: "none" }} />
-      <div style={{ position: "absolute", top: 20, right: 20, width: 120, height: 120, borderRadius: "50%", border: `1px solid ${C.gold}22`, opacity: 0.4 }} />
-      <div style={{ position: "absolute", bottom: 30, left: 20, width: 60, height: 60, borderRadius: "50%", border: `1px solid ${C.teal}33` }} />
-
-      <Tag>Seed Round · 2026</Tag>
-      <h1 style={{ fontSize: "clamp(32px,8vw,60px)", fontWeight: 300, letterSpacing: -2, margin: "20px 0 8px", fontFamily: "'Georgia', serif", lineHeight: 1.1 }}>
-        AEXS
+      <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#22c55e' }}>FINANCIAL PROJECTIONS</p>
+      <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
+        Path to $32.2M ARR in 36 Months
       </h1>
-      <p style={{ fontSize: "clamp(14px,3vw,20px)", color: C.dim, fontStyle: "italic", margin: "0 0 24px", letterSpacing: 1 }}>
-        AI Executive Suite
+      <p className="text-slate-400 text-sm mb-12 max-w-xl leading-relaxed slide-in">
+        Conservative model built on $24K average contract value, 22% close rate, and 130%+ net revenue retention.
       </p>
-      <div style={{ width: 48, height: 1, background: C.gold, margin: "0 auto 24px" }} />
-      <p style={{ fontSize: 13, color: C.dim, maxWidth: 380, lineHeight: 1.8, margin: "0 0 32px" }}>
-        The operating intelligence layer for the world's most ambitious executives — Chief of Staff, Governance, and Decision Support unified in one platform.
-      </p>
-      <div style={{ display: "flex", gap: 24, justifyContent: "center", flexWrap: "wrap" }}>
-        {[["$32.2M", "Y3 ARR Target"], ["$257M", "Valuation (8x)"], ["Month 12", "Break-Even"]].map(([v, l]) => (
-          <div key={l} style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 22, color: C.gold, fontFamily: "monospace", fontWeight: 700 }}>{v}</div>
-            <div style={{ fontSize: 9, color: C.muted, letterSpacing: 2, fontFamily: "monospace", textTransform: "uppercase" }}>{l}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
-function Slide1() {
-  const problems = [
-    { icon: "🌊", title: "Executive Overload", stat: "73%", desc: "of C-suite leaders report decision fatigue daily. They're drowning in data with no synthesis layer." },
-    { icon: "⚖️", title: "Regulatory Chaos", stat: "EU AI Act + 40+", desc: "national AI regulations now active. Most companies have zero compliance infrastructure." },
-    { icon: "🔮", title: "Blind Decisions", stat: "$3T/yr", desc: "lost globally to poor executive decisions made without real-time competitive or market intelligence." },
-    { icon: "🤖", title: "AI Adoption Gap", stat: "Only 12%", desc: "of Fortune 500 CEOs use AI tools daily in their core decision workflow. The gap is enormous." },
-  ];
-  return (
-    <div>
-      <SectionLabel>The Problem</SectionLabel>
-      <h2 style={{ fontSize: "clamp(20px,5vw,32px)", fontWeight: 300, margin: "0 0 8px", lineHeight: 1.2 }}>
-        Leaders are flying blind<br /><span style={{ color: C.gold }}>in an AI-powered world.</span>
-      </h2>
-      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 28px", lineHeight: 1.7 }}>
-        The tools executives rely on were built for a pre-AI era. No synthesis. No foresight. No compliance. Just noise.
-      </p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-        {problems.map((p, i) => (
-          <div key={i} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, padding: "16px" }}>
-            <div style={{ fontSize: 24, marginBottom: 8 }}>{p.icon}</div>
-            <div style={{ fontSize: 10, color: C.muted, fontFamily: "monospace", letterSpacing: 2, textTransform: "uppercase", marginBottom: 4 }}>{p.title}</div>
-            <div style={{ fontSize: 20, color: "#C94C4C", fontFamily: "monospace", fontWeight: 700, marginBottom: 6 }}>{p.stat}</div>
-            <p style={{ fontSize: 11, color: C.dim, margin: 0, lineHeight: 1.6 }}>{p.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Slide2() {
-  return (
-    <div>
-      <SectionLabel>The Solution</SectionLabel>
-      <h2 style={{ fontSize: "clamp(20px,5vw,32px)", fontWeight: 300, margin: "0 0 8px", lineHeight: 1.2 }}>
-        One unified platform.<br /><span style={{ color: C.teal }}>Three layers of intelligence.</span>
-      </h2>
-      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 24px", lineHeight: 1.7 }}>
-        AEXS wraps AI around every executive function — from morning briefings to board compliance to strategic decisions.
-      </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {[
-          { color: C.gold, emoji: "🧠", title: "AI Chief of Staff", sub: "Layer 1 · Operations", points: ["Daily executive briefings", "Meeting intelligence + action tracking", "Autonomous inbox triage", "Team performance dashboards"] },
-          { color: C.blue, emoji: "⚖️", title: "AI Governance Engine", sub: "Layer 2 · Compliance", points: ["Automated EU AI Act compliance", "Bias detection + model auditing", "Real-time regulatory monitoring", "Board-ready certification reports"] },
-          { color: C.purple, emoji: "📊", title: "Decision Intelligence", sub: "Layer 3 · Strategy", points: ["3-scenario decision modeling", "Live competitor intelligence", "Market signal aggregation", "Investment committee scoring"] },
-        ].map((s, i) => (
-          <div key={i} style={{ background: C.card, border: `1px solid ${s.color}33`, borderLeft: `3px solid ${s.color}`, borderRadius: 6, padding: "16px 20px", display: "flex", gap: 16, alignItems: "flex-start" }}>
-            <div style={{ fontSize: 28, flexShrink: 0 }}>{s.emoji}</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 4 }}>
-                <div>
-                  <div style={{ fontSize: 15, color: C.text, marginBottom: 2 }}>{s.title}</div>
-                  <Tag color={s.color}>{s.sub}</Tag>
+      <div className="flex gap-14 mb-10">
+        {/* Bar chart */}
+        <div className="flex-1 slide-in">
+          <p className="font-bold tracking-widest text-slate-500 mb-6" style={{ fontSize: '9px' }}>ARR GROWTH TRAJECTORY ($M)</p>
+          <div className="flex items-end gap-3" style={{ height: 220 }}>
+            {bars.map(({ label, arr, color, pct }, i) => (
+              <div key={label} className="flex-1 flex flex-col items-center gap-2">
+                <p className="font-bold text-xs mb-1" style={{ color, fontFamily: 'Syne, sans-serif' }}>
+                  {arr > 0 ? `$${arr}M` : '—'}
+                </p>
+                <div className="w-full overflow-hidden rounded-t" style={{ height: `${Math.max(pct * 1.9, 8)}px` }}>
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: color,
+                      opacity: 0.88,
+                      borderRadius: '4px 4px 0 0',
+                      transformOrigin: 'bottom',
+                      transform: animated ? 'scaleY(1)' : 'scaleY(0)',
+                      transition: `transform 0.7s cubic-bezier(.4,0,.2,1) ${i * 0.12}s`,
+                    }}
+                  />
                 </div>
+                <p className="text-slate-500 text-[10px] text-center">{label}</p>
               </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
-                {s.points.map((p, j) => (
-                  <span key={j} style={{ fontSize: 10, color: C.dim, background: "#13131a", border: `1px solid ${C.border}`, borderRadius: 3, padding: "3px 8px" }}>
-                    ✓ {p}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Slide3() {
-  const [active, setActive] = useState(0);
-  const features = [
-    {
-      tab: "🧠 Chief of Staff", color: C.gold,
-      screens: [
-        { title: "Morning Brief", desc: "AI delivers a 90-second executive summary at 7AM every day — emails triaged, calendar conflicts resolved, top priorities ranked." },
-        { title: "Meeting Intelligence", desc: "AI joins every meeting, transcribes, extracts action items, assigns owners, and follows up — automatically." },
-        { title: "Executive Memory", desc: "Proprietary knowledge graph learns your communication style, key relationships, and decision history over time." },
-      ]
-    },
-    {
-      tab: "⚖️ Governance", color: C.blue,
-      screens: [
-        { title: "Risk Dashboard", desc: "Real-time compliance heatmap across all your AI systems, color-coded by regulatory risk level." },
-        { title: "Bias Scanner", desc: "Automated fairness testing against protected attributes. Generates board-ready audit reports in 48 hours." },
-        { title: "AI Certification", desc: "Official 'AEXS Certified' badge — a public, verifiable compliance credential that builds customer trust." },
-      ]
-    },
-    {
-      tab: "📊 Decision", color: C.purple,
-      screens: [
-        { title: "Scenario Engine", desc: "Any decision generates 3 scenarios — optimistic, base, pessimistic — with probability scores and risk factors." },
-        { title: "Competitor Feed", desc: "Live monitoring: funding rounds, product launches, hiring signals, pricing changes. All in one feed." },
-        { title: "Decision Tracker", desc: "Log decisions made on-platform. Measure actual outcomes at 30/60/90 days. Build your ROI proof." },
-      ]
-    },
-  ];
-  const f = features[active];
-  return (
-    <div>
-      <SectionLabel>Product Deep Dive</SectionLabel>
-      <h2 style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 300, margin: "0 0 20px" }}>
-        Built for how executives <span style={{ color: C.teal }}>actually work.</span>
-      </h2>
-      <div style={{ display: "flex", gap: 6, marginBottom: 20, overflowX: "auto" }}>
-        {features.map((ft, i) => (
-          <button key={i} onClick={() => setActive(i)} style={{
-            flex: "0 0 auto", padding: "8px 14px", border: `1px solid ${active === i ? ft.color : C.border}`,
-            background: active === i ? `${ft.color}18` : "transparent", color: active === i ? ft.color : C.muted,
-            fontFamily: "monospace", fontSize: 10, cursor: "pointer", borderRadius: 4, letterSpacing: 1
-          }}>{ft.tab}</button>
-        ))}
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-        {f.screens.map((s, i) => (
-          <div key={i} style={{ background: C.card, border: `1px solid ${f.color}33`, borderRadius: 6, padding: "16px" }}>
-            <div style={{ width: "100%", height: 60, background: `linear-gradient(135deg, ${f.color}18 0%, ${C.dark} 100%)`, borderRadius: 4, marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <div style={{ width: 24, height: 24, borderRadius: "50%", background: f.color, opacity: 0.6 }} />
-            </div>
-            <div style={{ fontSize: 12, color: C.text, marginBottom: 6 }}>{s.title}</div>
-            <p style={{ fontSize: 10, color: C.dim, margin: 0, lineHeight: 1.6 }}>{s.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Slide4() {
-  const pieData = [
-    { name: "Enterprise SW", value: 180, color: C.gold },
-    { name: "AI SaaS", value: 140, color: C.teal },
-    { name: "GRC Software", value: 85, color: C.blue },
-    { name: "Exec Tools", value: 45, color: C.purple },
-  ];
-  return (
-    <div>
-      <SectionLabel>Market Opportunity</SectionLabel>
-      <h2 style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 300, margin: "0 0 8px" }}>
-        A <span style={{ color: C.gold }}>$450B+</span> addressable market<br />at the intersection of four categories.
-      </h2>
-      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 24px", lineHeight: 1.7 }}>AEXS competes in — and bridges — enterprise software, AI SaaS, GRC, and executive productivity.</p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "center" }}>
-        <ResponsiveContainer width="100%" height={200}>
-          <PieChart>
-            <Pie data={pieData} cx="50%" cy="50%" innerRadius={50} outerRadius={90} dataKey="value" paddingAngle={3}>
-              {pieData.map((e, i) => <Cell key={i} fill={e.color} opacity={0.85} />)}
-            </Pie>
-            <Tooltip formatter={(v) => `$${v}B`} contentStyle={{ background: C.card, border: `1px solid ${C.border}`, fontFamily: "monospace", fontSize: 10 }} />
-          </PieChart>
-        </ResponsiveContainer>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {pieData.map((d, i) => (
-            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", background: C.card, border: `1px solid ${d.color}33`, borderRadius: 4 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 8, height: 8, borderRadius: "50%", background: d.color }} />
-                <span style={{ fontSize: 11, color: C.dim }}>{d.name}</span>
-              </div>
-              <span style={{ fontSize: 13, color: d.color, fontFamily: "monospace", fontWeight: 700 }}>${d.value}B</span>
-            </div>
-          ))}
-          <div style={{ padding: "10px 12px", background: `${C.teal}11`, border: `1px solid ${C.teal}33`, borderRadius: 4 }}>
-            <div style={{ fontSize: 9, color: C.muted, fontFamily: "monospace", letterSpacing: 2, marginBottom: 4 }}>OUR SERVICEABLE MARKET</div>
-            <div style={{ fontSize: 18, color: C.teal, fontFamily: "monospace", fontWeight: 700 }}>$28B SAM</div>
+            ))}
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
 
-function Slide5() {
-  const milestones = [
-    { done: true, q: "Q1 2026", title: "Concept & Research", items: ["10 executive interviews", "Regulatory mapping complete", "Tech stack chosen"] },
-    { done: false, q: "Q2 2026", title: "MVP Build", items: ["Chief of Staff MVP live", "20 beta users onboarded", "First $15K MRR"] },
-    { done: false, q: "Q3 2026", title: "Beta → Paid", items: ["100 paying customers", "$80K MRR", "Governance module launch"] },
-    { done: false, q: "Q4 2026", title: "Series A Raise", items: ["$1M ARR milestone", "Decision Suite launch", "Series A close"] },
-  ];
-  return (
-    <div>
-      <SectionLabel>Traction & Milestones</SectionLabel>
-      <h2 style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 300, margin: "0 0 8px" }}>
-        Early signal is <span style={{ color: C.teal }}>exceptionally strong.</span>
-      </h2>
-      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 24px", lineHeight: 1.7 }}>Built on direct insight from 10+ C-suite executives. Product-market fit validated before a line of code was written.</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-        {milestones.map((m, i) => (
-          <div key={i} style={{ display: "flex", gap: 16, paddingBottom: 20, position: "relative" }}>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
-              <div style={{ width: 28, height: 28, borderRadius: "50%", background: m.done ? C.teal : C.card, border: `2px solid ${m.done ? C.teal : C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, color: m.done ? "#000" : C.muted, fontWeight: 700 }}>
-                {m.done ? "✓" : "○"}
-              </div>
-              {i < milestones.length - 1 && <div style={{ width: 1, flex: 1, background: m.done ? `${C.teal}44` : C.border, minHeight: 20, marginTop: 4 }} />}
+        {/* Key metrics */}
+        <div className="w-56 flex-shrink-0 slide-in">
+          {[
+            { label: 'SEED ROUND',      value: '$1.5M',    color: '#C8A84B' },
+            { label: 'Y1 ARR',          value: '$2.6M',    color: '#C8A84B' },
+            { label: 'Y2 ARR',          value: '$9.2M',    color: '#22c55e' },
+            { label: 'Y3 ARR',          value: '$32.2M',   color: '#3b82f6' },
+            { label: 'BREAK-EVEN',      value: 'Month 12', color: '#22c55e' },
+            { label: 'GROSS MARGIN',    value: '82%',      color: '#a855f7' },
+            { label: 'Y3 VALUATION 8×', value: '$257M',    color: '#C8A84B' },
+          ].map(({ label, value, color }) => (
+            <div key={label} className="flex justify-between items-center py-2.5"
+              style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <p className="font-bold tracking-widest text-slate-500" style={{ fontSize: '9px' }}>{label}</p>
+              <p className="font-syne font-bold text-sm" style={{ color }}>{value}</p>
             </div>
-            <div style={{ flex: 1, paddingBottom: 4 }}>
-              <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 8, flexWrap: "wrap" }}>
-                <Tag color={m.done ? C.teal : C.muted}>{m.q}</Tag>
-                <span style={{ fontSize: 13, color: m.done ? C.text : C.muted }}>{m.title}</span>
-              </div>
-              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                {m.items.map((item, j) => (
-                  <span key={j} style={{ fontSize: 10, color: C.dim, background: C.card, border: `1px solid ${C.border}`, borderRadius: 3, padding: "3px 8px" }}>
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom metrics strip */}
+      <div className="grid grid-cols-4 gap-4 slide-in">
+        {[
+          { label: 'AVG CONTRACT',  value: '$24K',    color: '#C8A84B' },
+          { label: 'CUSTOMERS Y3', value: '1,340+',  color: '#22c55e' },
+          { label: 'PAYBACK',      value: '4 months', color: '#a855f7' },
+          { label: 'NRR TARGET',   value: '130%+',   color: '#3b82f6' },
+        ].map(({ label, value, color }) => (
+          <div key={label} className="rounded-lg p-4 text-center"
+            style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            <p className="font-bold tracking-widest text-slate-500 mb-2" style={{ fontSize: '9px' }}>{label}</p>
+            <p className="font-syne font-bold text-xl" style={{ color }}>{value}</p>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 
-function Slide6() {
-  const tiers = [
-    { name: "Starter", price: "$499/mo", color: C.gold, target: "Solo executive", features: ["AI executive assistant", "Daily briefings", "Email + calendar", "5 meeting summaries/mo"] },
-    { name: "Growth", price: "$1,999/mo", color: C.teal, target: "Leadership team (up to 5)", features: ["Full executive assistant", "Compliance & governance", "Unlimited meetings", "Priority scoring engine"], highlight: true },
-    { name: "Enterprise", price: "$8,500/mo", color: C.purple, target: "Full C-suite + board", features: ["All 3 modules", "Decision intelligence", "White-glove onboarding", "Custom data feeds", "AI Compliance Cert"] },
-  ];
+/* ─── Main component ─── */
+export default function PitchDeck() {
+  const [active, setActive] = useState(0);
+  const sectionRefs = useRef([]);
+
+  /* Sidebar auto-highlight as user scrolls */
+  useEffect(() => {
+    const observers = sectionRefs.current.map((el, i) => {
+      if (!el) return null;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActive(i); },
+        { rootMargin: '-20% 0px -70% 0px' }
+      );
+      obs.observe(el);
+      return obs;
+    });
+    return () => observers.forEach(obs => obs?.disconnect());
+  }, []);
+
+  /* Slide-in reveal animation for .slide-in elements */
+  useEffect(() => {
+    const targets = document.querySelectorAll('.slide-in');
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.1 }
+    );
+    targets.forEach(t => obs.observe(t));
+    return () => obs.disconnect();
+  }, []);
+
+  const scrollTo = (i) => {
+    sectionRefs.current[i]?.scrollIntoView({ behavior: 'smooth' });
+    setActive(i);
+  };
+
+  const progress = ((active + 1) / SLIDES.length) * 100;
+
   return (
-    <div>
-      <SectionLabel>Business Model</SectionLabel>
-      <h2 style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 300, margin: "0 0 8px" }}>
-        SaaS subscription + <span style={{ color: C.gold }}>outcome-based upsells.</span>
-      </h2>
-      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 20px", lineHeight: 1.7 }}>Three tiers designed to land small and expand. NRR target: 130%+.</p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 20 }}>
-        {tiers.map((t, i) => (
-          <div key={i} style={{ background: t.highlight ? `${t.color}0d` : C.card, border: `1px solid ${t.color}${t.highlight ? "66" : "33"}`, borderRadius: 6, padding: "16px", position: "relative" }}>
-            {t.highlight && <div style={{ position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)", background: t.color, color: "#000", fontSize: 8, fontFamily: "monospace", letterSpacing: 2, padding: "3px 10px", borderRadius: 2, textTransform: "uppercase", fontWeight: 700 }}>Most Popular</div>}
-            <div style={{ fontSize: 9, color: t.color, fontFamily: "monospace", letterSpacing: 2, textTransform: "uppercase", marginBottom: 6 }}>{t.name}</div>
-            <div style={{ fontSize: 20, color: C.text, fontFamily: "monospace", fontWeight: 700, marginBottom: 4 }}>{t.price}</div>
-            <div style={{ fontSize: 10, color: C.muted, marginBottom: 14, fontStyle: "italic" }}>{t.target}</div>
-            {t.features.map((f, j) => (
-              <div key={j} style={{ fontSize: 10, color: C.dim, padding: "5px 0", borderBottom: j < t.features.length - 1 ? `1px solid ${C.border}` : "none" }}>
-                <span style={{ color: t.color }}>✓</span> {f}
+    <div style={{ backgroundColor: '#080C18', color: 'white', fontFamily: "'Inter', sans-serif" }}>
+      <style>{`
+        .slide-in { opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+        .slide-in.visible { opacity: 1; transform: translateY(0); }
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(200,168,75,0.3); border-radius: 2px; }
+      `}</style>
+
+      {/* ── TOP NAV ── */}
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center px-6"
+        style={{ height: '56px', backgroundColor: '#080C18', borderBottom: '1px solid rgba(200,168,75,0.18)' }}>
+
+        {/* Wordmark */}
+        <div className="flex items-baseline gap-2" style={{ width: '220px' }}>
+          <span className="font-syne font-bold text-gold tracking-tight" style={{ fontSize: '18px' }}>AEXS</span>
+          <span className="text-slate-400 font-bold tracking-widest" style={{ fontSize: '11px' }}>AI EXECUTIVE SUITE</span>
+        </div>
+
+        {/* Nav links */}
+        <div className="flex-1 flex justify-center gap-10">
+          {[
+            { label: 'HOME',      href: '/',        active: false },
+            { label: 'PITCH DECK', href: '/pitch',  active: true  },
+            { label: 'ROADMAP',   href: '/roadmap', active: false },
+          ].map(({ label, href, active: isActive }) => (
+            <a key={label} href={href}
+              className={`font-bold tracking-widest transition-colors ${
+                isActive
+                  ? 'text-gold border-b border-gold pb-px'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+              style={{ fontSize: '11px' }}>
+              {label}
+            </a>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div className="flex justify-end" style={{ width: '220px' }}>
+          <a href="/deck.pdf" download="AEXS_InvestorDeck_2026.pdf"
+            className="border border-gold text-gold font-bold tracking-widest transition-all hover:bg-gold hover:text-deck"
+            style={{ padding: '6px 14px', fontSize: '10px' }}>
+            REQUEST FULL DECK
+          </a>
+        </div>
+
+        {/* Gold rule at very bottom of nav */}
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: 'rgba(200,168,75,0.15)' }} />
+      </nav>
+
+      {/* ── LEFT SIDEBAR ── */}
+      <aside className="fixed bottom-0 left-0 z-40 flex flex-col"
+        style={{ top: '56px', width: '220px', backgroundColor: '#080C18', borderRight: '1px solid rgba(255,255,255,0.05)' }}>
+
+        {/* Header */}
+        <div className="px-4 pt-5 pb-3">
+          <p className="font-bold tracking-widest text-gold" style={{ fontSize: '9px' }}>INVESTOR DECK</p>
+          <div className="mt-2 h-px" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} />
+        </div>
+
+        {/* Slide list */}
+        <nav className="flex-1 overflow-y-auto">
+          {SLIDES.map((slide, i) => (
+            <button key={slide.id} onClick={() => scrollTo(i)}
+              className="w-full flex items-center gap-3 text-left transition-all"
+              style={{
+                padding: '9px 16px',
+                borderLeft: active === i ? `3px solid #C8A84B` : '3px solid transparent',
+                backgroundColor: active === i ? 'rgba(100,116,139,0.18)' : 'transparent',
+              }}
+              onMouseEnter={e => {
+                if (active !== i) {
+                  e.currentTarget.style.borderLeftColor = 'rgba(200,168,75,0.5)';
+                  e.currentTarget.style.backgroundColor = 'rgba(30,41,59,0.4)';
+                }
+              }}
+              onMouseLeave={e => {
+                if (active !== i) {
+                  e.currentTarget.style.borderLeftColor = 'transparent';
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }
+              }}>
+              <span style={{ color: slide.accent, fontSize: '12px', flexShrink: 0 }}>{slide.icon}</span>
+              <span style={{
+                fontSize: '12px',
+                color: active === i ? 'white' : 'rgba(255,255,255,0.6)',
+                fontWeight: active === i ? '600' : '400',
+              }}>
+                {slide.label}
+              </span>
+            </button>
+          ))}
+        </nav>
+
+        {/* Footer: counter + progress bar */}
+        <div className="px-4 pb-4 pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+          <p className="text-slate-500 mb-2" style={{ fontSize: '10px' }}>{active + 1} / {SLIDES.length}</p>
+          <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
+            <div className="h-full rounded-full transition-all duration-500"
+              style={{ width: `${progress}%`, backgroundColor: '#C8A84B' }} />
+          </div>
+        </div>
+      </aside>
+
+      {/* ── MAIN CONTENT ── */}
+      <main style={{ marginLeft: '220px', paddingTop: '56px' }}>
+
+        {/* ── SLIDE 1: COVER ── */}
+        <section ref={el => sectionRefs.current[0] = el} id="cover"
+          className="min-h-screen flex items-center px-16 py-20"
+          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="flex w-full gap-16 items-center">
+
+            {/* Left */}
+            <div className="flex-1">
+              <p className="font-bold tracking-widest mb-6" style={{ fontSize: '9px', color: '#C8A84B' }}>
+                INVESTOR PRESENTATION · 2026
+              </p>
+              <h1 className="font-syne font-bold text-gold leading-none mb-4"
+                style={{ fontSize: 'clamp(64px,9vw,96px)' }}>
+                AEXS
+              </h1>
+              <p className="font-syne font-semibold text-white/80 mb-2" style={{ fontSize: '22px' }}>
+                AI Executive Suite
+              </p>
+              <p className="text-slate-400 text-sm mb-8 max-w-sm leading-relaxed">
+                The world's first AI-native command layer for enterprise leadership — unifying executive intelligence, regulatory compliance, and decision governance in a single platform.
+              </p>
+              <div className="flex gap-6 mb-8 items-center">
+                <div>
+                  <p className="font-syne font-bold text-gold" style={{ fontSize: '26px' }}>$1.5M</p>
+                  <p className="text-slate-500 font-bold tracking-widest" style={{ fontSize: '9px' }}>SEED ROUND</p>
+                </div>
+                <div className="w-px h-10" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }} />
+                <div>
+                  <p className="font-syne font-bold text-white" style={{ fontSize: '26px' }}>$32.2M</p>
+                  <p className="text-slate-500 font-bold tracking-widest" style={{ fontSize: '9px' }}>Y3 ARR TARGET</p>
+                </div>
+                <div className="w-px h-10" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }} />
+                <div>
+                  <p className="font-syne font-bold text-white" style={{ fontSize: '26px' }}>$8M</p>
+                  <p className="text-slate-500 font-bold tracking-widest" style={{ fontSize: '9px' }}>VALUATION CAP</p>
+                </div>
+              </div>
+              <p className="text-slate-500 font-bold tracking-widest" style={{ fontSize: '10px' }}>
+                contact@aexs.ai · aexs.ai
+              </p>
+            </div>
+
+            {/* Right: stacked layer cards */}
+            <div className="flex-shrink-0" style={{ width: '380px' }}>
+              <div className="flex flex-col gap-3 mb-4">
+                {[
+                  { n: '01', label: 'LAYER 01', title: 'AI Chief of Staff',    sub: 'Executive memory, briefings, follow-ups', accent: '#C8A84B' },
+                  { n: '02', label: 'LAYER 02', title: 'AI Governance Engine', sub: 'EU AI Act, ISO 42001, board-ready reports', accent: '#3b82f6' },
+                  { n: '03', label: 'LAYER 03', title: 'Decision Intelligence', sub: 'Data-grounded choices with full audit trail', accent: '#22c55e' },
+                ].map(({ label, title, sub, accent }) => (
+                  <div key={label} className="rounded-xl p-4 slide-in"
+                    style={{ border: `1px solid ${accent}44`, backgroundColor: `${accent}08` }}>
+                    <p className="font-bold tracking-widest mb-1" style={{ fontSize: '9px', color: accent }}>{label}</p>
+                    <p className="font-syne font-semibold text-white text-sm">{title}</p>
+                    <p className="text-slate-400 text-xs mt-1">{sub}</p>
+                  </div>
+                ))}
+              </div>
+              {/* Foundation bar */}
+              <div className="rounded-xl py-3 px-4 text-center slide-in"
+                style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(168,85,247,0.08))', border: '1px solid rgba(168,85,247,0.3)' }}>
+                <p className="font-bold tracking-widest text-purple-400" style={{ fontSize: '9px' }}>
+                  EXECUTIVE MEMORY GRAPH · UNIFIED INTELLIGENCE FOUNDATION
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SLIDE 2: PROBLEM ── */}
+        <section ref={el => sectionRefs.current[1] = el} id="problem"
+          className="min-h-screen flex flex-col justify-center px-16 py-20"
+          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#ef4444' }}>THE PROBLEM</p>
+          <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
+            Leaders Are Flying Blind
+          </h1>
+          <p className="text-slate-400 text-sm mb-12 max-w-xl leading-relaxed slide-in">
+            Modern executives face an impossible information burden with zero intelligent infrastructure to help.
+          </p>
+
+          {/* 2×2 stat grid */}
+          <div className="grid grid-cols-2 gap-4 max-w-2xl mb-8">
+            {[
+              { stat: '73%',  color: '#ef4444', title: 'Executive Overload',      body: 'of C-suite leaders report critical information is missed weekly due to data volume.' },
+              { stat: '$3T',  color: '#f97316', title: 'Annual Value Destroyed',  body: 'lost globally each year to poor executive decisions and misaligned strategic execution.' },
+              { stat: '40+',  color: '#C8A84B', title: 'Regulatory Frameworks',  body: 'now mandate AI governance documentation — with no unified compliance tooling available.' },
+              { stat: '12%',  color: '#3b82f6', title: 'AI Adoption Success',    body: 'of enterprise AI initiatives deliver measurable executive-level business value.' },
+            ].map(({ stat, color, title, body }) => (
+              <div key={stat} className="rounded-xl p-6 slide-in"
+                style={{ backgroundColor: `${color}0d`, border: `1px solid ${color}33` }}>
+                <p className="font-syne font-bold mb-2 leading-none" style={{ fontSize: '54px', color }}>
+                  {stat}
+                </p>
+                <p className="text-white text-sm font-semibold mb-1">{title}</p>
+                <p className="text-slate-400 text-xs leading-relaxed">{body}</p>
               </div>
             ))}
           </div>
-        ))}
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-        {[["One-time Audit", "$25K", "AI compliance certification"], ["Gov Reports", "$2.5K", "Per benchmark report"], ["White Label", "$15K+/mo", "For consulting firms"]].map(([l, v, d]) => (
-          <div key={l} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 4, padding: "12px" }}>
-            <div style={{ fontSize: 9, color: C.muted, fontFamily: "monospace", letterSpacing: 2, marginBottom: 4 }}>{l}</div>
-            <div style={{ fontSize: 16, color: C.gold, fontFamily: "monospace", fontWeight: 700 }}>{v}</div>
-            <div style={{ fontSize: 10, color: C.muted, marginTop: 3 }}>{d}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
-function Slide7() {
-  const data = [
-    { year: "Y1", ARR: 2.6, Burn: 1.8 },
-    { year: "Y2", ARR: 9.2, Burn: 3.8 },
-    { year: "Y3", ARR: 32.2, Burn: 6.0 },
-  ];
-  const metrics = [
-    { label: "Seed Round", value: "$1.5M", color: C.gold },
-    { label: "Break-Even", value: "Month 12", color: C.blue },
-    { label: "Y3 ARR", value: "$32.2M", color: C.purple },
-    { label: "Y3 Valuation (8x)", value: "$257M", color: C.gold },
-    { label: "Gross Margin Y3", value: "73%", color: C.teal },
-  ];
-  return (
-    <div>
-      <SectionLabel>Financial Projections</SectionLabel>
-      <h2 style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 300, margin: "0 0 8px" }}>
-        Path to <span style={{ color: C.gold }}>$32.2M ARR</span> in 36 months.
-      </h2>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
-        {metrics.map((m, i) => (
-          <div key={i} style={{ background: C.card, border: `1px solid ${m.color}33`, borderRadius: 4, padding: "10px 14px", flex: "1 1 100px" }}>
-            <div style={{ fontSize: 9, color: C.muted, fontFamily: "monospace", letterSpacing: 2, textTransform: "uppercase", marginBottom: 4 }}>{m.label}</div>
-            <div style={{ fontSize: 16, color: m.color, fontFamily: "monospace", fontWeight: 700 }}>{m.value}</div>
+          {/* EU AI Act alert bar */}
+          <div className="max-w-2xl rounded-xl px-5 py-4 flex items-center gap-3 slide-in"
+            style={{ backgroundColor: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.35)' }}>
+            <span className="text-red-400 text-xl flex-shrink-0">⚠</span>
+            <p className="text-red-300 text-sm font-semibold leading-relaxed">
+              The EU AI Act is enforceable NOW — non-compliance carries fines up to 7% of global annual turnover.
+            </p>
           </div>
-        ))}
-      </div>
-      <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, padding: "16px" }}>
-        <p style={{ fontSize: 9, color: C.muted, fontFamily: "monospace", letterSpacing: 2, margin: "0 0 12px", textTransform: "uppercase" }}>ARR vs Cumulative Burn ($M)</p>
-        <ResponsiveContainer width="100%" height={180}>
-          <BarChart data={data} barGap={4}>
-            <XAxis dataKey="year" tick={{ fill: C.muted, fontSize: 10, fontFamily: "monospace" }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: C.muted, fontSize: 10, fontFamily: "monospace" }} axisLine={false} tickLine={false} tickFormatter={v => `$${v}M`} />
-            <Tooltip contentStyle={{ background: C.card, border: `1px solid ${C.border}`, fontFamily: "monospace", fontSize: 10 }} formatter={v => `$${v}M`} />
-            <Bar dataKey="ARR" fill={C.teal} radius={[3, 3, 0, 0]} opacity={0.85} />
-            <Bar dataKey="Burn" fill={C.muted} radius={[3, 3, 0, 0]} opacity={0.5} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
-  );
-}
+        </section>
 
-function Slide8() {
-  const competitors = [
-    { name: "AEXS", cos: true, gov: true, dss: true, unified: true, aiNative: true, color: C.teal },
-    { name: "Monday.com", cos: true, gov: false, dss: false, unified: false, aiNative: false, color: C.muted },
-    { name: "OneTrust", cos: false, gov: true, dss: false, unified: false, aiNative: false, color: C.muted },
-    { name: "Gartner", cos: false, gov: false, dss: true, unified: false, aiNative: false, color: C.muted },
-    { name: "Notion AI", cos: true, gov: false, dss: false, unified: false, aiNative: true, color: C.muted },
-  ];
-  const cols = ["Chief of Staff", "Governance", "Decision Intel", "Unified Suite", "AI-Native"];
-  const keys = ["cos", "gov", "dss", "unified", "aiNative"];
-  return (
-    <div>
-      <SectionLabel>Competitive Landscape</SectionLabel>
-      <h2 style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 300, margin: "0 0 8px" }}>
-        No one owns the <span style={{ color: C.teal }}>full executive stack.</span>
-      </h2>
-      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 20px", lineHeight: 1.7 }}>Point solutions exist for each function. AEXS is the only unified AI-native executive intelligence platform.</p>
-      <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "monospace" }}>
-          <thead>
-            <tr style={{ borderBottom: `1px solid ${C.border}` }}>
-              <th style={{ textAlign: "left", padding: "8px 12px", fontSize: 9, color: C.muted, letterSpacing: 2, textTransform: "uppercase", fontWeight: 400 }}>Platform</th>
-              {cols.map(c => <th key={c} style={{ padding: "8px 8px", fontSize: 9, color: C.muted, letterSpacing: 1, textTransform: "uppercase", fontWeight: 400, textAlign: "center" }}>{c}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {competitors.map((co, i) => (
-              <tr key={i} style={{ borderBottom: `1px solid ${C.border}`, background: co.name === "AEXS" ? `${C.teal}08` : "transparent" }}>
-                <td style={{ padding: "12px 12px", fontSize: 13, color: co.color, fontWeight: co.name === "AEXS" ? 700 : 400 }}>
-                  {co.name === "AEXS" && <span style={{ color: C.teal }}>★ </span>}{co.name}
-                </td>
-                {keys.map(k => (
-                  <td key={k} style={{ textAlign: "center", padding: "12px 8px" }}>
-                    {co[k]
-                      ? <span style={{ color: co.name === "AEXS" ? C.teal : "#4CC97A88", fontSize: 14 }}>✓</span>
-                      : <span style={{ color: "#C94C4C66", fontSize: 14 }}>✗</span>}
-                  </td>
-                ))}
-              </tr>
+        {/* ── SLIDE 3: SOLUTION ── */}
+        <section ref={el => sectionRefs.current[2] = el} id="solution"
+          className="min-h-screen flex flex-col justify-center px-16 py-20"
+          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#C8A84B' }}>THE SOLUTION</p>
+          <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
+            One Platform. Total Executive Intelligence.
+          </h1>
+          <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
+            AEXS is the AI-native command layer that unifies executive memory, regulatory compliance, and decision governance.
+          </p>
+
+          <div className="flex gap-4 mb-4">
+            {[
+              {
+                layerLabel: 'LAYER 01', accent: '#C8A84B',
+                title: 'AI Chief of Staff',
+                bullets: [
+                  'Persistent executive memory across all meetings',
+                  'Automated daily briefings & priority surfacing',
+                  'AI-generated follow-up tracking & accountability',
+                  'Context-aware stakeholder relationship mapping',
+                  'Real-time decision support with historical context',
+                ],
+                metric: '40% reduction', metricSub: 'in executive context-switching',
+              },
+              {
+                layerLabel: 'LAYER 02', accent: '#ef4444',
+                title: 'AI Governance Engine',
+                bullets: [
+                  'EU AI Act article-by-article compliance mapping',
+                  'ISO 42001 automated audit documentation',
+                  'Board-ready governance reports in one click',
+                  'Real-time regulatory change monitoring & alerts',
+                  'Risk scoring & remediation action tracking',
+                ],
+                metric: '90% faster', metricSub: 'regulatory audit preparation',
+              },
+              {
+                layerLabel: 'LAYER 03', accent: '#3b82f6',
+                title: 'Decision Intelligence',
+                bullets: [
+                  'Structured decision frameworks with data grounding',
+                  'Full audit trail for every executive decision',
+                  'Scenario modeling with risk/reward analysis',
+                  'Cross-functional alignment tracking & approvals',
+                  'Decision quality scoring and retrospective analysis',
+                ],
+                metric: '3× improvement', metricSub: 'in decision execution speed',
+              },
+            ].map(({ layerLabel, accent, title, bullets, metric, metricSub }) => (
+              <div key={layerLabel}
+                className="flex-1 rounded-xl p-6 flex flex-col slide-in"
+                style={{ border: `1px solid ${accent}44`, backgroundColor: `${accent}06` }}>
+                <div className="inline-flex px-2 py-1 rounded mb-4"
+                  style={{ backgroundColor: `${accent}20`, width: 'fit-content' }}>
+                  <p className="font-bold tracking-widest" style={{ fontSize: '9px', color: accent }}>{layerLabel}</p>
+                </div>
+                <h3 className="font-syne font-bold text-white text-lg mb-4">{title}</h3>
+                <ul className="space-y-2 flex-1 mb-6">
+                  {bullets.map(b => (
+                    <li key={b} className="flex items-start gap-2 text-slate-300 text-xs leading-relaxed">
+                      <span style={{ color: accent, marginTop: '2px', flexShrink: 0 }}>▸</span>{b}
+                    </li>
+                  ))}
+                </ul>
+                <div className="rounded-lg px-4 py-3 text-center"
+                  style={{ backgroundColor: `${accent}12`, border: `1px solid ${accent}30` }}>
+                  <p className="font-bold text-sm" style={{ color: accent }}>{metric}</p>
+                  <p className="text-slate-400 text-xs">{metricSub}</p>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
-      </div>
-      <div style={{ marginTop: 16, display: "flex", gap: 10, flexWrap: "wrap" }}>
-        {["Executive Memory Graph", "Cross-module AI reasoning", "Regulatory certification", "Outcome tracking"].map((m, i) => (
-          <div key={i} style={{ padding: "6px 12px", background: `${C.teal}11`, border: `1px solid ${C.teal}33`, borderRadius: 3, fontSize: 10, color: C.teal }}>
-            🔒 {m}
           </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
-function Slide9() {
-  const phases = [
-    { label: "Phase 1", title: "Land (0–6mo)", color: C.gold, channels: ["LinkedIn thought leadership", "CEO community seeding", "Warm network outreach", "ProductHunt launch"] },
-    { label: "Phase 2", title: "Expand (6–18mo)", color: C.blue, channels: ["VC portfolio distribution", "Executive coach partners", "Content: 'CEO Brief' newsletter", "Conference sponsorships"] },
-    { label: "Phase 3", title: "Dominate (18–36mo)", color: C.purple, channels: ["Big 4 white-label deals", "Government tender bids", "Global regulatory expansion", "Platform API marketplace"] },
-  ];
-  return (
-    <div>
-      <SectionLabel>Go-To-Market Strategy</SectionLabel>
-      <h2 style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 300, margin: "0 0 8px" }}>
-        Land with one module.<br /><span style={{ color: C.gold }}>Expand across the suite.</span>
-      </h2>
-      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 20px", lineHeight: 1.7 }}>Chief of Staff is the trojan horse. Once embedded, Governance and Decision Support become natural upsells with 130%+ NRR.</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {phases.map((p, i) => (
-          <div key={i} style={{ background: C.card, border: `1px solid ${p.color}33`, borderRadius: 6, padding: "16px 20px", display: "flex", gap: 16, alignItems: "flex-start" }}>
-            <div style={{ flexShrink: 0, textAlign: "center" }}>
-              <Tag color={p.color}>{p.label}</Tag>
-              <div style={{ fontSize: 11, color: p.color, marginTop: 6 }}>{p.title}</div>
+          {/* Foundation bar */}
+          <div className="rounded-xl py-3 px-6 text-center slide-in"
+            style={{ background: 'linear-gradient(90deg, rgba(124,58,237,0.1), rgba(168,85,247,0.07), rgba(124,58,237,0.1))', border: '1px solid rgba(168,85,247,0.25)' }}>
+            <p className="font-bold tracking-widest text-purple-400" style={{ fontSize: '9px' }}>
+              EXECUTIVE MEMORY GRAPH · UNIFIED INTELLIGENCE FOUNDATION · POWERS ALL THREE LAYERS
+            </p>
+          </div>
+        </section>
+
+        {/* ── SLIDE 4: PRODUCT ── */}
+        <section ref={el => sectionRefs.current[3] = el} id="product"
+          className="min-h-screen flex flex-col justify-center px-16 py-20"
+          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#3b82f6' }}>PRODUCT DEEP DIVE</p>
+          <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
+            Built for How Executives Actually Work
+          </h1>
+          <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
+            Three deeply integrated modules that function as a unified executive operating system.
+          </p>
+
+          <div className="grid grid-cols-3 gap-6">
+            {[
+              {
+                label: 'CHIEF OF STAFF', accent: '#C8A84B',
+                features: ['Morning intelligence brief', 'Commitment tracking across 100+ items', 'Stakeholder relationship graph', 'Meeting pre-brief & follow-up automation', 'Priority conflict detection'],
+                screen: ['Daily Brief · 6:45 AM', '"3 high-priority items require', 'your attention before the board', 'call at 10AM…"'],
+              },
+              {
+                label: 'GOVERNANCE HUB', accent: '#ef4444',
+                features: ['EU AI Act compliance dashboard', 'ISO 42001 gap analysis', 'Automated evidence collection', 'Board report generation in <5 min', 'Regulatory calendar & deadlines'],
+                screen: ['Compliance Score: 94%', 'EU AI Act: Article 13', 'Transparency — ✓ Documented', 'Next review: 2026-06-01'],
+              },
+              {
+                label: 'DECISION ENGINE', accent: '#3b82f6',
+                features: ['Decision canvas with structured inputs', 'Stakeholder sign-off workflows', 'Historical decision pattern analysis', 'Risk scenario modeling', 'Outcome measurement & tracking'],
+                screen: ['Decision #247: Vendor Select', 'Risk Score: Low · 87% confidence', 'Status: ✓ Board Approved', 'Outcome tracked: 30/60/90d'],
+              },
+            ].map(({ label, accent, features, screen }) => (
+              <div key={label} className="rounded-xl p-5 flex flex-col slide-in"
+                style={{ border: `1px solid ${accent}33`, backgroundColor: `${accent}08` }}>
+                <p className="font-bold tracking-widest mb-3" style={{ fontSize: '9px', color: accent }}>{label}</p>
+                <ul className="space-y-2 mb-4 flex-1">
+                  {features.map(f => (
+                    <li key={f} className="flex items-start gap-2 text-slate-300 text-xs">
+                      <span style={{ color: accent, flexShrink: 0 }}>▸</span>{f}
+                    </li>
+                  ))}
+                </ul>
+                <div className="rounded-lg p-3 font-mono text-xs leading-relaxed"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: `1px solid ${accent}22`, color: `${accent}cc` }}>
+                  {screen.map((line, i) => <p key={i}>{line}</p>)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── SLIDE 5: MARKET ── */}
+        <section ref={el => sectionRefs.current[4] = el} id="market"
+          className="min-h-screen flex flex-col justify-center px-16 py-20"
+          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#a855f7' }}>MARKET OPPORTUNITY</p>
+          <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
+            A Category That Doesn't Exist Yet
+          </h1>
+          <p className="text-slate-400 text-sm mb-12 max-w-xl leading-relaxed slide-in">
+            AEXS sits at the intersection of three massive markets, with no direct competitor occupying this exact space.
+          </p>
+
+          <div className="flex items-center gap-16">
+            {/* Concentric circles */}
+            <div className="relative flex-shrink-0 slide-in" style={{ width: '340px', height: '340px' }}>
+              {/* Outer — Executive Software */}
+              <div className="absolute inset-0 rounded-full flex items-end justify-center pb-5"
+                style={{ backgroundColor: 'rgba(124,58,237,0.1)', border: '2px solid rgba(124,58,237,0.4)' }}>
+              </div>
+              <p className="absolute font-bold tracking-wide text-purple-300" style={{ top: '14px', left: '50%', transform: 'translateX(-50%)', fontSize: '10px', whiteSpace: 'nowrap' }}>Executive Software</p>
+
+              {/* Middle — AI SaaS */}
+              <div className="absolute rounded-full"
+                style={{ inset: '50px', backgroundColor: 'rgba(59,130,246,0.12)', border: '2px solid rgba(59,130,246,0.45)' }} />
+              <p className="absolute font-bold tracking-wide text-blue-300" style={{ top: '68px', left: '50%', transform: 'translateX(-50%)', fontSize: '10px', whiteSpace: 'nowrap' }}>AI SaaS</p>
+
+              {/* Inner — GRC */}
+              <div className="absolute rounded-full"
+                style={{ inset: '110px', backgroundColor: 'rgba(34,197,94,0.15)', border: '2px solid rgba(34,197,94,0.5)' }} />
+              <p className="absolute font-bold tracking-wide text-green-300" style={{ top: '126px', left: '50%', transform: 'translateX(-50%)', fontSize: '10px', whiteSpace: 'nowrap' }}>GRC</p>
+
+              {/* Center — AEXS */}
+              <div className="absolute rounded-full flex items-center justify-center"
+                style={{ inset: '152px', backgroundColor: 'rgba(200,168,75,0.25)', border: '2px solid #C8A84B' }}>
+                <p className="font-syne font-bold text-gold text-xs">AEXS</p>
+              </div>
             </div>
-            <div style={{ flex: 1, display: "flex", flexWrap: "wrap", gap: 6 }}>
-              {p.channels.map((c, j) => (
-                <span key={j} style={{ fontSize: 10, color: C.dim, background: "#13131a", border: `1px solid ${C.border}`, borderRadius: 3, padding: "4px 10px" }}>→ {c}</span>
+
+            {/* Legend */}
+            <div className="flex-1 space-y-8 slide-in">
+              {[
+                { dot: '#7c3aed', label: 'TOTAL ADDRESSABLE MARKET', value: '$450B+', sub: 'Global enterprise executive software & AI-enabled productivity tooling' },
+                { dot: '#3b82f6', label: 'SERVICEABLE ADDRESSABLE MARKET', value: '$28B', sub: 'Mid-to-large enterprise AI governance & executive intelligence platforms' },
+                { dot: '#22c55e', label: 'SERVICEABLE OBTAINABLE MARKET', value: '$2.8B', sub: 'Early-mover capture across regulated industries in EU + North America' },
+              ].map(({ dot, label, value, sub }) => (
+                <div key={label}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: dot }} />
+                    <p className="font-bold tracking-widest" style={{ fontSize: '9px', color: dot }}>{label}</p>
+                  </div>
+                  <p className="font-syne font-bold text-white text-4xl mb-1">{value}</p>
+                  <p className="text-slate-400 text-sm leading-relaxed">{sub}</p>
+                </div>
               ))}
             </div>
           </div>
-        ))}
-      </div>
-      <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-        {[["CAC Target", "$800", "via content + partners"], ["LTV Target", "$96K", "at 10yr enterprise"], ["LTV:CAC", "120x", "world-class ratio"]].map(([l, v, s]) => (
-          <div key={l} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 4, padding: "12px", textAlign: "center" }}>
-            <div style={{ fontSize: 9, color: C.muted, fontFamily: "monospace", letterSpacing: 2, marginBottom: 4, textTransform: "uppercase" }}>{l}</div>
-            <div style={{ fontSize: 20, color: C.teal, fontFamily: "monospace", fontWeight: 700 }}>{v}</div>
-            <div style={{ fontSize: 10, color: C.muted, marginTop: 3 }}>{s}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+        </section>
 
-function Slide10() {
-  const team = [
-    { name: "Mc", role: "CEO & Founder", bio: "Visionary executive leader. Deep expertise in AI-augmented leadership and organizational strategy. Product vision and GTM.", color: C.gold, initials: "MC" },
-    { name: "AI Chief of Staff", role: "Operations Intelligence", bio: "Autonomous agent managing executive operations layer. Meeting intelligence, briefings, inbox, and team coordination.", color: C.blue, initials: "AI" },
-    { name: "AI Governance Engine", role: "Compliance Intelligence", bio: "Regulatory monitoring, bias detection, and certification engine. EU AI Act, ISO 42001, and global frameworks.", color: C.purple, initials: "⚖" },
-    { name: "AI Decision Agent", role: "Strategic Intelligence", bio: "Scenario modeling, competitor intelligence, and decision scoring. Real-time signal aggregation and pattern recognition.", color: C.teal, initials: "↗" },
-  ];
-  const advisors = ["Ex-Regulator (EU AI Act)", "Compliance Partner (Big 4)", "VC Advisor (AI-focused)", "Enterprise Sales Lead"];
-  return (
-    <div>
-      <SectionLabel>Team</SectionLabel>
-      <h2 style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 300, margin: "0 0 8px" }}>
-        Human vision.<br /><span style={{ color: C.gold }}>AI execution power.</span>
-      </h2>
-      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 20px", lineHeight: 1.7 }}>AEXS is built on a radical premise: that AI agents are team members, not just tools.</p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
-        {team.map((t, i) => (
-          <div key={i} style={{ background: C.card, border: `1px solid ${t.color}33`, borderLeft: `3px solid ${t.color}`, borderRadius: 6, padding: "16px", display: "flex", gap: 12 }}>
-            <div style={{ width: 40, height: 40, borderRadius: "50%", background: `${t.color}22`, border: `1px solid ${t.color}55`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, color: t.color, fontFamily: "monospace", fontWeight: 700, flexShrink: 0 }}>
-              {t.initials}
+        {/* ── SLIDE 6: TRACTION ── */}
+        <section ref={el => sectionRefs.current[5] = el} id="traction"
+          className="min-h-screen flex flex-col justify-center px-16 py-20"
+          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#22c55e' }}>TRACTION & VALIDATION</p>
+          <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
+            Early Signals. Real Demand.
+          </h1>
+          <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
+            Pre-revenue, with concrete validation across product, market, and regulatory dimensions.
+          </p>
+
+          <div className="flex gap-10">
+            {/* Validation proof cards */}
+            <div className="flex-1 grid grid-cols-2 gap-4">
+              {[
+                { accent: '#22c55e', icon: '✓', label: 'PRODUCT VALIDATION',  title: 'MVP Complete',         body: 'All three product modules built and internally tested across real executive workflows.' },
+                { accent: '#C8A84B', icon: '◆', label: 'MARKET VALIDATION',   title: 'Inbound Interest',     body: 'Direct outreach from 3 enterprise prospects following regulatory compliance announcements.' },
+                { accent: '#3b82f6', icon: '⚖', label: 'REGULATORY TIMING',  title: 'EU AI Act Active',     body: 'Enforcement began August 2025 — creating immediate urgency for AEXS governance module.' },
+                { accent: '#f97316', icon: '◉', label: 'FOUNDER ADVANTAGE',   title: 'Domain Authority',     body: 'Founder operates at the intersection of AI, governance & executive leadership — built for the buyer.' },
+              ].map(({ accent, icon, label, title, body }) => (
+                <div key={label} className="rounded-xl p-5 slide-in"
+                  style={{ border: `1px solid ${accent}44`, backgroundColor: `${accent}08` }}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span style={{ color: accent, fontSize: '14px' }}>{icon}</span>
+                    <p className="font-bold tracking-widest" style={{ fontSize: '9px', color: accent }}>{label}</p>
+                  </div>
+                  <p className="text-white font-semibold text-sm mb-2">{title}</p>
+                  <p className="text-slate-400 text-xs leading-relaxed">{body}</p>
+                </div>
+              ))}
             </div>
+
+            {/* Milestone timeline */}
+            <div className="flex-shrink-0" style={{ width: '240px' }}>
+              <p className="text-white font-bold tracking-widest mb-4" style={{ fontSize: '10px' }}>2026 MILESTONES</p>
+              <div className="space-y-1">
+                {[
+                  { q: 'Q1 2026', label: 'Foundation',    items: ['MVP shipped', 'Deck published', 'Seed outreach'],        done: true  },
+                  { q: 'Q2 2026', label: 'First Revenue', items: ['2 pilot customers', 'Seed close', 'Team hired'],         done: false },
+                  { q: 'Q3 2026', label: 'Scale',         items: ['10 customers', '$500K ARR', 'GTM motion live'],          done: false },
+                  { q: 'Q4 2026', label: 'Series A Prep', items: ['$2M ARR run-rate', 'EU certification', 'Series A prep'], done: false },
+                ].map(({ q, label, items, done }, idx, arr) => (
+                  <div key={q} className="flex gap-3">
+                    <div className="flex flex-col items-center">
+                      <div className="w-3 h-3 rounded-full flex-shrink-0 mt-0.5"
+                        style={{ backgroundColor: done ? '#22c55e' : '#1e293b', border: done ? 'none' : '1px solid #334155' }} />
+                      {idx < arr.length - 1 && (
+                        <div className="w-px flex-1 mt-1" style={{ backgroundColor: '#1e293b', minHeight: '20px' }} />
+                      )}
+                    </div>
+                    <div className="pb-4">
+                      <p className="text-gold font-bold" style={{ fontSize: '10px' }}>{q}</p>
+                      <p className="text-white font-semibold text-xs mb-1">{label}</p>
+                      {items.map(item => (
+                        <p key={item} className="text-slate-500" style={{ fontSize: '10px' }}>· {item}</p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SLIDE 7: BUSINESS MODEL ── */}
+        <section ref={el => sectionRefs.current[6] = el} id="model"
+          className="min-h-screen flex flex-col justify-center px-16 py-20"
+          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#C8A84B' }}>BUSINESS MODEL</p>
+          <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
+            SaaS Recurring Revenue at Every Level
+          </h1>
+          <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
+            Annual subscriptions with module-based expansion. High NRR design from day one.
+          </p>
+
+          <div className="flex gap-5 mb-8">
+            {[
+              {
+                name: 'Starter',    price: '$499',   period: '/mo', accent: '#C8A84B', target: 'SMB & Scale-ups',
+                modules: ['AI Chief of Staff', 'Basic decision logging', 'Standard compliance reports', 'Email support'],
+                popular: false,
+              },
+              {
+                name: 'Growth',     price: '$1,999', period: '/mo', accent: '#3b82f6', target: 'Mid-Market',
+                modules: ['All Starter features', 'Full Governance Engine', 'Decision Intelligence Suite', 'API access + integrations', 'Priority support'],
+                popular: true,
+              },
+              {
+                name: 'Enterprise', price: '$8,500', period: '/mo', accent: '#a855f7', target: 'Large Enterprise',
+                modules: ['All Growth features', 'Custom AI training on company data', 'Dedicated success manager', 'White-label options', 'Custom SLA & compliance'],
+                popular: false,
+              },
+            ].map(({ name, price, period, accent, target, modules, popular }) => (
+              <div key={name} className="flex-1 rounded-xl p-6 flex flex-col relative slide-in"
+                style={{ border: `1px solid ${accent}44`, backgroundColor: `${accent}06` }}>
+                {popular && (
+                  <div className="absolute text-white font-bold"
+                    style={{ top: '-11px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#3b82f6', padding: '3px 12px', borderRadius: '999px', fontSize: '9px', whiteSpace: 'nowrap', letterSpacing: '1px' }}>
+                    MOST POPULAR
+                  </div>
+                )}
+                <p className="font-bold tracking-widest mb-1" style={{ fontSize: '9px', color: accent }}>{name.toUpperCase()}</p>
+                <p className="text-slate-400 text-xs mb-4">{target}</p>
+                <div className="flex items-baseline gap-1 mb-6">
+                  <span className="font-syne font-bold text-white" style={{ fontSize: '36px' }}>{price}</span>
+                  <span className="text-slate-400 text-sm">{period}</span>
+                </div>
+                <ul className="space-y-2.5 flex-1">
+                  {modules.map(m => (
+                    <li key={m} className="flex items-center gap-2 text-slate-300 text-xs">
+                      <span style={{ color: accent }}>✓</span>{m}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {/* Unit economics strip */}
+          <div className="grid grid-cols-4 gap-4 slide-in">
+            {[
+              { label: 'GROSS MARGIN',   value: '82%',   color: '#22c55e' },
+              { label: 'LTV/CAC RATIO',  value: '8.4×',  color: '#C8A84B' },
+              { label: 'PAYBACK PERIOD', value: '4 mo',  color: '#3b82f6' },
+              { label: 'NET RETENTION',  value: '118%+', color: '#a855f7' },
+            ].map(({ label, value, color }) => (
+              <div key={label} className="rounded-lg p-4 text-center"
+                style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <p className="font-bold tracking-widest text-slate-500 mb-2" style={{ fontSize: '9px' }}>{label}</p>
+                <p className="font-syne font-bold text-2xl" style={{ color }}>{value}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── SLIDE 8: FINANCIALS ── */}
+        <FinancialsSlide onRef={el => sectionRefs.current[7] = el} />
+
+        {/* ── SLIDE 9: COMPETITION ── */}
+        <section ref={el => sectionRefs.current[8] = el} id="competition"
+          className="min-h-screen flex flex-col justify-center px-16 py-20"
+          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#f97316' }}>COMPETITIVE LANDSCAPE</p>
+          <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
+            No One Owns This Category. Yet.
+          </h1>
+          <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
+            Existing tools solve pieces of the puzzle. AEXS is the only platform built end-to-end for the AI-era executive.
+          </p>
+
+          <div className="overflow-x-auto slide-in">
+            <table className="w-full" style={{ borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                  <th className="text-left pb-3 text-slate-500 font-bold tracking-widest pr-6" style={{ fontSize: '9px' }}>CAPABILITY</th>
+                  {[
+                    { name: 'AEXS',         gold: true  },
+                    { name: 'Monday.com',   gold: false },
+                    { name: 'OneTrust',     gold: false },
+                    { name: 'Gartner',      gold: false },
+                    { name: 'Notion AI',    gold: false },
+                    { name: 'Salesforce AI',gold: false },
+                  ].map(({ name, gold }) => (
+                    <th key={name}
+                      className="pb-3 text-center font-bold text-xs"
+                      style={{ color: gold ? '#C8A84B' : '#94a3b8', backgroundColor: gold ? 'rgba(200,168,75,0.04)' : 'transparent' }}>
+                      {name}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Executive Memory & Context',     true,  false, false, false, false, false],
+                  ['AI Governance & EU AI Act',       true,  false, true,  true,  false, false],
+                  ['Decision Intelligence Layer',     true,  false, false, true,  false, false],
+                  ['Integrated Briefing Engine',      true,  false, false, false, false, false],
+                  ['Founder-Led AI Training',         true,  false, false, false, true,  false],
+                  ['Real-Time Compliance Alerts',     true,  false, true,  true,  false, false],
+                  ['Executive-Native UX',             true,  false, false, false, false, false],
+                ].map(([capability, ...vals]) => (
+                  <tr key={capability}
+                    className="transition-colors"
+                    style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.02)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
+                    <td className="py-3 text-slate-300 text-xs pr-6">{capability}</td>
+                    {vals.map((v, i) => (
+                      <td key={i} className="py-3 text-center"
+                        style={{ backgroundColor: i === 0 ? 'rgba(200,168,75,0.05)' : 'transparent' }}>
+                        {v
+                          ? <span className="text-green-400 font-bold">✓</span>
+                          : <span className="text-slate-700 text-sm">○</span>
+                        }
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 rounded-xl p-5 slide-in"
+            style={{ background: 'linear-gradient(135deg, rgba(200,168,75,0.06), rgba(200,168,75,0.02))', border: '1px solid rgba(200,168,75,0.28)' }}>
+            <p className="text-gold font-semibold text-sm mb-1">The Verdict</p>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              AEXS is the only platform combining executive memory, AI governance compliance, and decision intelligence in a single product. Every competitor solves at most one dimension — AEXS owns the intersection.
+            </p>
+          </div>
+        </section>
+
+        {/* ── SLIDE 10: GO-TO-MARKET ── */}
+        <section ref={el => sectionRefs.current[9] = el} id="gtm"
+          className="min-h-screen flex flex-col justify-center px-16 py-20"
+          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#3b82f6' }}>GO-TO-MARKET STRATEGY</p>
+          <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">Land. Expand. Dominate.</h1>
+          <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
+            A three-phase motion designed to convert regulatory urgency into category leadership.
+          </p>
+
+          <div className="flex gap-4 mb-8">
+            {[
+              {
+                phase: 'PHASE 01', name: 'LAND',     accent: '#C8A84B', target: 'Months 1–6',   headline: 'Regulatory-Led Entry',
+                channels: ['Direct outreach to compliance officers', 'EU AI Act urgency content marketing', 'Founder-led enterprise pilots', 'Regulatory consultant partnerships'],
+                metric: '2–5 enterprise pilots',
+              },
+              {
+                phase: 'PHASE 02', name: 'EXPAND',   accent: '#3b82f6', target: 'Months 7–18',  headline: 'Product-Led Growth',
+                channels: ['Executive peer referrals', 'Board-level case studies & PR', 'Partner channel: Big 4, system integrators', 'Conference presence at GRC/AI events'],
+                metric: '$2M ARR target',
+              },
+              {
+                phase: 'PHASE 03', name: 'DOMINATE', accent: '#22c55e', target: 'Months 19–36', headline: 'Category Leadership',
+                channels: ['Global enterprise sales motion', 'OEM/White-label licensing deals', 'Platform ecosystem & API economy', 'Series B for international expansion'],
+                metric: '$32.2M ARR target',
+              },
+            ].map(({ phase, name, accent, target, headline, channels, metric }) => (
+              <div key={phase} className="flex-1 rounded-xl p-6 flex flex-col slide-in"
+                style={{ border: `1px solid ${accent}44`, backgroundColor: `${accent}06` }}>
+                <p className="font-bold tracking-widest mb-1" style={{ fontSize: '9px', color: accent }}>{phase}</p>
+                <p className="font-syne font-bold text-white text-xl mb-0.5">{name}</p>
+                <p className="text-slate-500 text-xs mb-3">{target}</p>
+                <p className="text-white text-sm font-semibold mb-4">{headline}</p>
+                <ul className="space-y-2 flex-1 mb-4">
+                  {channels.map(c => (
+                    <li key={c} className="flex items-start gap-2 text-slate-300 text-xs">
+                      <span style={{ color: accent, flexShrink: 0 }}>▸</span>{c}
+                    </li>
+                  ))}
+                </ul>
+                <div className="rounded-lg px-4 py-2 text-center"
+                  style={{ backgroundColor: `${accent}12`, border: `1px solid ${accent}30` }}>
+                  <p className="font-bold text-sm" style={{ color: accent }}>{metric}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Unit economics strip */}
+          <div className="grid grid-cols-4 gap-4 slide-in">
+            {[
+              { label: 'AVG DEAL SIZE', value: '$24K',     color: '#C8A84B' },
+              { label: 'SALES CYCLE',  value: '45 days',  color: '#3b82f6' },
+              { label: 'TARGET ICP',   value: 'CxO / GC', color: '#22c55e' },
+              { label: 'CLOSE RATE',   value: '22%',      color: '#a855f7' },
+            ].map(({ label, value, color }) => (
+              <div key={label} className="rounded-lg p-4 text-center"
+                style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <p className="font-bold tracking-widest text-slate-500 mb-2" style={{ fontSize: '9px' }}>{label}</p>
+                <p className="font-syne font-bold text-2xl" style={{ color }}>{value}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── SLIDE 11: TEAM ── */}
+        <section ref={el => sectionRefs.current[10] = el} id="team"
+          className="min-h-screen flex flex-col justify-center px-16 py-20"
+          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#C8A84B' }}>THE TEAM</p>
+          <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">Built by the Buyer</h1>
+          <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
+            The founder IS the target customer — an executive who built the tool they needed. AI agents function as the founding team until human hires are funded.
+          </p>
+
+          <div className="flex gap-8">
+            {/* Founder card */}
+            <div className="rounded-xl p-8 flex-shrink-0 slide-in"
+              style={{ width: '320px', border: '1px solid rgba(200,168,75,0.4)', backgroundColor: 'rgba(200,168,75,0.05)' }}>
+              <div className="w-14 h-14 rounded-full mb-4 flex items-center justify-center font-syne font-bold text-xl"
+                style={{ backgroundColor: 'rgba(200,168,75,0.15)', border: '2px solid #C8A84B', color: '#C8A84B' }}>
+                Mc
+              </div>
+              <p className="font-bold tracking-widest text-gold mb-1" style={{ fontSize: '9px' }}>FOUNDER & CEO</p>
+              <p className="font-syne font-bold text-white text-xl mb-4">Mc</p>
+              <div className="space-y-2 mb-6">
+                {[
+                  'Executive leadership & AI strategy practitioner',
+                  'Deep expertise in regulatory compliance & governance',
+                  'Product architect for enterprise AI systems',
+                  'Built AEXS to solve the problem he lived daily',
+                ].map(item => (
+                  <div key={item} className="flex items-start gap-2">
+                    <span className="text-gold text-xs mt-0.5 flex-shrink-0">▸</span>
+                    <p className="text-slate-300 text-xs leading-relaxed">{item}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-lg px-4 py-3"
+                style={{ backgroundColor: 'rgba(200,168,75,0.1)', border: '1px solid rgba(200,168,75,0.25)' }}>
+                <p className="text-gold font-semibold text-xs leading-relaxed">
+                  "I built the tool I needed as an executive. Turns out, every executive needs it."
+                </p>
+              </div>
+            </div>
+
+            {/* Hire plan */}
+            <div className="flex-1 slide-in">
+              <p className="text-white font-bold tracking-widest mb-5" style={{ fontSize: '10px' }}>AI TEAM + SEED HIRE PLAN</p>
+
+              {/* AI agents */}
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                {[
+                  { name: 'AI Chief of Staff',    role: 'Executive workflow, briefings & context', accent: '#C8A84B' },
+                  { name: 'AI Governance Agent',  role: 'Regulatory monitoring & compliance',      accent: '#ef4444' },
+                  { name: 'AI Decision Agent',    role: 'Scenario modeling & audit trails',        accent: '#3b82f6' },
+                ].map(({ name, role, accent }) => (
+                  <div key={name} className="rounded-xl p-4"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: `1px solid ${accent}33` }}>
+                    <div className="w-8 h-8 rounded-full mb-3 flex items-center justify-center"
+                      style={{ backgroundColor: `${accent}18`, border: `1px solid ${accent}44` }}>
+                      <span style={{ color: accent, fontSize: '11px' }}>◉</span>
+                    </div>
+                    <p className="text-white font-semibold text-xs mb-1">{name}</p>
+                    <p className="text-slate-500" style={{ fontSize: '10px' }}>{role}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Hire roadmap */}
+              <p className="text-white font-bold tracking-widest mb-3" style={{ fontSize: '10px' }}>SEED HIRE PLAN</p>
+              <div className="space-y-2">
+                {[
+                  { role: 'Head of Sales / GTM',      timeline: 'Month 1', priority: 'Critical', accent: '#ef4444' },
+                  { role: 'Senior Full-Stack Engineer', timeline: 'Month 2', priority: 'High',    accent: '#f97316' },
+                  { role: 'Customer Success Lead',      timeline: 'Month 3', priority: 'High',    accent: '#C8A84B' },
+                  { role: 'Marketing / Brand Lead',     timeline: 'Month 4', priority: 'Medium',  accent: '#3b82f6' },
+                ].map(({ role, timeline, priority, accent }) => (
+                  <div key={role} className="flex items-center gap-4 py-2.5 px-4 rounded-lg"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: accent }} />
+                    <p className="text-white text-xs flex-1">{role}</p>
+                    <p className="text-slate-500 text-xs">{timeline}</p>
+                    <span className="text-xs px-2 py-0.5 rounded font-semibold"
+                      style={{ backgroundColor: `${accent}18`, color: accent, border: `1px solid ${accent}30` }}>
+                      {priority}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SLIDE 12: THE ASK ── */}
+        <section ref={el => sectionRefs.current[11] = el} id="ask"
+          className="min-h-screen flex flex-col justify-center px-16 py-20"
+          style={{ backgroundColor: '#080C18' }}>
+
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#C8A84B' }}>THE ASK</p>
+          <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
+            Raising $1.5M Seed Round
+          </h1>
+          <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
+            SAFE note at $8M cap. 18-month runway to Series A metrics and category leadership.
+          </p>
+
+          <div className="flex gap-12 mb-10">
+            {/* Fund allocation */}
+            <div className="flex-1 slide-in">
+              <p className="text-white font-bold tracking-widest mb-4" style={{ fontSize: '10px' }}>FUND ALLOCATION — $1.5M</p>
+              <div className="space-y-3 mb-6">
+                {[
+                  { label: 'Sales & GTM Hiring',    pct: 40, accent: '#C8A84B', amount: '$600K' },
+                  { label: 'Product Engineering',   pct: 30, accent: '#3b82f6', amount: '$450K' },
+                  { label: 'Marketing & Brand',     pct: 15, accent: '#22c55e', amount: '$225K' },
+                  { label: 'Operations & Legal',    pct: 15, accent: '#a855f7', amount: '$225K' },
+                ].map(({ label, pct, accent, amount }) => (
+                  <div key={label}>
+                    <div className="flex justify-between text-xs mb-1.5">
+                      <span className="text-slate-300">{label}</span>
+                      <span className="text-slate-400">{amount} · {pct}%</span>
+                    </div>
+                    <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
+                      <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: accent }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Round details */}
+              <div className="space-y-0">
+                {[
+                  { label: 'Instrument',     value: 'SAFE Note'  },
+                  { label: 'Valuation Cap',  value: '$8M'        },
+                  { label: 'Round Size',     value: '$1.5M'      },
+                  { label: 'Min Ticket',     value: '$25K'       },
+                  { label: 'Target Close',   value: 'Q2 2026'    },
+                ].map(({ label, value }) => (
+                  <div key={label} className="flex justify-between py-2.5"
+                    style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <span className="text-slate-400 text-xs">{label}</span>
+                    <span className="text-white text-xs font-bold">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* This Round Unlocks */}
+            <div className="flex-1 slide-in">
+              <p className="text-white font-bold tracking-widest mb-4" style={{ fontSize: '10px' }}>THIS ROUND UNLOCKS</p>
+              <div className="space-y-3">
+                {[
+                  { n: '01', title: 'First Enterprise Customers', body: '2–5 paying pilot customers generating early ARR and product signal', accent: '#C8A84B' },
+                  { n: '02', title: 'GTM Team in Market',         body: 'Sales lead hired and closing within 90 days of fund close',           accent: '#3b82f6' },
+                  { n: '03', title: 'Series A Foundation',        body: '$2M ARR run-rate, compliance certification, and board-ready metrics by Q4 2026', accent: '#22c55e' },
+                  { n: '04', title: 'Category Ownership',         body: 'First-mover positioning in the AI Executive Suite category before incumbents react', accent: '#a855f7' },
+                ].map(({ n, title, body, accent }) => (
+                  <div key={n} className="flex gap-4 p-4 rounded-xl"
+                    style={{ backgroundColor: `${accent}07`, border: `1px solid ${accent}22` }}>
+                    <p className="font-syne font-bold leading-none flex-shrink-0" style={{ fontSize: '24px', color: accent }}>{n}</p>
+                    <div>
+                      <p className="text-white font-semibold text-sm mb-1">{title}</p>
+                      <p className="text-slate-400 text-xs leading-relaxed">{body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Gold CTA bar */}
+          <div className="rounded-xl py-5 px-8 flex items-center justify-between slide-in"
+            style={{ background: 'linear-gradient(135deg, rgba(200,168,75,0.12), rgba(200,168,75,0.06))', border: '1px solid rgba(200,168,75,0.45)' }}>
             <div>
-              <div style={{ fontSize: 13, color: C.text, marginBottom: 2 }}>{t.name}</div>
-              <div style={{ fontSize: 9, color: t.color, fontFamily: "monospace", letterSpacing: 1, textTransform: "uppercase", marginBottom: 6 }}>{t.role}</div>
-              <p style={{ fontSize: 10, color: C.dim, margin: 0, lineHeight: 1.6 }}>{t.bio}</p>
+              <p className="font-syne font-bold text-white text-xl mb-1">
+                Ready to lead the executive AI category?
+              </p>
+              <p className="text-slate-400 text-sm">
+                Join AEXS at the ground floor of a defining enterprise AI platform.
+              </p>
             </div>
+            <a href="/deck.pdf" download="AEXS_InvestorDeck_2026.pdf"
+              className="flex-shrink-0 ml-8 font-bold tracking-widest transition-all hover:bg-gold hover:text-deck"
+              style={{ padding: '12px 24px', border: '1px solid #C8A84B', color: '#C8A84B', fontSize: '11px' }}>
+              DOWNLOAD DECK →
+            </a>
           </div>
-        ))}
-      </div>
-      <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, padding: "14px 16px" }}>
-        <div style={{ fontSize: 9, color: C.muted, fontFamily: "monospace", letterSpacing: 2, textTransform: "uppercase", marginBottom: 10 }}>Advisory Network (Building)</div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-          {advisors.map((a, i) => (
-            <span key={i} style={{ fontSize: 10, color: C.dim, background: "#13131a", border: `1px solid ${C.border}`, borderRadius: 3, padding: "4px 10px" }}>+ {a}</span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+        </section>
 
-function Slide11() {
-  const use = [
-    { label: "Product & Engineering", pct: 45, color: C.teal },
-    { label: "Sales & Marketing", pct: 30, color: C.gold },
-    { label: "Operations & Legal", pct: 15, color: C.blue },
-    { label: "Reserve", pct: 10, color: C.muted },
-  ];
-  return (
-    <div>
-      <SectionLabel>The Ask</SectionLabel>
-      <h2 style={{ fontSize: "clamp(20px,5vw,34px)", fontWeight: 300, margin: "0 0 8px", lineHeight: 1.2 }}>
-        Raising <span style={{ color: C.gold }}>$1.5M Seed</span><br />to reach $1M ARR.
-      </h2>
-      <p style={{ fontSize: 13, color: C.dim, margin: "0 0 24px", lineHeight: 1.7 }}>Break-even at Month 12. 100 enterprise customers. Series A ready.</p>
-
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
-        <div style={{ background: C.card, border: `1px solid ${C.gold}44`, borderRadius: 6, padding: "20px" }}>
-          <div style={{ fontSize: 9, color: C.muted, fontFamily: "monospace", letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>Round Details</div>
-          {[["Round", "Pre-Seed / Seed"], ["Amount", "$1.5M"], ["Instrument", "SAFE / Equity"], ["Valuation Cap", "$8M"], ["Min Ticket", "$25K"], ["Lead Investor", "Seeking"]].map(([l, v]) => (
-            <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: `1px solid ${C.border}`, fontSize: 11 }}>
-              <span style={{ color: C.muted, fontFamily: "monospace" }}>{l}</span>
-              <span style={{ color: l === "Amount" ? C.gold : C.text, fontWeight: l === "Amount" ? 700 : 400 }}>{v}</span>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, padding: "20px" }}>
-          <div style={{ fontSize: 9, color: C.muted, fontFamily: "monospace", letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>Use of Funds</div>
-          {use.map((u, i) => (
-            <div key={i} style={{ marginBottom: 10 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                <span style={{ fontSize: 10, color: C.dim }}>{u.label}</span>
-                <span style={{ fontSize: 10, color: u.color, fontFamily: "monospace" }}>{u.pct}%</span>
-              </div>
-              <div style={{ height: 4, background: C.border, borderRadius: 2 }}>
-                <div style={{ width: `${u.pct}%`, height: "100%", background: u.color, borderRadius: 2 }} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div style={{ background: `linear-gradient(135deg, ${C.gold}0d 0%, ${C.teal}08 100%)`, border: `1px solid ${C.gold}33`, borderRadius: 6, padding: "20px", textAlign: "center" }}>
-        <p style={{ fontSize: 13, color: C.dim, margin: "0 0 12px", fontStyle: "italic", lineHeight: 1.7 }}>
-          "We are not building another productivity tool. We are building the operating system for the AI-augmented executive."
-        </p>
-        <div style={{ fontSize: 11, color: C.gold, fontFamily: "monospace", letterSpacing: 2 }}>— Mc, Founder & CEO</div>
-        <div style={{ marginTop: 16, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-          <div style={{ padding: "10px 20px", background: C.gold, color: "#000", borderRadius: 4, fontSize: 11, fontFamily: "monospace", fontWeight: 700, letterSpacing: 2, cursor: "pointer" }}>
-            REQUEST DECK PDF →
-          </div>
-          <div style={{ padding: "10px 20px", background: "transparent", border: `1px solid ${C.gold}`, color: C.gold, borderRadius: 4, fontSize: 11, fontFamily: "monospace", letterSpacing: 2, cursor: "pointer" }}>
-            SCHEDULE CALL
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const SLIDE_COMPONENTS = [Slide0, Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8, Slide9, Slide10, Slide11];
-
-export default function PitchDeck() {
-  const [current, setCurrent] = useState(0);
-  const SlideComp = SLIDE_COMPONENTS[current];
-
-  return (
-    <div style={{ minHeight: "100vh", background: C.dark, color: C.text, fontFamily: "'Georgia', 'Times New Roman', serif", display: "flex", flexDirection: "column" }}>
-
-      {/* Top Nav */}
-      <div style={{ background: "#0b0b0f", borderBottom: `1px solid ${C.border}`, padding: "12px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
-        <div>
-          <span style={{ fontSize: 14, fontFamily: "monospace", color: C.gold, fontWeight: 700, letterSpacing: 2 }}>AEXS</span>
-          <span style={{ fontSize: 10, color: C.muted, fontFamily: "monospace", marginLeft: 12, letterSpacing: 2 }}>AI EXECUTIVE SUITE · INVESTOR DECK</span>
-        </div>
-        <div style={{ fontSize: 10, color: C.muted, fontFamily: "monospace" }}>
-          {current + 1} / {slides.length}
-        </div>
-      </div>
-
-      {/* Slide Nav */}
-      <div style={{ background: "#0b0b0f", borderBottom: `1px solid ${C.border}`, padding: "8px 20px", display: "flex", gap: 4, overflowX: "auto", flexShrink: 0 }}>
-        {slides.map((s, i) => (
-          <button key={i} onClick={() => setCurrent(i)} style={{
-            flex: "0 0 auto", padding: "6px 10px", border: `1px solid ${current === i ? C.gold : "transparent"}`,
-            background: current === i ? `${C.gold}18` : "transparent",
-            color: current === i ? C.gold : C.muted, fontFamily: "monospace", fontSize: 9,
-            cursor: "pointer", borderRadius: 3, letterSpacing: 1, whiteSpace: "nowrap",
-            transition: "all 0.2s"
-          }}>
-            <span style={{ marginRight: 4 }}>{s.icon}</span>{s.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Main Slide */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "24px 20px" }}>
-        <div style={{ maxWidth: 700, margin: "0 auto" }}>
-          <SlideComp />
-        </div>
-      </div>
-
-      {/* Bottom Nav */}
-      <div style={{ background: "#0b0b0f", borderTop: `1px solid ${C.border}`, padding: "12px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
-        <button onClick={() => setCurrent(Math.max(0, current - 1))} disabled={current === 0}
-          style={{ padding: "8px 16px", background: "transparent", border: `1px solid ${current === 0 ? C.border : C.gold}`, color: current === 0 ? C.muted : C.gold, fontFamily: "monospace", fontSize: 10, cursor: current === 0 ? "default" : "pointer", borderRadius: 3, letterSpacing: 2 }}>
-          ← PREV
-        </button>
-
-        <div style={{ display: "flex", gap: 4 }}>
-          {slides.map((_, i) => (
-            <div key={i} onClick={() => setCurrent(i)} style={{ width: current === i ? 16 : 6, height: 6, borderRadius: 3, background: current === i ? C.gold : C.border, cursor: "pointer", transition: "all 0.2s" }} />
-          ))}
-        </div>
-
-        <button onClick={() => setCurrent(Math.min(slides.length - 1, current + 1))} disabled={current === slides.length - 1}
-          style={{ padding: "8px 16px", background: current === slides.length - 1 ? "transparent" : C.gold, border: `1px solid ${C.gold}`, color: current === slides.length - 1 ? C.muted : "#000", fontFamily: "monospace", fontSize: 10, cursor: current === slides.length - 1 ? "default" : "pointer", borderRadius: 3, letterSpacing: 2, fontWeight: 700 }}>
-          NEXT →
-        </button>
-      </div>
+      </main>
     </div>
   );
 }
