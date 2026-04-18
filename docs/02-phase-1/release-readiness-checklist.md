@@ -48,6 +48,25 @@ All items must be checked before sign-off.
 - [ ] `public/docs/` contains only content safe for investor viewing
 - [ ] Internal docs under `docs/` are not accessible via any app route
 
+## Pre-Presentation (Presenter Checklist)
+
+The browser cannot suppress OS notifications or hide extension icons in
+normal windowed mode. These items are the presenter's responsibility
+before an investor demo begins.
+
+- [ ] OS Do Not Disturb / Focus mode enabled
+      macOS: Control Centre → Focus → Do Not Disturb
+      Windows: Settings → System → Focus → Do not disturb
+- [ ] Slack, email client, and calendar app quit (not just minimised)
+- [ ] Use the dedicated "AEXS Demo" Chrome profile (no extensions, no
+      bookmarks bar, notifications blocked site-wide). Create once:
+      Chrome → Profile menu → Add → "AEXS Demo".
+- [ ] Open `http://localhost:4173/pitch` (or `aexs.ai/pitch`)
+- [ ] On the entry gate, click **Enter Fullscreen Presentation**
+- [ ] Confirm: toolbar, extensions, and tab bar are hidden
+- [ ] Walk through all 12 slides once before the investor joins
+- [ ] Esc exits fullscreen (browser-enforced); press P to re-enter
+
 ---
 
 ## Final Sign-off

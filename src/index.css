@@ -141,16 +141,98 @@ body {
 }
 
 @media print {
-  .slide-shell {
-    width: 960px;
-    height: 540px;
-    page-break-after: always;
-    overflow: hidden;
+
+  /* ── CHROME SUPPRESSION ───────────────────────────────────────────────────
+     PitchDeck.jsx renders its own fixed nav + aside.
+     These are position:fixed elements inside a root div.
+     Layer 2 (?mode=export) prevents them from mounting entirely;
+     this CSS is the zero-JS fallback for browser Cmd+P. */
+
+  /* Top nav bar (brand + links + REQUEST FULL DECK) */
+  .fixed.top-0.z-50 {
+    display: none !important;
   }
+
+  /* Left sidebar (INVESTOR DECK label + slide links + counter) */
+  .fixed.z-40 {
+    display: none !important;
+  }
+
+  /* ── LAYOUT RESET ─────────────────────────────────────────────────────── */
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #080C18 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Force background color printing on all elements */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ── SLIDE SHELL — one page per slide ─────────────────────────────────── */
+
+  .slide-shell {
+    width: 100vw !important;
+    height: 100vh !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    overflow: hidden !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+  }
+
+  .slide-shell:last-of-type {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
   .slide-shell > section {
     min-height: unset !important;
-    height: 100%;
+    height: 100% !important;
+    margin: 0 !important;
+    padding-top: 0 !important;
   }
+}
+
+/* ── FULLSCREEN PRESENTATION MODE ─────────────────────────────────────
+   Activated by usePresentationMode → requestFullscreen(). Hides the
+   browser toolbar, extension icons, tab bar. Page-side concerns only:
+   suppress scrollbars and make slides fill the viewport. */
+:fullscreen,
+:-webkit-full-screen {
+  background: var(--color-bg);
+}
+
+:fullscreen body,
+:-webkit-full-screen body {
+  overflow: hidden;
+}
+
+:fullscreen .slide-shell,
+:-webkit-full-screen .slide-shell {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+/* ── EXPORT MODE — CSS layer (always active) ──────────────────────────
+   body[data-export-mode="true"] is set by the useExportMode hook when
+   the URL contains ?mode=export. This layer is a belt-and-suspenders
+   guard: the JSX already skips rendering chrome, but if any chrome
+   element slips through (new component, stale bundle, mid-hydration
+   flash) this CSS still hides it before page.pdf() captures. */
+body[data-export-mode="true"] .fixed.top-0.z-50,
+body[data-export-mode="true"] .fixed.z-40,
+body[data-export-mode="true"] [data-print-hide="true"] {
+  display: none !important;
 }
 
 /* Smooth color transition on nav links (NavBar.jsx). */

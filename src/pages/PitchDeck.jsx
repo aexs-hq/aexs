@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import FOUNDER from '../../content/founder-bio.json';
+import PresentationGate from '../components/PresentationGate';
 import SlideShell from '../components/SlideShell';
+import { useExportMode } from '../hooks/useExportMode';
+import { usePresentationMode } from '../hooks/usePresentationMode';
 // Color-alpha helper for dynamic accent colors.
 // ca(cssVar, pct) → "color-mix(in srgb, <cssVar> <pct>%, transparent)"
 const ca = (v, pct) => `color-mix(in srgb, ${v} ${pct}%, transparent)`;
@@ -136,6 +139,20 @@ function FinancialsSlide({ onRef }) {
 export default function PitchDeck() {
   const [active, setActive] = useState(0);
   const sectionRefs = useRef([]);
+  const isExport = useExportMode();
+  const { isPresenting } = usePresentationMode();
+
+  // Gate appears once per tab. Never in PDF export. Dismissal is sticky
+  // within the session so the deck doesn't re-prompt between navigations.
+  const [gateVisible, setGateVisible] = useState(() => {
+    if (isExport) return false;
+    if (typeof window === 'undefined') return false;
+    return window.sessionStorage.getItem('aexs-gate-dismissed') !== 'true';
+  });
+  const dismissGate = () => {
+    window.sessionStorage.setItem('aexs-gate-dismissed', 'true');
+    setGateVisible(false);
+  };
 
   /* Sidebar auto-highlight as user scrolls */
   useEffect(() => {
@@ -170,6 +187,25 @@ export default function PitchDeck() {
   const progress = ((active + 1) / SLIDES.length) * 100;
 
   return (
+    <>
+      {gateVisible && <PresentationGate onDismiss={dismissGate} />}
+
+      {isPresenting && !isExport && (
+        <div style={{
+          position: 'fixed',
+          top: '16px',
+          right: '16px',
+          fontSize: '10px',
+          color: 'var(--color-border-deck)',
+          letterSpacing: '0.1em',
+          zIndex: 100,
+          userSelect: 'none',
+          pointerEvents: 'none',
+        }}>
+          PRESENTING · ESC TO EXIT
+        </div>
+      )}
+
     <div style={{ backgroundColor: 'var(--color-bg)', color: 'white', fontFamily: "'Inter', sans-serif" }}>
       <style>{`
         .slide-in { opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
@@ -180,7 +216,7 @@ export default function PitchDeck() {
       `}</style>
 
       {/* ── TOP NAV ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center px-6"
+      {!isExport && <nav className="fixed top-0 left-0 right-0 z-50 flex items-center px-6"
         style={{ height: '56px', backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-gold) 18%, transparent)' }}>
 
         {/* Wordmark */}
@@ -219,10 +255,10 @@ export default function PitchDeck() {
 
         {/* Gold rule at very bottom of nav */}
         <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: 'color-mix(in srgb, var(--color-gold) 15%, transparent)' }} />
-      </nav>
+      </nav>}
 
       {/* ── LEFT SIDEBAR ── */}
-      <aside className="fixed bottom-0 left-0 z-40 flex flex-col"
+      {!isExport && <aside className="fixed bottom-0 left-0 z-40 flex flex-col"
         style={{ top: '56px', width: '220px', backgroundColor: 'var(--color-bg)', borderRight: '1px solid color-mix(in srgb, var(--color-white-1) 5%, transparent)' }}>
 
         {/* Header */}
@@ -273,10 +309,10 @@ export default function PitchDeck() {
               style={{ width: `${progress}%`, backgroundColor: 'var(--color-gold)' }} />
           </div>
         </div>
-      </aside>
+      </aside>}
 
       {/* ── MAIN CONTENT ── */}
-      <main style={{ marginLeft: '220px', paddingTop: '56px' }}>
+      <main style={isExport ? { padding: 0 } : { marginLeft: '220px', paddingTop: '56px' }}>
 
         {/* ── SLIDE 1: COVER ── */}
         <SlideShell><section ref={el => sectionRefs.current[0] = el} id="cover"
@@ -1049,5 +1085,6 @@ export default function PitchDeck() {
 
       </main>
     </div>
+    </>
   );
 }
