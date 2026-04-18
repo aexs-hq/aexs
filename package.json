@@ -13,10 +13,10 @@
     "preview": "vite preview",
     "test": "vitest run",
     "check-docs-sync": "test -f public/docs/business-contradictions.md || (echo 'ERROR: public/docs/business-contradictions.md is missing. Run: npm run sync-docs' && exit 1) && diff docs/business-contradictions.md public/docs/business-contradictions.md",
-    "prepare": "git config core.hooksPath .githooks",
     "verify-theme-sync": "node scripts/verify-theme-sync.js",
     "export-deck": "node scripts/export-deck-pdf.js",
-    "check": "eslint . && vitest run && npm run build && npm run check-docs-sync && npm run verify-theme-sync"
+    "check": "eslint . && vitest run && npm run build && npm run check-docs-sync && npm run verify-theme-sync",
+    "setup-hooks": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "react": "^19.2.4",
