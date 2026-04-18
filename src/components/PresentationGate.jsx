@@ -24,6 +24,21 @@ export default function PresentationGate({ onDismiss }) {
     return () => clearInterval(timer);
   }, [onDismiss]);
 
+  // Any scroll / wheel / touch dismisses the gate immediately — the
+  // overlay must never block the deck from being read.
+  useEffect(() => {
+    const dismissOnce = () => onDismiss();
+    const opts = { once: true, passive: true };
+    window.addEventListener('wheel', dismissOnce, opts);
+    window.addEventListener('touchmove', dismissOnce, opts);
+    window.addEventListener('scroll', dismissOnce, opts);
+    return () => {
+      window.removeEventListener('wheel', dismissOnce);
+      window.removeEventListener('touchmove', dismissOnce);
+      window.removeEventListener('scroll', dismissOnce);
+    };
+  }, [onDismiss]);
+
   const handlePresent = async () => {
     await enterPresentation();
     onDismiss();
@@ -40,7 +55,11 @@ export default function PresentationGate({ onDismiss }) {
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 9999,
+        // Scroll/click on the deck underneath passes through the backdrop.
+        // Only the buttons below opt back in with pointer-events: auto.
+        pointerEvents: 'none',
       }}
+      aria-hidden="true"
     >
       <div
         style={{
@@ -94,6 +113,7 @@ export default function PresentationGate({ onDismiss }) {
           cursor: 'pointer',
           marginBottom: '16px',
           letterSpacing: '0.05em',
+          pointerEvents: 'auto',
         }}
       >
         ENTER FULLSCREEN PRESENTATION
@@ -110,6 +130,7 @@ export default function PresentationGate({ onDismiss }) {
           fontSize: '13px',
           borderRadius: '6px',
           cursor: 'pointer',
+          pointerEvents: 'auto',
         }}
       >
         Skip — continue in browser ({countdown}s)

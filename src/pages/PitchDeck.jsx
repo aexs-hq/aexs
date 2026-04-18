@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import FOUNDER from '../../content/founder-bio.json';
 import PresentationGate from '../components/PresentationGate';
 import SlideShell from '../components/SlideShell';
@@ -141,6 +142,10 @@ export default function PitchDeck() {
   const sectionRefs = useRef([]);
   const isExport = useExportMode();
   const { isPresenting } = usePresentationMode();
+  // Both the PDF export pipeline and live fullscreen presentation want
+  // the same "no chrome" layout — share one flag so we can't suppress
+  // one surface but forget the other.
+  const isChromeFree = isExport || isPresenting;
 
   // Gate appears once per tab. Never in PDF export. Dismissal is sticky
   // within the session so the deck doesn't re-prompt between navigations.
@@ -216,7 +221,7 @@ export default function PitchDeck() {
       `}</style>
 
       {/* ── TOP NAV ── */}
-      {!isExport && <nav className="fixed top-0 left-0 right-0 z-50 flex items-center px-6"
+      {!isChromeFree && <nav className="fixed top-0 left-0 right-0 z-50 flex items-center px-6"
         style={{ height: '56px', backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-gold) 18%, transparent)' }}>
 
         {/* Wordmark */}
@@ -232,7 +237,7 @@ export default function PitchDeck() {
             { label: 'PITCH DECK', href: '/pitch',  active: true  },
             { label: 'ROADMAP',   href: '/roadmap', active: false },
           ].map(({ label, href, active: isActive }) => (
-            <a key={label} href={href}
+            <Link key={label} to={href}
               className={`font-bold tracking-widest transition-colors ${
                 isActive
                   ? 'text-gold border-b border-gold pb-px'
@@ -240,7 +245,7 @@ export default function PitchDeck() {
               }`}
               style={{ fontSize: '11px' }}>
               {label}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -258,7 +263,7 @@ export default function PitchDeck() {
       </nav>}
 
       {/* ── LEFT SIDEBAR ── */}
-      {!isExport && <aside className="fixed bottom-0 left-0 z-40 flex flex-col"
+      {!isChromeFree && <aside className="fixed bottom-0 left-0 z-40 flex flex-col"
         style={{ top: '56px', width: '220px', backgroundColor: 'var(--color-bg)', borderRight: '1px solid color-mix(in srgb, var(--color-white-1) 5%, transparent)' }}>
 
         {/* Header */}
@@ -312,7 +317,7 @@ export default function PitchDeck() {
       </aside>}
 
       {/* ── MAIN CONTENT ── */}
-      <main style={isExport ? { padding: 0 } : { marginLeft: '220px', paddingTop: '56px' }}>
+      <main style={isChromeFree ? { padding: 0 } : { marginLeft: '220px', paddingTop: '56px' }}>
 
         {/* ── SLIDE 1: COVER ── */}
         <SlideShell><section ref={el => sectionRefs.current[0] = el} id="cover"
