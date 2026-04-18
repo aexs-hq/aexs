@@ -1,18 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
+import FOUNDER from '../../content/founder-bio.json';
+import SlideShell from '../components/SlideShell';
+// Color-alpha helper for dynamic accent colors.
+// ca(cssVar, pct) → "color-mix(in srgb, <cssVar> <pct>%, transparent)"
+const ca = (v, pct) => `color-mix(in srgb, ${v} ${pct}%, transparent)`;
+
 
 const SLIDES = [
-  { id: 'cover',       label: 'Cover',          icon: '◆', accent: '#C8A84B' },
-  { id: 'problem',     label: 'Problem',        icon: '⚠', accent: '#ef4444' },
-  { id: 'solution',    label: 'Solution',       icon: '✦', accent: '#C8A84B' },
-  { id: 'product',     label: 'Product',        icon: '⬡', accent: '#3b82f6' },
-  { id: 'market',      label: 'Market',         icon: '◎', accent: '#a855f7' },
-  { id: 'traction',    label: 'Traction',       icon: '▲', accent: '#22c55e' },
-  { id: 'model',       label: 'Business Model', icon: '◈', accent: '#C8A84B' },
-  { id: 'financials',  label: 'Financials',     icon: '↑', accent: '#22c55e' },
-  { id: 'competition', label: 'Competition',    icon: '⊕', accent: '#f97316' },
-  { id: 'gtm',         label: 'Go-To-Market',   icon: '→', accent: '#3b82f6' },
-  { id: 'team',        label: 'Team',           icon: '◉', accent: '#C8A84B' },
-  { id: 'ask',         label: 'The Ask',        icon: '★', accent: '#C8A84B' },
+  { id: 'cover',       label: 'Cover',          icon: '◆', accent: 'var(--color-gold)' },
+  { id: 'problem',     label: 'Problem',        icon: '⚠', accent: 'var(--color-red)' },
+  { id: 'solution',    label: 'Solution',       icon: '✦', accent: 'var(--color-gold)' },
+  { id: 'product',     label: 'Product',        icon: '⬡', accent: 'var(--color-blue)' },
+  { id: 'market',      label: 'Market',         icon: '◎', accent: 'var(--color-purple)' },
+  { id: 'traction',    label: 'Traction',       icon: '▲', accent: 'var(--color-green)' },
+  { id: 'model',       label: 'Business Model', icon: '◈', accent: 'var(--color-gold)' },
+  { id: 'financials',  label: 'Financials',     icon: '↑', accent: 'var(--color-green)' },
+  { id: 'competition', label: 'Competition',    icon: '⊕', accent: 'var(--color-orange)' },
+  { id: 'gtm',         label: 'Go-To-Market',   icon: '→', accent: 'var(--color-blue)' },
+  { id: 'team',        label: 'Team',           icon: '◉', accent: 'var(--color-gold)' },
+  { id: 'ask',         label: 'The Ask',        icon: '★', accent: 'var(--color-gold)' },
 ];
 
 /* ─── Financials slide as its own component to manage bar-animation observer ─── */
@@ -37,19 +43,19 @@ function FinancialsSlide({ onRef }) {
   }, []);
 
   const bars = [
-    { label: 'Pre-Rev', arr: 0,    color: '#475569', pct: 2  },
-    { label: 'Y1 H1',  arr: 0.8,  color: '#C8A84B', pct: 5  },
-    { label: 'Y1',     arr: 2.6,  color: '#C8A84B', pct: 15 },
-    { label: 'Y2',     arr: 9.2,  color: '#22c55e', pct: 45 },
-    { label: 'Y3',     arr: 32.2, color: '#3b82f6', pct: 100 },
+    { label: 'Pre-Rev', arr: 0,    color: 'var(--color-white-4)', pct: 2  },
+    { label: 'Y1 H1',  arr: 0.8,  color: 'var(--color-gold)', pct: 5  },
+    { label: 'Y1',     arr: 2.6,  color: 'var(--color-gold)', pct: 15 },
+    { label: 'Y2',     arr: 9.2,  color: 'var(--color-green)', pct: 45 },
+    { label: 'Y3',     arr: 32.2, color: 'var(--color-blue)', pct: 100 },
   ];
 
   return (
     <section ref={setRef} id="financials"
       className="min-h-screen flex flex-col justify-center px-16 py-20"
-      style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+      style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
 
-      <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#22c55e' }}>FINANCIAL PROJECTIONS</p>
+      <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-green)' }}>FINANCIAL PROJECTIONS</p>
       <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
         Path to $32.2M ARR in 36 Months
       </h1>
@@ -90,16 +96,16 @@ function FinancialsSlide({ onRef }) {
         {/* Key metrics */}
         <div className="w-56 flex-shrink-0 slide-in">
           {[
-            { label: 'SEED ROUND',      value: '$1.5M',    color: '#C8A84B' },
-            { label: 'Y1 ARR',          value: '$2.6M',    color: '#C8A84B' },
-            { label: 'Y2 ARR',          value: '$9.2M',    color: '#22c55e' },
-            { label: 'Y3 ARR',          value: '$32.2M',   color: '#3b82f6' },
-            { label: 'BREAK-EVEN',      value: 'Month 12', color: '#22c55e' },
-            { label: 'GROSS MARGIN',    value: '82%',      color: '#a855f7' },
-            { label: 'Y3 VALUATION 8×', value: '$257M',    color: '#C8A84B' },
+            { label: 'SEED ROUND',      value: '$1.5M',    color: 'var(--color-gold)' },
+            { label: 'Y1 ARR',          value: '$2.6M',    color: 'var(--color-gold)' },
+            { label: 'Y2 ARR',          value: '$9.2M',    color: 'var(--color-green)' },
+            { label: 'Y3 ARR',          value: '$32.2M',   color: 'var(--color-blue)' },
+            { label: 'BREAK-EVEN',      value: 'Month 12', color: 'var(--color-green)' },
+            { label: 'GROSS MARGIN',    value: '82%',      color: 'var(--color-purple)' },
+            { label: 'Y3 VALUATION 8×', value: '$257M',    color: 'var(--color-gold)' },
           ].map(({ label, value, color }) => (
             <div key={label} className="flex justify-between items-center py-2.5"
-              style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              style={{ borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
               <p className="font-bold tracking-widest text-slate-500" style={{ fontSize: '9px' }}>{label}</p>
               <p className="font-syne font-bold text-sm" style={{ color }}>{value}</p>
             </div>
@@ -110,13 +116,13 @@ function FinancialsSlide({ onRef }) {
       {/* Bottom metrics strip */}
       <div className="grid grid-cols-4 gap-4 slide-in">
         {[
-          { label: 'AVG CONTRACT',  value: '$24K',    color: '#C8A84B' },
-          { label: 'CUSTOMERS Y3', value: '1,340+',  color: '#22c55e' },
-          { label: 'PAYBACK',      value: '4 months', color: '#a855f7' },
-          { label: 'NRR TARGET',   value: '130%+',   color: '#3b82f6' },
+          { label: 'AVG CONTRACT',  value: '$24K',    color: 'var(--color-gold)' },
+          { label: 'CUSTOMERS Y3', value: '1,340+',  color: 'var(--color-green)' },
+          { label: 'PAYBACK',      value: '4 months', color: 'var(--color-purple)' },
+          { label: 'NRR TARGET',   value: '130%+',   color: 'var(--color-blue)' },
         ].map(({ label, value, color }) => (
           <div key={label} className="rounded-lg p-4 text-center"
-            style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 3%, transparent)', border: '1px solid color-mix(in srgb, var(--color-white-1) 7%, transparent)' }}>
             <p className="font-bold tracking-widest text-slate-500 mb-2" style={{ fontSize: '9px' }}>{label}</p>
             <p className="font-syne font-bold text-xl" style={{ color }}>{value}</p>
           </div>
@@ -164,18 +170,18 @@ export default function PitchDeck() {
   const progress = ((active + 1) / SLIDES.length) * 100;
 
   return (
-    <div style={{ backgroundColor: '#080C18', color: 'white', fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ backgroundColor: 'var(--color-bg)', color: 'white', fontFamily: "'Inter', sans-serif" }}>
       <style>{`
         .slide-in { opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
         .slide-in.visible { opacity: 1; transform: translateY(0); }
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(200,168,75,0.3); border-radius: 2px; }
+        ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-gold) 30%, transparent); border-radius: 2px; }
       `}</style>
 
       {/* ── TOP NAV ── */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center px-6"
-        style={{ height: '56px', backgroundColor: '#080C18', borderBottom: '1px solid rgba(200,168,75,0.18)' }}>
+        style={{ height: '56px', backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-gold) 18%, transparent)' }}>
 
         {/* Wordmark */}
         <div className="flex items-baseline gap-2" style={{ width: '220px' }}>
@@ -212,17 +218,17 @@ export default function PitchDeck() {
         </div>
 
         {/* Gold rule at very bottom of nav */}
-        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: 'rgba(200,168,75,0.15)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: 'color-mix(in srgb, var(--color-gold) 15%, transparent)' }} />
       </nav>
 
       {/* ── LEFT SIDEBAR ── */}
       <aside className="fixed bottom-0 left-0 z-40 flex flex-col"
-        style={{ top: '56px', width: '220px', backgroundColor: '#080C18', borderRight: '1px solid rgba(255,255,255,0.05)' }}>
+        style={{ top: '56px', width: '220px', backgroundColor: 'var(--color-bg)', borderRight: '1px solid color-mix(in srgb, var(--color-white-1) 5%, transparent)' }}>
 
         {/* Header */}
         <div className="px-4 pt-5 pb-3">
           <p className="font-bold tracking-widest text-gold" style={{ fontSize: '9px' }}>INVESTOR DECK</p>
-          <div className="mt-2 h-px" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} />
+          <div className="mt-2 h-px" style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 8%, transparent)' }} />
         </div>
 
         {/* Slide list */}
@@ -232,13 +238,13 @@ export default function PitchDeck() {
               className="w-full flex items-center gap-3 text-left transition-all"
               style={{
                 padding: '9px 16px',
-                borderLeft: active === i ? `3px solid #C8A84B` : '3px solid transparent',
+                borderLeft: active === i ? `3px solid var(--color-gold)` : '3px solid transparent',
                 backgroundColor: active === i ? 'rgba(100,116,139,0.18)' : 'transparent',
               }}
               onMouseEnter={e => {
                 if (active !== i) {
-                  e.currentTarget.style.borderLeftColor = 'rgba(200,168,75,0.5)';
-                  e.currentTarget.style.backgroundColor = 'rgba(30,41,59,0.4)';
+                  e.currentTarget.style.borderLeftColor = 'color-mix(in srgb, var(--color-gold) 50%, transparent)';
+                  e.currentTarget.style.backgroundColor = 'color-mix(in srgb, var(--color-white-5) 40%, transparent)';
                 }
               }}
               onMouseLeave={e => {
@@ -250,7 +256,7 @@ export default function PitchDeck() {
               <span style={{ color: slide.accent, fontSize: '12px', flexShrink: 0 }}>{slide.icon}</span>
               <span style={{
                 fontSize: '12px',
-                color: active === i ? 'white' : 'rgba(255,255,255,0.6)',
+                color: active === i ? 'white' : 'color-mix(in srgb, var(--color-white-1) 60%, transparent)',
                 fontWeight: active === i ? '600' : '400',
               }}>
                 {slide.label}
@@ -260,11 +266,11 @@ export default function PitchDeck() {
         </nav>
 
         {/* Footer: counter + progress bar */}
-        <div className="px-4 pb-4 pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="px-4 pb-4 pt-3" style={{ borderTop: '1px solid color-mix(in srgb, var(--color-white-1) 5%, transparent)' }}>
           <p className="text-slate-500 mb-2" style={{ fontSize: '10px' }}>{active + 1} / {SLIDES.length}</p>
-          <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
+          <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 8%, transparent)' }}>
             <div className="h-full rounded-full transition-all duration-500"
-              style={{ width: `${progress}%`, backgroundColor: '#C8A84B' }} />
+              style={{ width: `${progress}%`, backgroundColor: 'var(--color-gold)' }} />
           </div>
         </div>
       </aside>
@@ -273,14 +279,14 @@ export default function PitchDeck() {
       <main style={{ marginLeft: '220px', paddingTop: '56px' }}>
 
         {/* ── SLIDE 1: COVER ── */}
-        <section ref={el => sectionRefs.current[0] = el} id="cover"
+        <SlideShell><section ref={el => sectionRefs.current[0] = el} id="cover"
           className="min-h-screen flex items-center px-16 py-20"
-          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
           <div className="flex w-full gap-16 items-center">
 
             {/* Left */}
             <div className="flex-1">
-              <p className="font-bold tracking-widest mb-6" style={{ fontSize: '9px', color: '#C8A84B' }}>
+              <p className="font-bold tracking-widest mb-6" style={{ fontSize: '9px', color: 'var(--color-gold)' }}>
                 INVESTOR PRESENTATION · 2026
               </p>
               <h1 className="font-syne font-bold text-gold leading-none mb-4"
@@ -298,12 +304,12 @@ export default function PitchDeck() {
                   <p className="font-syne font-bold text-gold" style={{ fontSize: '26px' }}>$1.5M</p>
                   <p className="text-slate-500 font-bold tracking-widest" style={{ fontSize: '9px' }}>SEED ROUND</p>
                 </div>
-                <div className="w-px h-10" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }} />
+                <div className="w-px h-10" style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 10%, transparent)' }} />
                 <div>
                   <p className="font-syne font-bold text-white" style={{ fontSize: '26px' }}>$32.2M</p>
                   <p className="text-slate-500 font-bold tracking-widest" style={{ fontSize: '9px' }}>Y3 ARR TARGET</p>
                 </div>
-                <div className="w-px h-10" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }} />
+                <div className="w-px h-10" style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 10%, transparent)' }} />
                 <div>
                   <p className="font-syne font-bold text-white" style={{ fontSize: '26px' }}>$8M</p>
                   <p className="text-slate-500 font-bold tracking-widest" style={{ fontSize: '9px' }}>VALUATION CAP</p>
@@ -318,12 +324,12 @@ export default function PitchDeck() {
             <div className="flex-shrink-0" style={{ width: '380px' }}>
               <div className="flex flex-col gap-3 mb-4">
                 {[
-                  { n: '01', label: 'LAYER 01', title: 'AI Chief of Staff',    sub: 'Executive memory, briefings, follow-ups', accent: '#C8A84B' },
-                  { n: '02', label: 'LAYER 02', title: 'AI Governance Engine', sub: 'EU AI Act, ISO 42001, board-ready reports', accent: '#3b82f6' },
-                  { n: '03', label: 'LAYER 03', title: 'Decision Intelligence', sub: 'Data-grounded choices with full audit trail', accent: '#22c55e' },
+                  { n: '01', label: 'LAYER 01', title: 'AI Chief of Staff',    sub: 'Executive memory, briefings, follow-ups', accent: 'var(--color-gold)' },
+                  { n: '02', label: 'LAYER 02', title: 'AI Governance Engine', sub: 'EU AI Act, ISO 42001, board-ready reports', accent: 'var(--color-blue)' },
+                  { n: '03', label: 'LAYER 03', title: 'Decision Intelligence', sub: 'Data-grounded choices with full audit trail', accent: 'var(--color-green)' },
                 ].map(({ label, title, sub, accent }) => (
                   <div key={label} className="rounded-xl p-4 slide-in"
-                    style={{ border: `1px solid ${accent}44`, backgroundColor: `${accent}08` }}>
+                    style={{ border: `1px solid ${ca(accent, 27)}`, backgroundColor: `${ca(accent, 3)}` }}>
                     <p className="font-bold tracking-widest mb-1" style={{ fontSize: '9px', color: accent }}>{label}</p>
                     <p className="font-syne font-semibold text-white text-sm">{title}</p>
                     <p className="text-slate-400 text-xs mt-1">{sub}</p>
@@ -332,21 +338,21 @@ export default function PitchDeck() {
               </div>
               {/* Foundation bar */}
               <div className="rounded-xl py-3 px-4 text-center slide-in"
-                style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(168,85,247,0.08))', border: '1px solid rgba(168,85,247,0.3)' }}>
+                style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-purple-700) 12%, transparent), color-mix(in srgb, var(--color-purple) 8%, transparent))', border: '1px solid color-mix(in srgb, var(--color-purple) 30%, transparent)' }}>
                 <p className="font-bold tracking-widest text-purple-400" style={{ fontSize: '9px' }}>
                   EXECUTIVE MEMORY GRAPH · UNIFIED INTELLIGENCE FOUNDATION
                 </p>
               </div>
             </div>
           </div>
-        </section>
+        </section></SlideShell>
 
         {/* ── SLIDE 2: PROBLEM ── */}
-        <section ref={el => sectionRefs.current[1] = el} id="problem"
+        <SlideShell><section ref={el => sectionRefs.current[1] = el} id="problem"
           className="min-h-screen flex flex-col justify-center px-16 py-20"
-          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
 
-          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#ef4444' }}>THE PROBLEM</p>
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-red)' }}>THE PROBLEM</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
             Leaders Are Flying Blind
           </h1>
@@ -357,13 +363,13 @@ export default function PitchDeck() {
           {/* 2×2 stat grid */}
           <div className="grid grid-cols-2 gap-4 max-w-2xl mb-8">
             {[
-              { stat: '73%',  color: '#ef4444', title: 'Executive Overload',      body: 'of C-suite leaders report critical information is missed weekly due to data volume.' },
-              { stat: '$3T',  color: '#f97316', title: 'Annual Value Destroyed',  body: 'lost globally each year to poor executive decisions and misaligned strategic execution.' },
-              { stat: '40+',  color: '#C8A84B', title: 'Regulatory Frameworks',  body: 'now mandate AI governance documentation — with no unified compliance tooling available.' },
-              { stat: '12%',  color: '#3b82f6', title: 'AI Adoption Success',    body: 'of enterprise AI initiatives deliver measurable executive-level business value.' },
+              { stat: '73%',  color: 'var(--color-red)', title: 'Executive Overload',      body: 'of C-suite leaders report critical information is missed weekly due to data volume.' },
+              { stat: '$3T',  color: 'var(--color-orange)', title: 'Annual Value Destroyed',  body: 'lost globally each year to poor executive decisions and misaligned strategic execution.' },
+              { stat: '40+',  color: 'var(--color-gold)', title: 'Regulatory Frameworks',  body: 'now mandate AI governance documentation — with no unified compliance tooling available.' },
+              { stat: '12%',  color: 'var(--color-blue)', title: 'AI Adoption Success',    body: 'of enterprise AI initiatives deliver measurable executive-level business value.' },
             ].map(({ stat, color, title, body }) => (
               <div key={stat} className="rounded-xl p-6 slide-in"
-                style={{ backgroundColor: `${color}0d`, border: `1px solid ${color}33` }}>
+                style={{ backgroundColor: `${ca(color, 5)}`, border: `1px solid ${ca(color, 20)}` }}>
                 <p className="font-syne font-bold mb-2 leading-none" style={{ fontSize: '54px', color }}>
                   {stat}
                 </p>
@@ -375,20 +381,20 @@ export default function PitchDeck() {
 
           {/* EU AI Act alert bar */}
           <div className="max-w-2xl rounded-xl px-5 py-4 flex items-center gap-3 slide-in"
-            style={{ backgroundColor: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.35)' }}>
+            style={{ backgroundColor: 'color-mix(in srgb, var(--color-red) 8%, transparent)', border: '1px solid color-mix(in srgb, var(--color-red) 35%, transparent)' }}>
             <span className="text-red-400 text-xl flex-shrink-0">⚠</span>
             <p className="text-red-300 text-sm font-semibold leading-relaxed">
               The EU AI Act is enforceable NOW — non-compliance carries fines up to 7% of global annual turnover.
             </p>
           </div>
-        </section>
+        </section></SlideShell>
 
         {/* ── SLIDE 3: SOLUTION ── */}
-        <section ref={el => sectionRefs.current[2] = el} id="solution"
+        <SlideShell><section ref={el => sectionRefs.current[2] = el} id="solution"
           className="min-h-screen flex flex-col justify-center px-16 py-20"
-          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
 
-          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#C8A84B' }}>THE SOLUTION</p>
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-gold)' }}>THE SOLUTION</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
             One Platform. Total Executive Intelligence.
           </h1>
@@ -399,7 +405,7 @@ export default function PitchDeck() {
           <div className="flex gap-4 mb-4">
             {[
               {
-                layerLabel: 'LAYER 01', accent: '#C8A84B',
+                layerLabel: 'LAYER 01', accent: 'var(--color-gold)',
                 title: 'AI Chief of Staff',
                 bullets: [
                   'Persistent executive memory across all meetings',
@@ -411,7 +417,7 @@ export default function PitchDeck() {
                 metric: '40% reduction', metricSub: 'in executive context-switching',
               },
               {
-                layerLabel: 'LAYER 02', accent: '#ef4444',
+                layerLabel: 'LAYER 02', accent: 'var(--color-red)',
                 title: 'AI Governance Engine',
                 bullets: [
                   'EU AI Act article-by-article compliance mapping',
@@ -423,7 +429,7 @@ export default function PitchDeck() {
                 metric: '90% faster', metricSub: 'regulatory audit preparation',
               },
               {
-                layerLabel: 'LAYER 03', accent: '#3b82f6',
+                layerLabel: 'LAYER 03', accent: 'var(--color-blue)',
                 title: 'Decision Intelligence',
                 bullets: [
                   'Structured decision frameworks with data grounding',
@@ -437,9 +443,9 @@ export default function PitchDeck() {
             ].map(({ layerLabel, accent, title, bullets, metric, metricSub }) => (
               <div key={layerLabel}
                 className="flex-1 rounded-xl p-6 flex flex-col slide-in"
-                style={{ border: `1px solid ${accent}44`, backgroundColor: `${accent}06` }}>
+                style={{ border: `1px solid ${ca(accent, 27)}`, backgroundColor: `${ca(accent, 2)}` }}>
                 <div className="inline-flex px-2 py-1 rounded mb-4"
-                  style={{ backgroundColor: `${accent}20`, width: 'fit-content' }}>
+                  style={{ backgroundColor: `${ca(accent, 13)}`, width: 'fit-content' }}>
                   <p className="font-bold tracking-widest" style={{ fontSize: '9px', color: accent }}>{layerLabel}</p>
                 </div>
                 <h3 className="font-syne font-bold text-white text-lg mb-4">{title}</h3>
@@ -451,7 +457,7 @@ export default function PitchDeck() {
                   ))}
                 </ul>
                 <div className="rounded-lg px-4 py-3 text-center"
-                  style={{ backgroundColor: `${accent}12`, border: `1px solid ${accent}30` }}>
+                  style={{ backgroundColor: `${ca(accent, 7)}`, border: `1px solid ${ca(accent, 19)}` }}>
                   <p className="font-bold text-sm" style={{ color: accent }}>{metric}</p>
                   <p className="text-slate-400 text-xs">{metricSub}</p>
                 </div>
@@ -461,19 +467,19 @@ export default function PitchDeck() {
 
           {/* Foundation bar */}
           <div className="rounded-xl py-3 px-6 text-center slide-in"
-            style={{ background: 'linear-gradient(90deg, rgba(124,58,237,0.1), rgba(168,85,247,0.07), rgba(124,58,237,0.1))', border: '1px solid rgba(168,85,247,0.25)' }}>
+            style={{ background: 'linear-gradient(90deg, color-mix(in srgb, var(--color-purple-700) 10%, transparent), color-mix(in srgb, var(--color-purple) 7%, transparent), color-mix(in srgb, var(--color-purple-700) 10%, transparent))', border: '1px solid color-mix(in srgb, var(--color-purple) 25%, transparent)' }}>
             <p className="font-bold tracking-widest text-purple-400" style={{ fontSize: '9px' }}>
               EXECUTIVE MEMORY GRAPH · UNIFIED INTELLIGENCE FOUNDATION · POWERS ALL THREE LAYERS
             </p>
           </div>
-        </section>
+        </section></SlideShell>
 
         {/* ── SLIDE 4: PRODUCT ── */}
-        <section ref={el => sectionRefs.current[3] = el} id="product"
+        <SlideShell><section ref={el => sectionRefs.current[3] = el} id="product"
           className="min-h-screen flex flex-col justify-center px-16 py-20"
-          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
 
-          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#3b82f6' }}>PRODUCT DEEP DIVE</p>
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-blue)' }}>PRODUCT DEEP DIVE</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
             Built for How Executives Actually Work
           </h1>
@@ -484,23 +490,23 @@ export default function PitchDeck() {
           <div className="grid grid-cols-3 gap-6">
             {[
               {
-                label: 'CHIEF OF STAFF', accent: '#C8A84B',
+                label: 'CHIEF OF STAFF', accent: 'var(--color-gold)',
                 features: ['Morning intelligence brief', 'Commitment tracking across 100+ items', 'Stakeholder relationship graph', 'Meeting pre-brief & follow-up automation', 'Priority conflict detection'],
                 screen: ['Daily Brief · 6:45 AM', '"3 high-priority items require', 'your attention before the board', 'call at 10AM…"'],
               },
               {
-                label: 'GOVERNANCE HUB', accent: '#ef4444',
+                label: 'GOVERNANCE HUB', accent: 'var(--color-red)',
                 features: ['EU AI Act compliance dashboard', 'ISO 42001 gap analysis', 'Automated evidence collection', 'Board report generation in <5 min', 'Regulatory calendar & deadlines'],
                 screen: ['Compliance Score: 94%', 'EU AI Act: Article 13', 'Transparency — ✓ Documented', 'Next review: 2026-06-01'],
               },
               {
-                label: 'DECISION ENGINE', accent: '#3b82f6',
+                label: 'DECISION ENGINE', accent: 'var(--color-blue)',
                 features: ['Decision canvas with structured inputs', 'Stakeholder sign-off workflows', 'Historical decision pattern analysis', 'Risk scenario modeling', 'Outcome measurement & tracking'],
                 screen: ['Decision #247: Vendor Select', 'Risk Score: Low · 87% confidence', 'Status: ✓ Board Approved', 'Outcome tracked: 30/60/90d'],
               },
             ].map(({ label, accent, features, screen }) => (
               <div key={label} className="rounded-xl p-5 flex flex-col slide-in"
-                style={{ border: `1px solid ${accent}33`, backgroundColor: `${accent}08` }}>
+                style={{ border: `1px solid ${ca(accent, 20)}`, backgroundColor: `${ca(accent, 3)}` }}>
                 <p className="font-bold tracking-widest mb-3" style={{ fontSize: '9px', color: accent }}>{label}</p>
                 <ul className="space-y-2 mb-4 flex-1">
                   {features.map(f => (
@@ -510,20 +516,20 @@ export default function PitchDeck() {
                   ))}
                 </ul>
                 <div className="rounded-lg p-3 font-mono text-xs leading-relaxed"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: `1px solid ${accent}22`, color: `${accent}cc` }}>
+                  style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 4%, transparent)', border: `1px solid ${ca(accent, 13)}`, color: `${ca(accent, 80)}` }}>
                   {screen.map((line, i) => <p key={i}>{line}</p>)}
                 </div>
               </div>
             ))}
           </div>
-        </section>
+        </section></SlideShell>
 
         {/* ── SLIDE 5: MARKET ── */}
-        <section ref={el => sectionRefs.current[4] = el} id="market"
+        <SlideShell><section ref={el => sectionRefs.current[4] = el} id="market"
           className="min-h-screen flex flex-col justify-center px-16 py-20"
-          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
 
-          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#a855f7' }}>MARKET OPPORTUNITY</p>
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-purple)' }}>MARKET OPPORTUNITY</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
             A Category That Doesn't Exist Yet
           </h1>
@@ -536,23 +542,23 @@ export default function PitchDeck() {
             <div className="relative flex-shrink-0 slide-in" style={{ width: '340px', height: '340px' }}>
               {/* Outer — Executive Software */}
               <div className="absolute inset-0 rounded-full flex items-end justify-center pb-5"
-                style={{ backgroundColor: 'rgba(124,58,237,0.1)', border: '2px solid rgba(124,58,237,0.4)' }}>
+                style={{ backgroundColor: 'color-mix(in srgb, var(--color-purple-700) 10%, transparent)', border: '2px solid color-mix(in srgb, var(--color-purple-700) 40%, transparent)' }}>
               </div>
               <p className="absolute font-bold tracking-wide text-purple-300" style={{ top: '14px', left: '50%', transform: 'translateX(-50%)', fontSize: '10px', whiteSpace: 'nowrap' }}>Executive Software</p>
 
               {/* Middle — AI SaaS */}
               <div className="absolute rounded-full"
-                style={{ inset: '50px', backgroundColor: 'rgba(59,130,246,0.12)', border: '2px solid rgba(59,130,246,0.45)' }} />
+                style={{ inset: '50px', backgroundColor: 'color-mix(in srgb, var(--color-blue) 12%, transparent)', border: '2px solid color-mix(in srgb, var(--color-blue) 45%, transparent)' }} />
               <p className="absolute font-bold tracking-wide text-blue-300" style={{ top: '68px', left: '50%', transform: 'translateX(-50%)', fontSize: '10px', whiteSpace: 'nowrap' }}>AI SaaS</p>
 
               {/* Inner — GRC */}
               <div className="absolute rounded-full"
-                style={{ inset: '110px', backgroundColor: 'rgba(34,197,94,0.15)', border: '2px solid rgba(34,197,94,0.5)' }} />
+                style={{ inset: '110px', backgroundColor: 'color-mix(in srgb, var(--color-green) 15%, transparent)', border: '2px solid color-mix(in srgb, var(--color-green) 50%, transparent)' }} />
               <p className="absolute font-bold tracking-wide text-green-300" style={{ top: '126px', left: '50%', transform: 'translateX(-50%)', fontSize: '10px', whiteSpace: 'nowrap' }}>GRC</p>
 
               {/* Center — AEXS */}
               <div className="absolute rounded-full flex items-center justify-center"
-                style={{ inset: '152px', backgroundColor: 'rgba(200,168,75,0.25)', border: '2px solid #C8A84B' }}>
+                style={{ inset: '152px', backgroundColor: 'color-mix(in srgb, var(--color-gold) 25%, transparent)', border: '2px solid var(--color-gold)' }}>
                 <p className="font-syne font-bold text-gold text-xs">AEXS</p>
               </div>
             </div>
@@ -560,9 +566,9 @@ export default function PitchDeck() {
             {/* Legend */}
             <div className="flex-1 space-y-8 slide-in">
               {[
-                { dot: '#7c3aed', label: 'TOTAL ADDRESSABLE MARKET', value: '$450B+', sub: 'Global enterprise executive software & AI-enabled productivity tooling' },
-                { dot: '#3b82f6', label: 'SERVICEABLE ADDRESSABLE MARKET', value: '$28B', sub: 'Mid-to-large enterprise AI governance & executive intelligence platforms' },
-                { dot: '#22c55e', label: 'SERVICEABLE OBTAINABLE MARKET', value: '$2.8B', sub: 'Early-mover capture across regulated industries in EU + North America' },
+                { dot: 'var(--color-purple-700)', label: 'TOTAL ADDRESSABLE MARKET', value: '$450B+', sub: 'Global enterprise executive software & AI-enabled productivity tooling' },
+                { dot: 'var(--color-blue)', label: 'SERVICEABLE ADDRESSABLE MARKET', value: '$28B', sub: 'Mid-to-large enterprise AI governance & executive intelligence platforms' },
+                { dot: 'var(--color-green)', label: 'SERVICEABLE OBTAINABLE MARKET', value: '$2.8B', sub: 'Early-mover capture across regulated industries in EU + North America' },
               ].map(({ dot, label, value, sub }) => (
                 <div key={label}>
                   <div className="flex items-center gap-2 mb-1">
@@ -575,14 +581,14 @@ export default function PitchDeck() {
               ))}
             </div>
           </div>
-        </section>
+        </section></SlideShell>
 
         {/* ── SLIDE 6: TRACTION ── */}
-        <section ref={el => sectionRefs.current[5] = el} id="traction"
+        <SlideShell><section ref={el => sectionRefs.current[5] = el} id="traction"
           className="min-h-screen flex flex-col justify-center px-16 py-20"
-          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
 
-          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#22c55e' }}>TRACTION & VALIDATION</p>
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-green)' }}>TRACTION & VALIDATION</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
             Early Signals. Real Demand.
           </h1>
@@ -594,13 +600,13 @@ export default function PitchDeck() {
             {/* Validation proof cards */}
             <div className="flex-1 grid grid-cols-2 gap-4">
               {[
-                { accent: '#22c55e', icon: '✓', label: 'PRODUCT VALIDATION',  title: 'MVP Complete',         body: 'All three product modules built and internally tested across real executive workflows.' },
-                { accent: '#C8A84B', icon: '◆', label: 'MARKET VALIDATION',   title: 'Inbound Interest',     body: 'Direct outreach from 3 enterprise prospects following regulatory compliance announcements.' },
-                { accent: '#3b82f6', icon: '⚖', label: 'REGULATORY TIMING',  title: 'EU AI Act Active',     body: 'Enforcement began August 2025 — creating immediate urgency for AEXS governance module.' },
-                { accent: '#f97316', icon: '◉', label: 'FOUNDER ADVANTAGE',   title: 'Domain Authority',     body: 'Founder operates at the intersection of AI, governance & executive leadership — built for the buyer.' },
+                { accent: 'var(--color-green)', icon: '✓', label: 'PRODUCT VALIDATION',  title: 'MVP Complete',         body: 'All three product modules built and internally tested across real executive workflows.' },
+                { accent: 'var(--color-gold)', icon: '◆', label: 'MARKET VALIDATION',   title: 'Inbound Interest',     body: 'Direct outreach from 3 enterprise prospects following regulatory compliance announcements.' },
+                { accent: 'var(--color-blue)', icon: '⚖', label: 'REGULATORY TIMING',  title: 'EU AI Act Active',     body: 'Enforcement began August 2025 — creating immediate urgency for AEXS governance module.' },
+                { accent: 'var(--color-orange)', icon: '◉', label: 'FOUNDER ADVANTAGE',   title: 'Domain Authority',     body: 'Founder operates at the intersection of AI, governance & executive leadership — built for the buyer.' },
               ].map(({ accent, icon, label, title, body }) => (
                 <div key={label} className="rounded-xl p-5 slide-in"
-                  style={{ border: `1px solid ${accent}44`, backgroundColor: `${accent}08` }}>
+                  style={{ border: `1px solid ${ca(accent, 27)}`, backgroundColor: `${ca(accent, 3)}` }}>
                   <div className="flex items-center gap-2 mb-3">
                     <span style={{ color: accent, fontSize: '14px' }}>{icon}</span>
                     <p className="font-bold tracking-widest" style={{ fontSize: '9px', color: accent }}>{label}</p>
@@ -624,9 +630,9 @@ export default function PitchDeck() {
                   <div key={q} className="flex gap-3">
                     <div className="flex flex-col items-center">
                       <div className="w-3 h-3 rounded-full flex-shrink-0 mt-0.5"
-                        style={{ backgroundColor: done ? '#22c55e' : '#1e293b', border: done ? 'none' : '1px solid #334155' }} />
+                        style={{ backgroundColor: done ? 'var(--color-green)' : 'var(--color-white-5)', border: done ? 'none' : '1px solid #334155' }} />
                       {idx < arr.length - 1 && (
-                        <div className="w-px flex-1 mt-1" style={{ backgroundColor: '#1e293b', minHeight: '20px' }} />
+                        <div className="w-px flex-1 mt-1" style={{ backgroundColor: 'var(--color-white-5)', minHeight: '20px' }} />
                       )}
                     </div>
                     <div className="pb-4">
@@ -641,14 +647,14 @@ export default function PitchDeck() {
               </div>
             </div>
           </div>
-        </section>
+        </section></SlideShell>
 
         {/* ── SLIDE 7: BUSINESS MODEL ── */}
-        <section ref={el => sectionRefs.current[6] = el} id="model"
+        <SlideShell><section ref={el => sectionRefs.current[6] = el} id="model"
           className="min-h-screen flex flex-col justify-center px-16 py-20"
-          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
 
-          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#C8A84B' }}>BUSINESS MODEL</p>
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-gold)' }}>BUSINESS MODEL</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
             SaaS Recurring Revenue at Every Level
           </h1>
@@ -659,26 +665,26 @@ export default function PitchDeck() {
           <div className="flex gap-5 mb-8">
             {[
               {
-                name: 'Starter',    price: '$499',   period: '/mo', accent: '#C8A84B', target: 'SMB & Scale-ups',
+                name: 'Starter',    price: '$499',   period: '/mo', accent: 'var(--color-gold)', target: 'SMB & Scale-ups',
                 modules: ['AI Chief of Staff', 'Basic decision logging', 'Standard compliance reports', 'Email support'],
                 popular: false,
               },
               {
-                name: 'Growth',     price: '$1,999', period: '/mo', accent: '#3b82f6', target: 'Mid-Market',
+                name: 'Growth',     price: '$1,999', period: '/mo', accent: 'var(--color-blue)', target: 'Mid-Market',
                 modules: ['All Starter features', 'Full Governance Engine', 'Decision Intelligence Suite', 'API access + integrations', 'Priority support'],
                 popular: true,
               },
               {
-                name: 'Enterprise', price: '$8,500', period: '/mo', accent: '#a855f7', target: 'Large Enterprise',
+                name: 'Enterprise', price: '$8,500', period: '/mo', accent: 'var(--color-purple)', target: 'Large Enterprise',
                 modules: ['All Growth features', 'Custom AI training on company data', 'Dedicated success manager', 'White-label options', 'Custom SLA & compliance'],
                 popular: false,
               },
             ].map(({ name, price, period, accent, target, modules, popular }) => (
               <div key={name} className="flex-1 rounded-xl p-6 flex flex-col relative slide-in"
-                style={{ border: `1px solid ${accent}44`, backgroundColor: `${accent}06` }}>
+                style={{ border: `1px solid ${ca(accent, 27)}`, backgroundColor: `${ca(accent, 2)}` }}>
                 {popular && (
                   <div className="absolute text-white font-bold"
-                    style={{ top: '-11px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#3b82f6', padding: '3px 12px', borderRadius: '999px', fontSize: '9px', whiteSpace: 'nowrap', letterSpacing: '1px' }}>
+                    style={{ top: '-11px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'var(--color-blue)', padding: '3px 12px', borderRadius: '999px', fontSize: '9px', whiteSpace: 'nowrap', letterSpacing: '1px' }}>
                     MOST POPULAR
                   </div>
                 )}
@@ -702,29 +708,29 @@ export default function PitchDeck() {
           {/* Unit economics strip */}
           <div className="grid grid-cols-4 gap-4 slide-in">
             {[
-              { label: 'GROSS MARGIN',   value: '82%',   color: '#22c55e' },
-              { label: 'LTV/CAC RATIO',  value: '8.4×',  color: '#C8A84B' },
-              { label: 'PAYBACK PERIOD', value: '4 mo',  color: '#3b82f6' },
-              { label: 'NET RETENTION',  value: '118%+', color: '#a855f7' },
+              { label: 'GROSS MARGIN',   value: '82%',   color: 'var(--color-green)' },
+              { label: 'LTV/CAC RATIO',  value: '8.4×',  color: 'var(--color-gold)' },
+              { label: 'PAYBACK PERIOD', value: '4 mo',  color: 'var(--color-blue)' },
+              { label: 'NET RETENTION',  value: '118%+', color: 'var(--color-purple)' },
             ].map(({ label, value, color }) => (
               <div key={label} className="rounded-lg p-4 text-center"
-                style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 3%, transparent)', border: '1px solid color-mix(in srgb, var(--color-white-1) 7%, transparent)' }}>
                 <p className="font-bold tracking-widest text-slate-500 mb-2" style={{ fontSize: '9px' }}>{label}</p>
                 <p className="font-syne font-bold text-2xl" style={{ color }}>{value}</p>
               </div>
             ))}
           </div>
-        </section>
+        </section></SlideShell>
 
         {/* ── SLIDE 8: FINANCIALS ── */}
-        <FinancialsSlide onRef={el => sectionRefs.current[7] = el} />
+        <SlideShell><FinancialsSlide onRef={el => sectionRefs.current[7] = el} /></SlideShell>
 
         {/* ── SLIDE 9: COMPETITION ── */}
-        <section ref={el => sectionRefs.current[8] = el} id="competition"
+        <SlideShell><section ref={el => sectionRefs.current[8] = el} id="competition"
           className="min-h-screen flex flex-col justify-center px-16 py-20"
-          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
 
-          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#f97316' }}>COMPETITIVE LANDSCAPE</p>
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-orange)' }}>COMPETITIVE LANDSCAPE</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
             No One Owns This Category. Yet.
           </h1>
@@ -735,7 +741,7 @@ export default function PitchDeck() {
           <div className="overflow-x-auto slide-in">
             <table className="w-full" style={{ borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                <tr style={{ borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 8%, transparent)' }}>
                   <th className="text-left pb-3 text-slate-500 font-bold tracking-widest pr-6" style={{ fontSize: '9px' }}>CAPABILITY</th>
                   {[
                     { name: 'AEXS',         gold: true  },
@@ -747,7 +753,7 @@ export default function PitchDeck() {
                   ].map(({ name, gold }) => (
                     <th key={name}
                       className="pb-3 text-center font-bold text-xs"
-                      style={{ color: gold ? '#C8A84B' : '#94a3b8', backgroundColor: gold ? 'rgba(200,168,75,0.04)' : 'transparent' }}>
+                      style={{ color: gold ? 'var(--color-gold)' : 'var(--color-white-3)', backgroundColor: gold ? 'color-mix(in srgb, var(--color-gold) 4%, transparent)' : 'transparent' }}>
                       {name}
                     </th>
                   ))}
@@ -765,13 +771,13 @@ export default function PitchDeck() {
                 ].map(([capability, ...vals]) => (
                   <tr key={capability}
                     className="transition-colors"
-                    style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
-                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.02)'; }}
+                    style={{ borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 4%, transparent)' }}
+                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'color-mix(in srgb, var(--color-white-1) 2%, transparent)'; }}
                     onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
                     <td className="py-3 text-slate-300 text-xs pr-6">{capability}</td>
                     {vals.map((v, i) => (
                       <td key={i} className="py-3 text-center"
-                        style={{ backgroundColor: i === 0 ? 'rgba(200,168,75,0.05)' : 'transparent' }}>
+                        style={{ backgroundColor: i === 0 ? 'color-mix(in srgb, var(--color-gold) 5%, transparent)' : 'transparent' }}>
                         {v
                           ? <span className="text-green-400 font-bold">✓</span>
                           : <span className="text-slate-700 text-sm">○</span>
@@ -785,20 +791,20 @@ export default function PitchDeck() {
           </div>
 
           <div className="mt-8 rounded-xl p-5 slide-in"
-            style={{ background: 'linear-gradient(135deg, rgba(200,168,75,0.06), rgba(200,168,75,0.02))', border: '1px solid rgba(200,168,75,0.28)' }}>
+            style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-gold) 6%, transparent), color-mix(in srgb, var(--color-gold) 2%, transparent))', border: '1px solid color-mix(in srgb, var(--color-gold) 28%, transparent)' }}>
             <p className="text-gold font-semibold text-sm mb-1">The Verdict</p>
             <p className="text-slate-300 text-sm leading-relaxed">
               AEXS is the only platform combining executive memory, AI governance compliance, and decision intelligence in a single product. Every competitor solves at most one dimension — AEXS owns the intersection.
             </p>
           </div>
-        </section>
+        </section></SlideShell>
 
         {/* ── SLIDE 10: GO-TO-MARKET ── */}
-        <section ref={el => sectionRefs.current[9] = el} id="gtm"
+        <SlideShell><section ref={el => sectionRefs.current[9] = el} id="gtm"
           className="min-h-screen flex flex-col justify-center px-16 py-20"
-          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
 
-          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#3b82f6' }}>GO-TO-MARKET STRATEGY</p>
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-blue)' }}>GO-TO-MARKET STRATEGY</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">Land. Expand. Dominate.</h1>
           <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
             A three-phase motion designed to convert regulatory urgency into category leadership.
@@ -807,23 +813,23 @@ export default function PitchDeck() {
           <div className="flex gap-4 mb-8">
             {[
               {
-                phase: 'PHASE 01', name: 'LAND',     accent: '#C8A84B', target: 'Months 1–6',   headline: 'Regulatory-Led Entry',
+                phase: 'PHASE 01', name: 'LAND',     accent: 'var(--color-gold)', target: 'Months 1–6',   headline: 'Regulatory-Led Entry',
                 channels: ['Direct outreach to compliance officers', 'EU AI Act urgency content marketing', 'Founder-led enterprise pilots', 'Regulatory consultant partnerships'],
                 metric: '2–5 enterprise pilots',
               },
               {
-                phase: 'PHASE 02', name: 'EXPAND',   accent: '#3b82f6', target: 'Months 7–18',  headline: 'Product-Led Growth',
+                phase: 'PHASE 02', name: 'EXPAND',   accent: 'var(--color-blue)', target: 'Months 7–18',  headline: 'Product-Led Growth',
                 channels: ['Executive peer referrals', 'Board-level case studies & PR', 'Partner channel: Big 4, system integrators', 'Conference presence at GRC/AI events'],
                 metric: '$2M ARR target',
               },
               {
-                phase: 'PHASE 03', name: 'DOMINATE', accent: '#22c55e', target: 'Months 19–36', headline: 'Category Leadership',
+                phase: 'PHASE 03', name: 'DOMINATE', accent: 'var(--color-green)', target: 'Months 19–36', headline: 'Category Leadership',
                 channels: ['Global enterprise sales motion', 'OEM/White-label licensing deals', 'Platform ecosystem & API economy', 'Series B for international expansion'],
                 metric: '$32.2M ARR target',
               },
             ].map(({ phase, name, accent, target, headline, channels, metric }) => (
               <div key={phase} className="flex-1 rounded-xl p-6 flex flex-col slide-in"
-                style={{ border: `1px solid ${accent}44`, backgroundColor: `${accent}06` }}>
+                style={{ border: `1px solid ${ca(accent, 27)}`, backgroundColor: `${ca(accent, 2)}` }}>
                 <p className="font-bold tracking-widest mb-1" style={{ fontSize: '9px', color: accent }}>{phase}</p>
                 <p className="font-syne font-bold text-white text-xl mb-0.5">{name}</p>
                 <p className="text-slate-500 text-xs mb-3">{target}</p>
@@ -836,7 +842,7 @@ export default function PitchDeck() {
                   ))}
                 </ul>
                 <div className="rounded-lg px-4 py-2 text-center"
-                  style={{ backgroundColor: `${accent}12`, border: `1px solid ${accent}30` }}>
+                  style={{ backgroundColor: `${ca(accent, 7)}`, border: `1px solid ${ca(accent, 19)}` }}>
                   <p className="font-bold text-sm" style={{ color: accent }}>{metric}</p>
                 </div>
               </div>
@@ -846,26 +852,26 @@ export default function PitchDeck() {
           {/* Unit economics strip */}
           <div className="grid grid-cols-4 gap-4 slide-in">
             {[
-              { label: 'AVG DEAL SIZE', value: '$24K',     color: '#C8A84B' },
-              { label: 'SALES CYCLE',  value: '45 days',  color: '#3b82f6' },
-              { label: 'TARGET ICP',   value: 'CxO / GC', color: '#22c55e' },
-              { label: 'CLOSE RATE',   value: '22%',      color: '#a855f7' },
+              { label: 'AVG DEAL SIZE', value: '$24K',     color: 'var(--color-gold)' },
+              { label: 'SALES CYCLE',  value: '45 days',  color: 'var(--color-blue)' },
+              { label: 'TARGET ICP',   value: 'CxO / GC', color: 'var(--color-green)' },
+              { label: 'CLOSE RATE',   value: '22%',      color: 'var(--color-purple)' },
             ].map(({ label, value, color }) => (
               <div key={label} className="rounded-lg p-4 text-center"
-                style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 3%, transparent)', border: '1px solid color-mix(in srgb, var(--color-white-1) 7%, transparent)' }}>
                 <p className="font-bold tracking-widest text-slate-500 mb-2" style={{ fontSize: '9px' }}>{label}</p>
                 <p className="font-syne font-bold text-2xl" style={{ color }}>{value}</p>
               </div>
             ))}
           </div>
-        </section>
+        </section></SlideShell>
 
         {/* ── SLIDE 11: TEAM ── */}
-        <section ref={el => sectionRefs.current[10] = el} id="team"
+        <SlideShell><section ref={el => sectionRefs.current[10] = el} id="team"
           className="min-h-screen flex flex-col justify-center px-16 py-20"
-          style={{ backgroundColor: '#080C18', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
 
-          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#C8A84B' }}>THE TEAM</p>
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-gold)' }}>THE TEAM</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">Built by the Buyer</h1>
           <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
             The founder IS the target customer — an executive who built the tool they needed. AI agents function as the founding team until human hires are funded.
@@ -874,20 +880,15 @@ export default function PitchDeck() {
           <div className="flex gap-8">
             {/* Founder card */}
             <div className="rounded-xl p-8 flex-shrink-0 slide-in"
-              style={{ width: '320px', border: '1px solid rgba(200,168,75,0.4)', backgroundColor: 'rgba(200,168,75,0.05)' }}>
+              style={{ width: '320px', border: '1px solid color-mix(in srgb, var(--color-gold) 40%, transparent)', backgroundColor: 'color-mix(in srgb, var(--color-gold) 5%, transparent)' }}>
               <div className="w-14 h-14 rounded-full mb-4 flex items-center justify-center font-syne font-bold text-xl"
-                style={{ backgroundColor: 'rgba(200,168,75,0.15)', border: '2px solid #C8A84B', color: '#C8A84B' }}>
-                Mc
+                style={{ backgroundColor: 'color-mix(in srgb, var(--color-gold) 15%, transparent)', border: '2px solid var(--color-gold)', color: 'var(--color-gold)' }}>
+                {FOUNDER.identity.public_name}
               </div>
-              <p className="font-bold tracking-widest text-gold mb-1" style={{ fontSize: '9px' }}>FOUNDER & CEO</p>
-              <p className="font-syne font-bold text-white text-xl mb-4">Mc</p>
+              <p className="font-bold tracking-widest text-gold mb-1" style={{ fontSize: '9px' }}>{FOUNDER.identity.title.toUpperCase()}</p>
+              <p className="font-syne font-bold text-white text-xl mb-4">{FOUNDER.identity.public_name}</p>
               <div className="space-y-2 mb-6">
-                {[
-                  'Executive leadership & AI strategy practitioner',
-                  'Deep expertise in regulatory compliance & governance',
-                  'Product architect for enterprise AI systems',
-                  'Built AEXS to solve the problem he lived daily',
-                ].map(item => (
+                {FOUNDER.credentials.map(item => (
                   <div key={item} className="flex items-start gap-2">
                     <span className="text-gold text-xs mt-0.5 flex-shrink-0">▸</span>
                     <p className="text-slate-300 text-xs leading-relaxed">{item}</p>
@@ -895,7 +896,7 @@ export default function PitchDeck() {
                 ))}
               </div>
               <div className="rounded-lg px-4 py-3"
-                style={{ backgroundColor: 'rgba(200,168,75,0.1)', border: '1px solid rgba(200,168,75,0.25)' }}>
+                style={{ backgroundColor: 'color-mix(in srgb, var(--color-gold) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--color-gold) 25%, transparent)' }}>
                 <p className="text-gold font-semibold text-xs leading-relaxed">
                   "I built the tool I needed as an executive. Turns out, every executive needs it."
                 </p>
@@ -909,14 +910,14 @@ export default function PitchDeck() {
               {/* AI agents */}
               <div className="grid grid-cols-3 gap-3 mb-6">
                 {[
-                  { name: 'AI Chief of Staff',    role: 'Executive workflow, briefings & context', accent: '#C8A84B' },
-                  { name: 'AI Governance Agent',  role: 'Regulatory monitoring & compliance',      accent: '#ef4444' },
-                  { name: 'AI Decision Agent',    role: 'Scenario modeling & audit trails',        accent: '#3b82f6' },
+                  { name: 'AI Chief of Staff',    role: 'Executive workflow, briefings & context', accent: 'var(--color-gold)' },
+                  { name: 'AI Governance Agent',  role: 'Regulatory monitoring & compliance',      accent: 'var(--color-red)' },
+                  { name: 'AI Decision Agent',    role: 'Scenario modeling & audit trails',        accent: 'var(--color-blue)' },
                 ].map(({ name, role, accent }) => (
                   <div key={name} className="rounded-xl p-4"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: `1px solid ${accent}33` }}>
+                    style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 3%, transparent)', border: `1px solid ${ca(accent, 20)}` }}>
                     <div className="w-8 h-8 rounded-full mb-3 flex items-center justify-center"
-                      style={{ backgroundColor: `${accent}18`, border: `1px solid ${accent}44` }}>
+                      style={{ backgroundColor: `${ca(accent, 9)}`, border: `1px solid ${ca(accent, 27)}` }}>
                       <span style={{ color: accent, fontSize: '11px' }}>◉</span>
                     </div>
                     <p className="text-white font-semibold text-xs mb-1">{name}</p>
@@ -929,18 +930,18 @@ export default function PitchDeck() {
               <p className="text-white font-bold tracking-widest mb-3" style={{ fontSize: '10px' }}>SEED HIRE PLAN</p>
               <div className="space-y-2">
                 {[
-                  { role: 'Head of Sales / GTM',      timeline: 'Month 1', priority: 'Critical', accent: '#ef4444' },
-                  { role: 'Senior Full-Stack Engineer', timeline: 'Month 2', priority: 'High',    accent: '#f97316' },
-                  { role: 'Customer Success Lead',      timeline: 'Month 3', priority: 'High',    accent: '#C8A84B' },
-                  { role: 'Marketing / Brand Lead',     timeline: 'Month 4', priority: 'Medium',  accent: '#3b82f6' },
+                  { role: 'Head of Sales / GTM',      timeline: 'Month 1', priority: 'Critical', accent: 'var(--color-red)' },
+                  { role: 'Senior Full-Stack Engineer', timeline: 'Month 2', priority: 'High',    accent: 'var(--color-orange)' },
+                  { role: 'Customer Success Lead',      timeline: 'Month 3', priority: 'High',    accent: 'var(--color-gold)' },
+                  { role: 'Marketing / Brand Lead',     timeline: 'Month 4', priority: 'Medium',  accent: 'var(--color-blue)' },
                 ].map(({ role, timeline, priority, accent }) => (
                   <div key={role} className="flex items-center gap-4 py-2.5 px-4 rounded-lg"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 2%, transparent)', border: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
                     <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: accent }} />
                     <p className="text-white text-xs flex-1">{role}</p>
                     <p className="text-slate-500 text-xs">{timeline}</p>
                     <span className="text-xs px-2 py-0.5 rounded font-semibold"
-                      style={{ backgroundColor: `${accent}18`, color: accent, border: `1px solid ${accent}30` }}>
+                      style={{ backgroundColor: `${ca(accent, 9)}`, color: accent, border: `1px solid ${ca(accent, 19)}` }}>
                       {priority}
                     </span>
                   </div>
@@ -948,14 +949,14 @@ export default function PitchDeck() {
               </div>
             </div>
           </div>
-        </section>
+        </section></SlideShell>
 
         {/* ── SLIDE 12: THE ASK ── */}
-        <section ref={el => sectionRefs.current[11] = el} id="ask"
+        <SlideShell><section ref={el => sectionRefs.current[11] = el} id="ask"
           className="min-h-screen flex flex-col justify-center px-16 py-20"
-          style={{ backgroundColor: '#080C18' }}>
+          style={{ backgroundColor: 'var(--color-bg)' }}>
 
-          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: '#C8A84B' }}>THE ASK</p>
+          <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-gold)' }}>THE ASK</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
             Raising $1.5M Seed Round
           </h1>
@@ -969,17 +970,17 @@ export default function PitchDeck() {
               <p className="text-white font-bold tracking-widest mb-4" style={{ fontSize: '10px' }}>FUND ALLOCATION — $1.5M</p>
               <div className="space-y-3 mb-6">
                 {[
-                  { label: 'Sales & GTM Hiring',    pct: 40, accent: '#C8A84B', amount: '$600K' },
-                  { label: 'Product Engineering',   pct: 30, accent: '#3b82f6', amount: '$450K' },
-                  { label: 'Marketing & Brand',     pct: 15, accent: '#22c55e', amount: '$225K' },
-                  { label: 'Operations & Legal',    pct: 15, accent: '#a855f7', amount: '$225K' },
+                  { label: 'Sales & GTM Hiring',    pct: 40, accent: 'var(--color-gold)', amount: '$600K' },
+                  { label: 'Product Engineering',   pct: 30, accent: 'var(--color-blue)', amount: '$450K' },
+                  { label: 'Marketing & Brand',     pct: 15, accent: 'var(--color-green)', amount: '$225K' },
+                  { label: 'Operations & Legal',    pct: 15, accent: 'var(--color-purple)', amount: '$225K' },
                 ].map(({ label, pct, accent, amount }) => (
                   <div key={label}>
                     <div className="flex justify-between text-xs mb-1.5">
                       <span className="text-slate-300">{label}</span>
                       <span className="text-slate-400">{amount} · {pct}%</span>
                     </div>
-                    <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
+                    <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 8%, transparent)' }}>
                       <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: accent }} />
                     </div>
                   </div>
@@ -996,7 +997,7 @@ export default function PitchDeck() {
                   { label: 'Target Close',   value: 'Q2 2026'    },
                 ].map(({ label, value }) => (
                   <div key={label} className="flex justify-between py-2.5"
-                    style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    style={{ borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 5%, transparent)' }}>
                     <span className="text-slate-400 text-xs">{label}</span>
                     <span className="text-white text-xs font-bold">{value}</span>
                   </div>
@@ -1009,13 +1010,13 @@ export default function PitchDeck() {
               <p className="text-white font-bold tracking-widest mb-4" style={{ fontSize: '10px' }}>THIS ROUND UNLOCKS</p>
               <div className="space-y-3">
                 {[
-                  { n: '01', title: 'First Enterprise Customers', body: '2–5 paying pilot customers generating early ARR and product signal', accent: '#C8A84B' },
-                  { n: '02', title: 'GTM Team in Market',         body: 'Sales lead hired and closing within 90 days of fund close',           accent: '#3b82f6' },
-                  { n: '03', title: 'Series A Foundation',        body: '$2M ARR run-rate, compliance certification, and board-ready metrics by Q4 2026', accent: '#22c55e' },
-                  { n: '04', title: 'Category Ownership',         body: 'First-mover positioning in the AI Executive Suite category before incumbents react', accent: '#a855f7' },
+                  { n: '01', title: 'First Enterprise Customers', body: '2–5 paying pilot customers generating early ARR and product signal', accent: 'var(--color-gold)' },
+                  { n: '02', title: 'GTM Team in Market',         body: 'Sales lead hired and closing within 90 days of fund close',           accent: 'var(--color-blue)' },
+                  { n: '03', title: 'Series A Foundation',        body: '$2M ARR run-rate, compliance certification, and board-ready metrics by Q4 2026', accent: 'var(--color-green)' },
+                  { n: '04', title: 'Category Ownership',         body: 'First-mover positioning in the AI Executive Suite category before incumbents react', accent: 'var(--color-purple)' },
                 ].map(({ n, title, body, accent }) => (
                   <div key={n} className="flex gap-4 p-4 rounded-xl"
-                    style={{ backgroundColor: `${accent}07`, border: `1px solid ${accent}22` }}>
+                    style={{ backgroundColor: `${ca(accent, 3)}`, border: `1px solid ${ca(accent, 13)}` }}>
                     <p className="font-syne font-bold leading-none flex-shrink-0" style={{ fontSize: '24px', color: accent }}>{n}</p>
                     <div>
                       <p className="text-white font-semibold text-sm mb-1">{title}</p>
@@ -1029,7 +1030,7 @@ export default function PitchDeck() {
 
           {/* Gold CTA bar */}
           <div className="rounded-xl py-5 px-8 flex items-center justify-between slide-in"
-            style={{ background: 'linear-gradient(135deg, rgba(200,168,75,0.12), rgba(200,168,75,0.06))', border: '1px solid rgba(200,168,75,0.45)' }}>
+            style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-gold) 12%, transparent), color-mix(in srgb, var(--color-gold) 6%, transparent))', border: '1px solid color-mix(in srgb, var(--color-gold) 45%, transparent)' }}>
             <div>
               <p className="font-syne font-bold text-white text-xl mb-1">
                 Ready to lead the executive AI category?
@@ -1040,11 +1041,11 @@ export default function PitchDeck() {
             </div>
             <a href="/deck.pdf" download="AEXS_InvestorDeck_2026.pdf"
               className="flex-shrink-0 ml-8 font-bold tracking-widest transition-all hover:bg-gold hover:text-deck"
-              style={{ padding: '12px 24px', border: '1px solid #C8A84B', color: '#C8A84B', fontSize: '11px' }}>
+              style={{ padding: '12px 24px', border: '1px solid var(--color-gold)', color: 'var(--color-gold)', fontSize: '11px' }}>
               DOWNLOAD DECK →
             </a>
           </div>
-        </section>
+        </section></SlideShell>
 
       </main>
     </div>

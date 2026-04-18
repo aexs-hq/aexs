@@ -14,7 +14,9 @@
     "test": "vitest run",
     "check-docs-sync": "test -f public/docs/business-contradictions.md || (echo 'ERROR: public/docs/business-contradictions.md is missing. Run: npm run sync-docs' && exit 1) && diff docs/business-contradictions.md public/docs/business-contradictions.md",
     "prepare": "git config core.hooksPath .githooks",
-    "check": "eslint . && vitest run && npm run build && npm run check-docs-sync"
+    "verify-theme-sync": "node scripts/verify-theme-sync.js",
+    "export-deck": "node scripts/export-deck-pdf.js",
+    "check": "eslint . && vitest run && npm run build && npm run check-docs-sync && npm run verify-theme-sync"
   },
   "dependencies": {
     "react": "^19.2.4",
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@tailwindcss/vite": "^4.2.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
@@ -31,6 +34,8 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "playwright": "^1.59.1",
+    "tailwindcss": "^4.2.2",
     "vite": "^8.0.4",
     "vitest": "^4.1.4"
   }
