@@ -1,13 +1,121 @@
+/* Tailwind v4 — replaces CDN script that was in index.html.
+   @theme inline tells Tailwind to reference existing :root CSS vars
+   rather than creating new ones, preserving our token-derived values. */
+@import "tailwindcss";
+
+@theme inline {
+  /* Color utilities — mirrors the CDN tailwind.config block removed from index.html */
+  --color-gold:         var(--color-gold);
+  --color-deck:         var(--color-bg);
+  --color-deck-card:    var(--color-card-deck);
+  --color-deck-blue:    var(--color-blue);
+  --color-deck-green:   var(--color-green);
+  --color-deck-red:     var(--color-red);
+  --color-deck-purple:  var(--color-purple);
+  --color-deck-white:   var(--color-white-1);
+  --color-deck-muted:   var(--color-white-3);
+  --color-deck-border:  var(--color-border-deck);
+
+  /* Font family utilities */
+  --font-syne:  'Syne', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+}
+
 /* AEXS global base styles.
    All component styling is done via inline styles.
    This file contains only the minimum structural and rendering rules. */
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   AEXS Design Tokens — CSS Custom Properties
+   Source of truth: tokens/design-tokens.json
+   DO NOT edit values here directly.
+   Edit tokens/design-tokens.json, then re-derive per:
+   docs/02-phase-1/pdf-render-strategy.md Section 3
+   ───────────────────────────────────────────────────────────────────────────── */
 :root {
-  /* Tell the browser this is a dark-scheme app so native controls
-     (e.g. the range slider in FinancialModel) render correctly in dark mode. */
-  color-scheme: light dark;
 
-  /* Font rendering quality hints — no visual redesign intended. */
+  /* Colors — direct from tokens/design-tokens.json colors.* */
+  --color-bg:              #080C18;   /* tokens.colors.bg */
+  --color-bg-pdf:          #07090F;   /* tokens.colors.bg-pdf */
+  --color-bg-alt:          #0C1220;   /* tokens.colors.bg-alt */
+  --color-card-deck:       #0F1628;   /* tokens.colors.card-deck */
+  --color-card-alt:        #131C30;   /* tokens.colors.card-alt */
+  --color-border-deck:     #1A2640;   /* tokens.colors.border-deck */
+  --color-border-alt:      #243352;   /* tokens.colors.border-alt */
+
+  --color-gold:            #C8A84B;   /* tokens.colors.gold — canonical per ADR-001 */
+  --color-gold-light:      #E6C76C;   /* tokens.colors.gold-light */
+  --color-gold-dark:       #8A6F2A;   /* tokens.colors.gold-dark */
+
+  --color-blue:            #3B82F6;   /* tokens.colors.blue-500 */
+  --color-blue-light:      #60A5FA;   /* tokens.colors.blue-light */
+  --color-blue-dark:       #1D4ED8;   /* tokens.colors.blue-dark */
+
+  --color-green:           #22c55e;   /* tokens.colors.green — browser canonical */
+  --color-green-emerald:   #10B981;   /* tokens.colors.green-emerald — PDF canonical */
+  --color-green-light:     #34D399;   /* tokens.colors.green-light */
+
+  --color-red:             #EF4444;   /* tokens.colors.red */
+
+  --color-orange:          #f97316;   /* tokens.colors.orange — browser canonical */
+  --color-orange-amber:    #F59E0B;   /* tokens.colors.orange-amber — PDF canonical */
+
+  --color-purple:          #a855f7;   /* tokens.colors.purple-500 — browser canonical */
+  --color-purple-violet:   #8B5CF6;   /* tokens.colors.purple-violet — PDF canonical */
+  --color-purple-deep:     #6D28D9;   /* tokens.colors.purple-deep */
+  --color-purple-700:      #7c3aed;   /* tokens.colors.purple-700 */
+
+  --color-white-1:         #FFFFFF;   /* tokens.colors.white-1 */
+  --color-white-2:         #E2E8F0;   /* tokens.colors.white-2 */
+  --color-white-3:         #94A3B8;   /* tokens.colors.white-3 */
+  --color-white-4:         #475569;   /* tokens.colors.white-4 */
+  --color-white-5:         #1E293B;   /* tokens.colors.white-5 */
+  --color-slate-700:       #334155;   /* tokens.colors.slate-700 */
+
+  /* Non-pitch surface colors — from theme.js (Rule 3), shared with token file */
+  --color-teal:            #4CC9A8;   /* tokens.colors.teal */
+  --color-muted:           #555566;   /* tokens.colors.muted */
+  --color-text:            #e8e4dc;   /* tokens.colors.text */
+  --color-dim:             #888899;   /* tokens.colors.dim */
+  --color-dark:            #09090d;   /* tokens.colors.dark */
+
+  /* Non-pitch UI surface colors — consumers: Home, NavBar, Roadmap, FinancialModel */
+  --color-blue-ui:         #4C8EC9;   /* tokens.colors.blue-ui */
+  --color-purple-ui:       #9B6CD9;   /* tokens.colors.purple-ui */
+  --color-card-ui:         #0e0e13;   /* tokens.colors.card-ui */
+  --color-border-ui:       #1e1e28;   /* tokens.colors.border-ui */
+
+  /* Typography — clamp() derived from tokens.type pt values
+     Formula: px = pt × 1.125 at 1440px ref width
+     clamp(min = px × 0.8, val = px / 1440 × 100vw, max = px × 1.2)  */
+  --type-display:    clamp(27px, 2.34vw, 41px);   /* 30pt → 33.75px */
+  --type-headline:   clamp(20px, 1.72vw, 30px);   /* 22pt → 24.75px */
+  --type-subhead:    clamp(13px, 1.09vw, 19px);   /* 14pt → 15.75px */
+  --type-body:       clamp(10px, 0.86vw, 15px);   /* 11pt → 12.375px */
+  --type-label:      clamp(8px,  0.70vw, 12px);   /* 9pt  → 10.125px */
+  --type-caption:    clamp(7px,  0.63vw, 11px);   /* 8pt  → 9px */
+
+  /* Spacing — 4px base unit scale */
+  --space-1:    4px;
+  --space-2:    8px;
+  --space-3:    12px;
+  --space-4:    16px;
+  --space-6:    24px;
+  --space-8:    32px;
+  --space-12:   48px;
+  --space-16:   64px;
+  --space-card-padding:    var(--space-3);   /* tokens.spacing.card-padding-x = 12 */
+  --space-slide-margin-x:  var(--space-8);   /* tokens.spacing.slide-margin-x = 30pt ≈ 34px */
+  --space-slide-margin-y:  var(--space-6);   /* tokens.spacing.slide-margin-y = 50pt ≈ 56px */
+
+  /* Slide geometry */
+  --slide-width:      960px;     /* tokens.canvas.width */
+  --slide-min-width:  960px;
+  --slide-max-width:  1440px;
+  --slide-aspect:     16 / 9;    /* tokens.canvas: 960 × 540 */
+
+  /* Browser rendering hints — no visual redesign intended */
+  color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -16,12 +124,33 @@
 
 body {
   margin: 0;
-  background: #09090d; /* C.dark — prevents white flash before React hydrates */
+  background: var(--color-dark); /* tokens.colors.dark — prevents white flash before React hydrates */
 }
 
 #root {
   width: 100%;
   min-height: 100svh;
+}
+
+/* SlideShell — wraps each PitchDeck section.
+   Browser: minimal wrapper (position + overflow).
+   Print / Playwright: fixed 960×540 page units. */
+.slide-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+@media print {
+  .slide-shell {
+    width: 960px;
+    height: 540px;
+    page-break-after: always;
+    overflow: hidden;
+  }
+  .slide-shell > section {
+    min-height: unset !important;
+    height: 100%;
+  }
 }
 
 /* Smooth color transition on nav links (NavBar.jsx). */

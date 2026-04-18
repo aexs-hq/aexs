@@ -1,4 +1,3 @@
-import { C } from '../constants/theme';
 import NavBar from './NavBar';
 
 /**
@@ -7,7 +6,7 @@ import NavBar from './NavBar';
  */
 export default function AppLayout({ children }) {
   return (
-    <div style={{ background: C.dark, minHeight: '100vh', color: C.text }}>
+    <div style={{ background: 'var(--color-dark)', minHeight: '100vh', color: 'var(--color-text)' }}>
       <NavBar />
       {children}
     </div>

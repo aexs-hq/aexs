@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { C } from '../constants/theme';
 
 
 const data = {
@@ -9,7 +8,7 @@ const data = {
       emoji: "🧠",
       title: "AI Chief of Staff",
       subtitle: "The operating brain behind every CEO",
-      color: C.gold,
+      color: 'var(--color-gold)',
       accent: "#1a1208",
       score: 43,
       phases: [
@@ -140,7 +139,7 @@ const data = {
       emoji: "⚖️",
       title: "AI Governance as a Service",
       subtitle: "Compliance is the new infrastructure",
-      color: C.blue,
+      color: 'var(--color-blue-ui)',
       accent: "#080f1a",
       score: 42,
       phases: [
@@ -271,7 +270,7 @@ const data = {
       emoji: "📊",
       title: "Executive Decision Support",
       subtitle: "Data-driven leadership, amplified",
-      color: C.purple,
+      color: 'var(--color-purple-ui)',
       accent: "#0a0812",
       score: 40,
       phases: [

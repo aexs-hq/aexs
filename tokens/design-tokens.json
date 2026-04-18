@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "Single authoritative source for all AEXS style values. Covers investor browser deck (PitchDeck.jsx), investor PDF deck (build_deck.py), and non-pitch browser surfaces via theme.js compatibility layer.",
+    "canonical-gold": "#C8A84B",
+    "canonical-gold-adr": "docs/decisions/ADR-001-canonical-gold.md",
+    "resolution-notes": {
+      "gold": "ADR-001: #C8A84B — PitchDeck.jsx + build_deck.py consensus. theme.js was #C9A84C, now aligned.",
+      "bg-divergence": "PitchDeck.jsx uses #080C18, build_deck.py uses #07090F. bg = #080C18 (browser primary). bg-pdf = #07090F (PDF primary, preserved separately so PDF background is unchanged after migration).",
+      "green-divergence": "Rule 2: PitchDeck.jsx uses #22c55e (green-500), build_deck.py uses #10B981 (emerald-500). Both preserved. green = browser canonical; green-emerald = PDF canonical. build_deck.py GREEN maps to green-emerald.",
+      "orange-divergence": "Rule 2: PitchDeck.jsx uses #f97316 (orange-500), build_deck.py uses #F59E0B (amber-400). Both preserved. orange = browser; orange-amber = PDF.",
+      "purple-divergence": "Rule 2: PitchDeck.jsx uses #a855f7 (purple-500), build_deck.py uses #8B5CF6 (violet-500). Both preserved. purple-500 = browser canonical; purple-violet = PDF canonical. Key named purple-500 (not purple) to avoid collision with theme.js purple (#9B6CD9 — a different UI purple used by non-pitch components).",
+      "key-naming-strategy": "Keys matching theme.js key names are: gold, teal, muted, text, dim, dark. Their values either match theme.js exactly (teal, muted, text, dim, dark) or are aligned to canonical (gold). Presentation keys that would collide with different-valued theme.js keys use distinct names (blue-500 not blue; card-deck not card; border-deck not border) — ensuring verify-theme-sync checks only truly shared keys.",
+      "theme-only-keys": ["teal", "muted", "text", "dim", "dark"]
+    }
+  },
+
+  "colors": {
+    "bg":                "#080C18",
+    "bg-pdf":            "#07090F",
+    "bg-alt":            "#0C1220",
+    "card-deck":         "#0F1628",
+    "card-alt":          "#131C30",
+    "border-deck":       "#1A2640",
+    "border-alt":        "#243352",
+
+    "gold":              "#C8A84B",
+    "gold-light":        "#E6C76C",
+    "gold-dark":         "#8A6F2A",
+
+    "blue-500":          "#3B82F6",
+    "blue-light":        "#60A5FA",
+    "blue-dark":         "#1D4ED8",
+
+    "green":             "#22c55e",
+    "green-emerald":     "#10B981",
+    "green-light":       "#34D399",
+
+    "red":               "#EF4444",
+
+    "orange":            "#f97316",
+    "orange-amber":      "#F59E0B",
+
+    "purple-500":        "#a855f7",
+    "purple-violet":     "#8B5CF6",
+    "purple-deep":       "#6D28D9",
+    "purple-700":        "#7c3aed",
+
+    "white-1":           "#FFFFFF",
+    "white-2":           "#E2E8F0",
+    "white-3":           "#94A3B8",
+    "white-4":           "#475569",
+    "white-5":           "#1E293B",
+    "slate-700":         "#334155",
+
+    "teal":              "#4CC9A8",
+    "muted":             "#555566",
+    "text":              "#e8e4dc",
+    "dim":               "#888899",
+    "dark":              "#09090d",
+
+    "blue-ui":           "#4C8EC9",
+    "purple-ui":         "#9B6CD9",
+    "card-ui":           "#0e0e13",
+    "border-ui":         "#1e1e28",
+
+    "surface-purple-bg": "#1A0F3A",
+    "surface-green-bg":  "#051A10",
+    "surface-blue-bg":   "#0B1A2E",
+    "surface-navy-bg":   "#0A1528",
+    "surface-teal-bg":   "#0C1A20",
+    "surface-gold-tint": "#1A1200",
+    "surface-gold-deep": "#140F00",
+    "surface-red-tint":  "#2A0808"
+  },
+
+  "canvas": {
+    "width":                960,
+    "height":               540,
+    "chrome-top-height":    3,
+    "chrome-bottom-height": 28,
+    "left-bar-width":       4
+  },
+
+  "type": {
+    "size-wordmark":    54,
+    "size-ask":         36,
+    "size-slide-title": 28,
+    "size-display":     30,
+    "size-headline":    22,
+    "size-subhead":     14,
+    "size-metric":      20,
+    "size-roi":         18,
+    "size-deck-label":  12,
+    "size-body":        11,
+    "size-body-sm":     10,
+    "size-cta":         13,
+    "size-label":        9,
+    "size-caption":      8,
+    "size-stat-value":  15,
+    "size-stat-large":  44,
+    "size-tiny":         7,
+    "size-node-label":   7.5,
+    "size-kicker":       8,
+    "size-chrome":       9,
+    "size-chrome-tag":   8
+  },
+
+  "spacing": {
+    "slide-margin-x":    30,
+    "slide-margin-y":    50,
+    "card-padding-x":    12,
+    "card-radius":        6,
+    "col-gap":           10,
+    "row-gap":            8,
+    "left-bar-width":     4,
+    "base-unit":          4,
+    "chrome-padding-x":  30,
+    "chrome-text-y":      9,
+    "footer-bar-y":      36,
+    "footer-bar-h":      42,
+    "card-stroke-w":      0.5
+  },
+
+  "alignment": {
+    "optical-center-coefficient": 0.33,
+    "note": "Used in footer_bar(), two_line_bar(), stat_strip(). Formula: baseline = bar_mid - font_size * 0.33. Accounts for Helvetica cap-height-to-font-size ratio so drawString baseline lands at optical center of its container bar."
+  }
+}

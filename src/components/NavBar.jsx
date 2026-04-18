@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom';
-import { C } from '../constants/theme';
 
 const NAV_LINKS = [
   { to: '/',        label: 'Home'            },
@@ -16,7 +15,7 @@ export default function NavBar() {
       gap: 20,
       padding: '10px 20px',
       background: '#0b0b0f',
-      borderBottom: `1px solid ${C.border}`,
+      borderBottom: '1px solid var(--color-border-ui)',
       fontFamily: 'monospace',
       fontSize: 10,
       letterSpacing: 2,
@@ -26,7 +25,7 @@ export default function NavBar() {
       overflowX: 'auto',
       scrollbarWidth: 'none',   /* Firefox */
     }}>
-      <span style={{ color: C.gold, fontWeight: 700, fontSize: 13, marginRight: 8, letterSpacing: 3 }}>
+      <span style={{ color: 'var(--color-gold)', fontWeight: 700, fontSize: 13, marginRight: 8, letterSpacing: 3 }}>
         AEXS
       </span>
       {NAV_LINKS.map(({ to, label }) => (
@@ -35,10 +34,10 @@ export default function NavBar() {
           to={to}
           end={to === '/'}
           style={({ isActive }) => ({
-            color: isActive ? C.gold : C.dim,
+            color: isActive ? 'var(--color-gold)' : 'var(--color-dim)',
             textDecoration: 'none',
             textTransform: 'uppercase',
-            borderBottom: isActive ? `1px solid ${C.gold}` : '1px solid transparent',
+            borderBottom: isActive ? '1px solid var(--color-gold)' : '1px solid transparent',
             paddingBottom: 2,
           })}
         >

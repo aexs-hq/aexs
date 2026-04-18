@@ -1,6 +1,5 @@
 import rawMd from '../../docs/business-contradictions.md?raw';
 import { Link } from 'react-router-dom';
-import { C } from '../constants/theme';
 import PageShell from '../components/PageShell';
 
 // ── Inline styles ────────────────────────────────────────────────────────────
@@ -10,7 +9,7 @@ const INLINE_CODE = {
   background: '#ffffff10',
   padding: '1px 5px',
   borderRadius: 2,
-  color: C.teal,
+  color: 'var(--color-teal)',
 };
 
 // ── Inline renderer ──────────────────────────────────────────────────────────
@@ -161,10 +160,10 @@ function MdBlock({ block }) {
           fontFamily: "'Georgia', 'Times New Roman', serif",
           fontSize: 'clamp(20px, 4vw, 28px)',
           fontWeight: 300,
-          color: C.text,
+          color: 'var(--color-text)',
           margin: '0 0 6px',
           paddingBottom: 10,
-          borderBottom: `1px solid ${C.border}`,
+          borderBottom: `1px solid ${'var(--color-border-ui)'}`,
           lineHeight: 1.2,
         }}>
           <Inline text={block.content} />
@@ -177,10 +176,10 @@ function MdBlock({ block }) {
           fontFamily: "'Georgia', serif",
           fontSize: 16,
           fontWeight: 400,
-          color: C.gold,
+          color: 'var(--color-gold)',
           margin: '36px 0 8px',
           paddingBottom: 4,
-          borderBottom: `1px solid ${C.border}`,
+          borderBottom: `1px solid ${'var(--color-border-ui)'}`,
         }}>
           <Inline text={block.content} />
         </h2>
@@ -191,7 +190,7 @@ function MdBlock({ block }) {
         <h3 style={{
           fontSize: 13,
           fontWeight: 600,
-          color: C.text,
+          color: 'var(--color-text)',
           margin: '20px 0 6px',
         }}>
           <Inline text={block.content} />
@@ -202,7 +201,7 @@ function MdBlock({ block }) {
       return (
         <hr style={{
           border: 'none',
-          borderTop: `1px solid ${C.border}`,
+          borderTop: `1px solid ${'var(--color-border-ui)'}`,
           margin: '28px 0',
         }} />
       );
@@ -211,7 +210,7 @@ function MdBlock({ block }) {
       return (
         <p style={{
           fontSize: 13,
-          color: C.dim,
+          color: 'var(--color-dim)',
           lineHeight: 1.8,
           margin: '0 0 10px',
         }}>
@@ -223,12 +222,12 @@ function MdBlock({ block }) {
       return (
         <pre style={{
           background: '#ffffff06',
-          border: `1px solid ${C.border}`,
+          border: `1px solid ${'var(--color-border-ui)'}`,
           borderRadius: 3,
           padding: '12px 16px',
           fontSize: 11,
           fontFamily: 'monospace',
-          color: C.dim,
+          color: 'var(--color-dim)',
           overflowX: 'auto',
           margin: '10px 0',
           whiteSpace: 'pre',
@@ -243,7 +242,7 @@ function MdBlock({ block }) {
           {block.items.map((item, j) => (
             <li key={j} style={{
               fontSize: 13,
-              color: C.dim,
+              color: 'var(--color-dim)',
               lineHeight: 1.7,
               marginBottom: 3,
             }}>
@@ -270,9 +269,9 @@ function MdBlock({ block }) {
                       fontSize: 9,
                       letterSpacing: 1,
                       textTransform: 'uppercase',
-                      color: C.muted,
+                      color: 'var(--color-muted)',
                       padding: '8px 12px',
-                      border: `1px solid ${C.border}`,
+                      border: `1px solid ${'var(--color-border-ui)'}`,
                       background: '#ffffff04',
                       textAlign: 'left',
                       whiteSpace: 'nowrap',
@@ -289,8 +288,8 @@ function MdBlock({ block }) {
                   {row.map((cell, k) => (
                     <td key={k} style={{
                       padding: '7px 12px',
-                      border: `1px solid ${C.border}`,
-                      color: C.dim,
+                      border: `1px solid ${'var(--color-border-ui)'}`,
+                      color: 'var(--color-dim)',
                       verticalAlign: 'top',
                     }}>
                       <Inline text={cell} />
@@ -323,7 +322,7 @@ export default function Contradictions() {
             fontSize: 9,
             letterSpacing: 3,
             textTransform: 'uppercase',
-            color: C.muted,
+            color: 'var(--color-muted)',
             textDecoration: 'none',
           }}
         >
@@ -342,7 +341,7 @@ export default function Contradictions() {
       <div style={{
         marginTop: 48,
         paddingTop: 20,
-        borderTop: `1px solid ${C.border}`,
+        borderTop: `1px solid ${'var(--color-border-ui)'}`,
       }}>
         <Link
           to="/"
@@ -351,7 +350,7 @@ export default function Contradictions() {
             fontSize: 9,
             letterSpacing: 3,
             textTransform: 'uppercase',
-            color: C.gold,
+            color: 'var(--color-gold)',
             textDecoration: 'none',
           }}
         >

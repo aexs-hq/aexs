@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { C } from '../constants/theme';
 import PageShell from '../components/PageShell';
 
 const SECTIONS = [
@@ -10,7 +9,7 @@ const SECTIONS = [
     tag: '12 Slides',
     description:
       'Investor-ready deck covering problem, solution, product, market sizing, traction, business model, financials, competition, go-to-market, team, and funding ask.',
-    color: C.gold,
+    color: 'var(--color-gold)',
   },
   {
     to: '/roadmap',
@@ -19,7 +18,7 @@ const SECTIONS = [
     tag: '3 Ventures · 36 Steps',
     description:
       'Phased build playbook for AI Chief of Staff, AI Governance as a Service, and Executive Decision Support — from entity setup through Series A prep.',
-    color: C.blue,
+    color: 'var(--color-blue-ui)',
   },
   {
     to: '/model',
@@ -28,7 +27,7 @@ const SECTIONS = [
     tag: '36-Month Projection',
     description:
       'Interactive model with adjustable pricing, growth rate, churn, COGS, and burn assumptions. Outputs MRR, ARR, gross margin, and cash balance per month.',
-    color: C.teal,
+    color: 'var(--color-teal)',
   },
 ];
 
@@ -41,7 +40,7 @@ export default function Home() {
           fontFamily: 'monospace',
           fontSize: 9,
           letterSpacing: 4,
-          color: C.muted,
+          color: 'var(--color-muted)',
           textTransform: 'uppercase',
           margin: '0 0 20px',
         }}>
@@ -52,7 +51,7 @@ export default function Home() {
           fontSize: 'clamp(36px, 7vw, 56px)',
           fontWeight: 300,
           letterSpacing: -1,
-          color: C.text,
+          color: 'var(--color-text)',
           margin: '0 0 12px',
           lineHeight: 1.1,
         }}>
@@ -62,16 +61,16 @@ export default function Home() {
           fontFamily: "'Georgia', serif",
           fontStyle: 'italic',
           fontSize: 16,
-          color: C.dim,
+          color: 'var(--color-dim)',
           margin: '0 0 24px',
           letterSpacing: 1,
         }}>
           AI Executive Suite
         </p>
-        <div style={{ width: 40, height: 1, background: C.gold, margin: '0 auto 24px' }} />
+        <div style={{ width: 40, height: 1, background: 'var(--color-gold)', margin: '0 auto 24px' }} />
         <p style={{
           fontSize: 14,
-          color: C.dim,
+          color: 'var(--color-dim)',
           maxWidth: 480,
           margin: '0 auto',
           lineHeight: 1.8,
@@ -95,8 +94,8 @@ export default function Home() {
             style={{ textDecoration: 'none' }}
           >
             <div style={{
-              background: C.card,
-              border: `1px solid ${C.border}`,
+              background: 'var(--color-card-ui)',
+              border: `1px solid ${'var(--color-border-ui)'}`,
               borderTop: `2px solid ${color}`,
               borderRadius: 4,
               padding: '24px 20px',
@@ -106,7 +105,7 @@ export default function Home() {
               boxSizing: 'border-box',
             }}
               onMouseEnter={e => e.currentTarget.style.borderColor = color}
-              onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--color-border-ui)'}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
                 <span style={{ fontSize: 18, color }}>{icon}</span>
@@ -123,7 +122,7 @@ export default function Home() {
               <p style={{
                 fontFamily: "'Georgia', serif",
                 fontSize: 17,
-                color: C.text,
+                color: 'var(--color-text)',
                 margin: '0 0 10px',
                 fontWeight: 400,
               }}>
@@ -131,7 +130,7 @@ export default function Home() {
               </p>
               <p style={{
                 fontSize: 12,
-                color: C.dim,
+                color: 'var(--color-dim)',
                 lineHeight: 1.7,
                 margin: 0,
               }}>
@@ -154,9 +153,9 @@ export default function Home() {
 
       {/* Disclaimer banner */}
       <div style={{
-        border: `1px solid ${C.gold}33`,
-        borderLeft: `3px solid ${C.gold}`,
-        background: `${C.gold}08`,
+        border: '1px solid color-mix(in srgb, var(--color-gold) 20%, transparent)',
+        borderLeft: '3px solid var(--color-gold)',
+        background: 'color-mix(in srgb, var(--color-gold) 3%, transparent)',
         borderRadius: 3,
         padding: '14px 18px',
       }}>
@@ -164,19 +163,19 @@ export default function Home() {
           fontFamily: 'monospace',
           fontSize: 9,
           letterSpacing: 3,
-          color: C.gold,
+          color: 'var(--color-gold)',
           textTransform: 'uppercase',
           margin: '0 0 6px',
         }}>
           Review Required
         </p>
-        <p style={{ fontSize: 12, color: C.dim, lineHeight: 1.7, margin: 0 }}>
+        <p style={{ fontSize: 12, color: 'var(--color-dim)', lineHeight: 1.7, margin: 0 }}>
           Several business assumptions in this demo — including pricing tiers, seed capital
           figure, and one brand color — contain unresolved contradictions between files.
           None have been changed. See{' '}
           <Link
             to="/contradictions"
-            style={{ color: C.gold, fontFamily: 'monospace', textDecoration: 'underline' }}
+            style={{ color: 'var(--color-gold)', fontFamily: 'monospace', textDecoration: 'underline' }}
           >
             business-contradictions
           </Link>{' '}

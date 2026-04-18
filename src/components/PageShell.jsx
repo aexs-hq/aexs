@@ -1,5 +1,3 @@
-import { C } from '../constants/theme';
-
 /**
  * PageShell — two uses:
  *
@@ -21,7 +19,7 @@ export default function PageShell({ loading = false, children }) {
         fontFamily: 'monospace',
         fontSize: 10,
         letterSpacing: 3,
-        color: C.muted,
+        color: 'var(--color-muted)',
         textTransform: 'uppercase',
       }}>
         Loading…

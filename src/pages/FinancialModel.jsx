@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
-import { C } from '../constants/theme';
 import { fmtK, fmtPct } from '../utils/format';
 import { calcSuite, suiteDefaults } from '../utils/suiteCalc';
 
@@ -12,7 +11,7 @@ const SliderRow = ({ label, value, min, max, step, onChange, fmt }) => (
     </div>
     <input type="range" min={min} max={max} step={step} value={value}
       onChange={e => onChange(parseFloat(e.target.value))}
-      style={{ width: "100%", accentColor: C.teal, height: 3, cursor: "pointer" }} />
+      style={{ width: "100%", accentColor: 'var(--color-teal)', height: 3, cursor: "pointer" }} />
   </div>
 );
 
@@ -30,7 +29,7 @@ const CustomTooltip = ({ active, payload, label }) => {
     <div style={{ background: "#111115", border: "1px solid #2a2a2e", borderRadius: 4, padding: "10px 14px", fontSize: 11, fontFamily: "monospace" }}>
       <div style={{ color: "#888", marginBottom: 6 }}>{label}</div>
       {payload.map((p, i) => (
-        <div key={i} style={{ color: p.color || C.teal, marginBottom: 2 }}>
+        <div key={i} style={{ color: p.color || 'var(--color-teal)', marginBottom: 2 }}>
           {p.name}: {fmtK(p.value)}
         </div>
       ))}
@@ -94,11 +93,11 @@ export default function FinancialModel() {
 
         {/* KPI Row */}
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 24 }}>
-          <KPI label="Y1 ARR" value={fmtK(y1arr)} sub="End of Year 1" color={C.teal} />
-          <KPI label="Y2 ARR" value={fmtK(y2arr)} sub="End of Year 2" color={C.teal} />
-          <KPI label="Y3 ARR" value={fmtK(y3arr)} sub="End of Year 3" color={C.teal} />
+          <KPI label="Y1 ARR" value={fmtK(y1arr)} sub="End of Year 1" color={'var(--color-teal)'} />
+          <KPI label="Y2 ARR" value={fmtK(y2arr)} sub="End of Year 2" color={'var(--color-teal)'} />
+          <KPI label="Y3 ARR" value={fmtK(y3arr)} sub="End of Year 3" color={'var(--color-teal)'} />
           <KPI label="Break-Even" value={beMonth ? `Month ${beMonth.month}` : "36m+"} sub="First profitable month" color={beMonth ? "#4CC97A" : "#C94C4C"} />
-          <KPI label="Y3 Margin" value={fmtPct(y3Margin)} sub="Gross margin" color={C.purple} />
+          <KPI label="Y3 Margin" value={fmtPct(y3Margin)} sub="Gross margin" color={'var(--color-purple-ui)'} />
           <KPI label="Peak Burn" value={fmtK(Math.abs(peakBurn))} sub="Worst month deficit" color="#C94C4C" />
         </div>
 
@@ -112,7 +111,7 @@ export default function FinancialModel() {
               <XAxis dataKey="year" tick={{ fill: "#555", fontSize: 10, fontFamily: "monospace" }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: "#555", fontSize: 10, fontFamily: "monospace" }} axisLine={false} tickLine={false} tickFormatter={v => `$${v}K`} />
               <Tooltip content={<CustomTooltip />} formatter={v => fmtK(v * 1000)} />
-              <Bar dataKey="ARR" fill={C.teal} radius={[3, 3, 0, 0]} opacity={0.85} />
+              <Bar dataKey="ARR" fill={'var(--color-teal)'} radius={[3, 3, 0, 0]} opacity={0.85} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -127,9 +126,9 @@ export default function FinancialModel() {
               {[["mrr", "MRR"], ["cashBalance", "Cash"], ["netBurn", "Net Burn"], ["customers", "Customers"]].map(([k, l]) => (
                 <button key={k} onClick={() => setActiveChart(k)}
                   style={{
-                    padding: "4px 10px", border: `1px solid ${activeChart === k ? C.teal : "#2a2a2e"}`,
-                    background: activeChart === k ? `${C.teal}22` : "transparent",
-                    color: activeChart === k ? C.teal : "#555",
+                    padding: "4px 10px", border: `1px solid ${activeChart === k ? 'var(--color-teal)' : '#2a2a2e'}`,
+                    background: activeChart === k ? 'color-mix(in srgb, var(--color-teal) 13%, transparent)' : 'transparent',
+                    color: activeChart === k ? 'var(--color-teal)' : '#555',
                     fontFamily: "monospace", fontSize: 9, cursor: "pointer", borderRadius: 3,
                     letterSpacing: 1, textTransform: "uppercase"
                   }}>{l}</button>
@@ -145,7 +144,7 @@ export default function FinancialModel() {
               <ReferenceLine y={0} stroke="#2a2a2e" strokeDasharray="4 4" />
               <Line type="monotone"
                 dataKey={activeChart === "mrr" ? "MRR" : activeChart === "cashBalance" ? "Cash Balance" : activeChart === "netBurn" ? "Net Burn" : "Customers"}
-                stroke={C.teal} strokeWidth={2} dot={false} />
+                stroke={'var(--color-teal)'} strokeWidth={2} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -194,7 +193,7 @@ export default function FinancialModel() {
               {[
                 { label: "Customers", y1: y1[11]?.customers, y2: y2[11]?.customers, y3: y3[11]?.customers, fmt: v => v?.toLocaleString() },
                 { label: "MRR", y1: y1[11]?.mrr, y2: y2[11]?.mrr, y3: y3[11]?.mrr, fmt: fmtK },
-                { label: "ARR", y1: y1arr, y2: y2arr, y3: y3arr, fmt: fmtK, bold: true, color: C.teal },
+                { label: "ARR", y1: y1arr, y2: y2arr, y3: y3arr, fmt: fmtK, bold: true, color: 'var(--color-teal)' },
                 { label: "Gross Profit", y1: y1[11]?.grossProfit, y2: y2[11]?.grossProfit, y3: y3[11]?.grossProfit, fmt: fmtK },
                 { label: "Gross Margin", y1: y1[11]?.grossMargin, y2: y2[11]?.grossMargin, y3: y3[11]?.grossMargin, fmt: fmtPct },
                 { label: "Monthly Burn", y1: y1[11]?.burn, y2: y2[11]?.burn, y3: y3[11]?.burn, fmt: v => `(${fmtK(v)})`, color: "#C94C4C" },
@@ -223,7 +222,7 @@ export default function FinancialModel() {
         </div>
 
         {/* Valuation Estimate */}
-        <div style={{ background: `linear-gradient(135deg, #0d0d10 0%, #111118 100%)`, border: `1px solid ${C.teal}33`, borderLeft: `3px solid ${C.teal}`, borderRadius: 6, padding: "20px" }}>
+        <div style={{ background: `linear-gradient(135deg, #0d0d10 0%, #111118 100%)`, border: '1px solid color-mix(in srgb, var(--color-teal) 20%, transparent)', borderLeft: '3px solid var(--color-teal)', borderRadius: 6, padding: "20px" }}>
           <p style={{ fontSize: 9, color: "#555", fontFamily: "monospace", letterSpacing: 3, textTransform: "uppercase", margin: "0 0 12px" }}>
             💰 VALUATION ESTIMATE AT YEAR 3
           </p>
@@ -235,7 +234,7 @@ export default function FinancialModel() {
             ].map((v, i) => (
               <div key={i} style={{ flex: "1 1 120px", textAlign: "center" }}>
                 <div style={{ fontSize: 10, color: "#555", fontFamily: "monospace", marginBottom: 6 }}>{v.label}</div>
-                <div style={{ fontSize: 22, color: C.teal, fontWeight: 700, fontFamily: "monospace" }}>{fmtK(v.val)}</div>
+                <div style={{ fontSize: 22, color: 'var(--color-teal)', fontWeight: 700, fontFamily: "monospace" }}>{fmtK(v.val)}</div>
               </div>
             ))}
           </div>
