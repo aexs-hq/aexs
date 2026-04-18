@@ -122,6 +122,15 @@
     "card-stroke-w":      0.5
   },
 
+  "spacing-print": {
+    "slide-margin-y":    24,
+    "slide-margin-x":    48,
+    "card-padding":      12,
+    "col-gap":           12,
+    "row-gap":           10,
+    "rationale": "Print canvas is 540px fixed. Browser canvas is scrollable. Measured baseline: 9 of 12 slides overflowed with py-20 (80px top/bottom) — max 181px on The Ask, avg 59px. Reducing slide-margin-y to 24px recovers 112px of vertical content space per slide, which fits Problem/Market/Traction/Model/Financials/GTM/Team. Solution (+39px residual) and Ask (+69px residual) remain over budget and are covered by Step 6 per-slide documentation in docs/03-inventory/export-overflow-audit.md."
+  },
+
   "alignment": {
     "optical-center-coefficient": 0.33,
     "note": "Used in footer_bar(), two_line_bar(), stat_strip(). Formula: baseline = bar_mid - font_size * 0.33. Accounts for Helvetica cap-height-to-font-size ratio so drawString baseline lands at optical center of its container bar."

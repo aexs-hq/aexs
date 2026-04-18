@@ -142,6 +142,18 @@ body {
 
 @media print {
 
+  /* ── PRINT SPACING TOKENS ─────────────────────────────────────────────────
+     Derived from tokens/design-tokens.json spacing-print. Rationale for
+     values lives there. Browser surface is unaffected — this :root override
+     is scoped to @media print only. */
+  :root {
+    --space-slide-margin-y:  24px;  /* tokens.spacing-print.slide-margin-y */
+    --space-slide-margin-x:  48px;  /* tokens.spacing-print.slide-margin-x */
+    --space-card-padding:    12px;  /* tokens.spacing-print.card-padding */
+    --space-col-gap:         12px;  /* tokens.spacing-print.col-gap */
+    --space-row-gap:         10px;  /* tokens.spacing-print.row-gap */
+  }
+
   /* ── CHROME SUPPRESSION ───────────────────────────────────────────────────
      PitchDeck.jsx renders its own fixed nav + aside.
      These are position:fixed elements inside a root div.
@@ -195,12 +207,81 @@ body {
     break-after: avoid !important;
   }
 
+  /* Drive section padding from the print spacing tokens above. The JSX
+     applies hardcoded Tailwind py-20/px-16 at source; this override
+     replaces those values only in print media. Phase 4: migrate the JSX
+     to consume the CSS vars directly so this override is no longer needed.
+     justify-content: flex-start anchors content to the top so any residual
+     overflow falls off the bottom instead of clipping the H1. */
   .slide-shell > section {
     min-height: unset !important;
     height: 100% !important;
     margin: 0 !important;
-    padding-top: 0 !important;
+    padding-top:    var(--space-slide-margin-y) !important;
+    padding-bottom: var(--space-slide-margin-y) !important;
+    padding-left:   var(--space-slide-margin-x) !important;
+    padding-right:  var(--space-slide-margin-x) !important;
+    justify-content: flex-start !important;
   }
+
+  /* ── Case C per-slide overrides ──────────────────────────────────────
+   * Slides whose post-global-compression residual still clips critical
+   * content get tightened CSS-var values here. Consuming rules are
+   * scoped to each slide's subtree so the other 8 slides render
+   * identically to the pre-override build.
+   *
+   * Removal criterion: if a slide's content reduces and fits within the
+   * global compression alone, delete its override block.
+   *
+   * Guard rail: no value compressed below 50% of the global print value.
+   */
+
+  /*
+   * #problem — residual +49px (pre-override)
+   * Clipped: EU AI Act warning banner (regulatory-urgency, cannot lose)
+   * Strategy: tighten card padding and stat-grid row gap
+   */
+  #problem {
+    --space-card-padding: 10px;  /* global 12px */
+    --space-row-gap:       8px;  /* global 10px */
+  }
+  #problem .rounded-xl { padding: var(--space-card-padding) !important; }
+  #problem .grid       { row-gap: var(--space-row-gap) !important; }
+
+  /*
+   * #solution — residual +95px (pre-override)
+   * Clipped: 40% / 90% / 3× metric footers on all three LAYER cards
+   * Strategy: tighten slide padding + card padding + bullet spacing +
+   *           generic bottom-margin compression via [class*="mb-"].
+   */
+  #solution {
+    --space-slide-margin-y: 16px;  /* global 24px — tightened from 20 to clear tolerance */
+    --space-card-padding:    9px;  /* global 12px */
+    --space-row-gap:         6px;  /* global 10px */
+  }
+  #solution .rounded-xl                   { padding: var(--space-card-padding) !important; }
+  #solution [class*="space-y-"] > * + *   { margin-top: var(--space-row-gap) !important; }
+  #solution [class*="mb-"]                { margin-bottom: var(--space-row-gap) !important; }
+  #solution .grid                         { row-gap: var(--space-row-gap) !important; }
+
+  /*
+   * #ask — residual +106px (worst pre-override)
+   * Clipped: gold CTA bar ("Ready to lead…" + DOWNLOAD DECK button)
+   * Strategy: tightest override — compress all vertical tokens + all
+   *           Tailwind bottom-margin + space-y spacings in subtree.
+   */
+  #ask {
+    --space-slide-margin-y: 13px;  /* global 24px — tightest allowed at >=50% rule (12px) */
+    --space-card-padding:    8px;  /* global 12px */
+    --space-col-gap:        10px;  /* global 12px */
+    --space-row-gap:         5px;  /* global 10px — at 50% limit */
+  }
+  #ask .rounded-xl                   { padding: var(--space-card-padding) !important; }
+  #ask [class*="space-y-"] > * + *   { margin-top: var(--space-row-gap) !important; }
+  #ask [class*="mb-"]                { margin-bottom: var(--space-row-gap) !important; }
+  #ask .flex.gap-12                  { gap: var(--space-col-gap) !important; }
+  #ask .py-2\.5,
+  #ask [class*="py-"]                { padding-top: var(--space-row-gap) !important; padding-bottom: var(--space-row-gap) !important; }
 }
 
 /* ── FULLSCREEN PRESENTATION MODE ─────────────────────────────────────
