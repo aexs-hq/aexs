@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "Authoritative source for founder identity and bio copy",
+    "name_transition_note": "Change public_name to future_full_name value when ready to go public with full name. No other field requires editing.",
+    "last_reviewed": "2026-04-17",
+    "reviewed_by": "Mc",
+    "consumption_note": "PitchDeck.jsx, Home.jsx, and build_deck.py currently hard-code founder copy. Migrate each to import/read from this file as part of Phase 4 content migration. Until then, this file is the approved copy reference — edit here first, then propagate manually."
+  },
+  "identity": {
+    "public_name":      "Mc",
+    "future_full_name": "Mcenoch",
+    "title":            "Founder & CEO",
+    "company":          "AEXS",
+    "location":         "Austria",
+    "email":            "contact@aexs.ai"
+  },
+  "bio": {
+    "one_liner": "Enterprise AI engineer. Austria-based founder. EU regulatory proximity by design.",
+
+    "two_line": "Technical founder and CEO with enterprise AI/ML engineering experience, including production RFID intelligence systems at Novomatic AG. Based in Austria, with direct exposure to the EU regulatory environment that makes AEXS's governance layer both timely and defensible.",
+
+    "three_line": "Technical founder and CEO with hands-on enterprise AI/ML engineering experience, including production-scale systems work at Novomatic AG in Austria. Creator of Songwriting Lab OS, an AI-native creative studio for music production, showing a repeatable ability to build AI systems across both enterprise and consumer contexts. Operating from Austria places AEXS close to EU AI Act enforcement, giving the company regulatory proximity that many US-based competitors do not have by default.",
+
+    "investor_facing": "Technical founder and CEO with enterprise AI/ML engineering experience, including production-scale RFID intelligence systems at Novomatic AG. Also built Songwriting Lab OS, an AI-native creative studio, demonstrating cross-domain execution in both enterprise and consumer AI products. Based in Austria, with direct proximity to the EU regulatory environment shaping the next generation of AI governance."
+  },
+  "credentials": [
+    "Enterprise AI/ML engineering — production systems at Novomatic AG",
+    "Creator, Songwriting Lab OS — AI-native music production studio",
+    "Austria-based — direct EU AI Act regulatory proximity"
+  ]
+}

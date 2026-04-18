@@ -4,7 +4,7 @@ Interactive investor demo for three AI ventures: AI Chief of Staff, AI Governanc
 
 ## Status
 
-**Demo-ready. All 7 business contradictions fully resolved (2026-04-10).**
+**Demo-ready. All 6 business contradictions fully resolved (2026-04-10).**
 Financial Model rebuilt as suite-tier architecture. Full record: `docs/founder-decision-sheet.md`.
 
 ## Running locally
