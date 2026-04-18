@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FOUNDER from '../../content/founder-bio.json';
+import pitchData from '../../content/pitch-data.json';
 import PresentationGate from '../components/PresentationGate';
 import SlideShell from '../components/SlideShell';
 import { useExportMode } from '../hooks/useExportMode';
@@ -26,8 +27,11 @@ const SLIDES = [
 ];
 
 /* ─── Financials slide as its own component to manage bar-animation observer ─── */
-function FinancialsSlide({ onRef }) {
-  const [animated, setAnimated] = useState(false);
+function FinancialsSlide({ onRef, isExport }) {
+  // In export mode the slide is rendered off-screen when Playwright prints,
+  // so the IntersectionObserver never fires and the bars would stay at
+  // scaleY(0). Seed animated=true up front for that surface.
+  const [animated, setAnimated] = useState(!!isExport);
   const localRef = useRef(null);
 
   const setRef = (el) => {
@@ -36,6 +40,7 @@ function FinancialsSlide({ onRef }) {
   };
 
   useEffect(() => {
+    if (isExport) return;
     const el = localRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(
@@ -44,7 +49,7 @@ function FinancialsSlide({ onRef }) {
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [isExport]);
 
   const bars = [
     { label: 'Pre-Rev', arr: 0,    color: 'var(--color-white-4)', pct: 2  },
@@ -61,10 +66,10 @@ function FinancialsSlide({ onRef }) {
 
       <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-green)' }}>FINANCIAL PROJECTIONS</p>
       <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
-        Path to $32.2M ARR in 36 Months
+        Path to {pitchData.financials.arr_y3} ARR in 36 Months
       </h1>
       <p className="text-slate-400 text-sm mb-12 max-w-xl leading-relaxed slide-in">
-        Conservative model built on $24K average contract value, 22% close rate, and 130%+ net revenue retention.
+        Conservative model built on {pitchData.unit_economics.avg_deal_size} average contract value, 22% close rate, and {pitchData.unit_economics.nrr} net revenue retention.
       </p>
 
       <div className="flex gap-14 mb-10">
@@ -100,13 +105,13 @@ function FinancialsSlide({ onRef }) {
         {/* Key metrics */}
         <div className="w-56 flex-shrink-0 slide-in">
           {[
-            { label: 'SEED ROUND',      value: '$1.5M',    color: 'var(--color-gold)' },
-            { label: 'Y1 ARR',          value: '$2.6M',    color: 'var(--color-gold)' },
-            { label: 'Y2 ARR',          value: '$9.2M',    color: 'var(--color-green)' },
-            { label: 'Y3 ARR',          value: '$32.2M',   color: 'var(--color-blue)' },
-            { label: 'BREAK-EVEN',      value: 'Month 12', color: 'var(--color-green)' },
-            { label: 'GROSS MARGIN',    value: '82%',      color: 'var(--color-purple)' },
-            { label: 'Y3 VALUATION 8×', value: '$257M',    color: 'var(--color-gold)' },
+            { label: 'SEED ROUND',      value: pitchData.round.size,                     color: 'var(--color-gold)' },
+            { label: 'Y1 ARR',          value: pitchData.financials.arr_y1,              color: 'var(--color-gold)' },
+            { label: 'Y2 ARR',          value: pitchData.financials.arr_y2,              color: 'var(--color-green)' },
+            { label: 'Y3 ARR',          value: pitchData.financials.arr_y3,              color: 'var(--color-blue)' },
+            { label: 'BREAK-EVEN',      value: pitchData.financials.breakeven,           color: 'var(--color-green)' },
+            { label: 'GROSS MARGIN',    value: pitchData.unit_economics.gross_margin,    color: 'var(--color-purple)' },
+            { label: 'Y3 VALUATION 8×', value: '$257M',                                  color: 'var(--color-gold)' },
           ].map(({ label, value, color }) => (
             <div key={label} className="flex justify-between items-center py-2.5"
               style={{ borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 6%, transparent)' }}>
@@ -120,10 +125,10 @@ function FinancialsSlide({ onRef }) {
       {/* Bottom metrics strip */}
       <div className="grid grid-cols-4 gap-4 slide-in">
         {[
-          { label: 'AVG CONTRACT',  value: '$24K',    color: 'var(--color-gold)' },
-          { label: 'CUSTOMERS Y3', value: '1,340+',  color: 'var(--color-green)' },
-          { label: 'PAYBACK',      value: '4 months', color: 'var(--color-purple)' },
-          { label: 'NRR TARGET',   value: '130%+',   color: 'var(--color-blue)' },
+          { label: 'AVG CONTRACT',  value: pitchData.unit_economics.avg_deal_size, color: 'var(--color-gold)' },
+          { label: 'CUSTOMERS Y3', value: '1,340+',                                color: 'var(--color-green)' },
+          { label: 'PAYBACK',      value: pitchData.unit_economics.cac_payback,   color: 'var(--color-purple)' },
+          { label: 'NRR TARGET',   value: pitchData.unit_economics.nrr,           color: 'var(--color-blue)' },
         ].map(({ label, value, color }) => (
           <div key={label} className="rounded-lg p-4 text-center"
             style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 3%, transparent)', border: '1px solid color-mix(in srgb, var(--color-white-1) 7%, transparent)' }}>
@@ -213,7 +218,10 @@ export default function PitchDeck() {
 
     <div style={{ backgroundColor: 'var(--color-bg)', color: 'white', fontFamily: "'Inter', sans-serif" }}>
       <style>{`
-        .slide-in { opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+        /* In export mode slides are captured from the top in one Playwright
+           snapshot, so the IntersectionObserver never fires for slides 2–12.
+           Force .slide-in elements visible so they don't render as opacity:0 in the PDF. */
+        .slide-in { opacity: ${isExport ? 1 : 0}; transform: ${isExport ? 'none' : 'translateY(18px)'}; transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
         .slide-in.visible { opacity: 1; transform: translateY(0); }
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -342,17 +350,17 @@ export default function PitchDeck() {
               </p>
               <div className="flex gap-6 mb-8 items-center">
                 <div>
-                  <p className="font-syne font-bold text-gold" style={{ fontSize: '26px' }}>$1.5M</p>
+                  <p className="font-syne font-bold text-gold" style={{ fontSize: '26px' }}>{pitchData.round.size}</p>
                   <p className="text-slate-500 font-bold tracking-widest" style={{ fontSize: '9px' }}>SEED ROUND</p>
                 </div>
                 <div className="w-px h-10" style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 10%, transparent)' }} />
                 <div>
-                  <p className="font-syne font-bold text-white" style={{ fontSize: '26px' }}>$32.2M</p>
+                  <p className="font-syne font-bold text-white" style={{ fontSize: '26px' }}>{pitchData.financials.arr_y3}</p>
                   <p className="text-slate-500 font-bold tracking-widest" style={{ fontSize: '9px' }}>Y3 ARR TARGET</p>
                 </div>
                 <div className="w-px h-10" style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 10%, transparent)' }} />
                 <div>
-                  <p className="font-syne font-bold text-white" style={{ fontSize: '26px' }}>$8M</p>
+                  <p className="font-syne font-bold text-white" style={{ fontSize: '26px' }}>{pitchData.round.cap}</p>
                   <p className="text-slate-500 font-bold tracking-widest" style={{ fontSize: '9px' }}>VALUATION CAP</p>
                 </div>
               </div>
@@ -705,18 +713,22 @@ export default function PitchDeck() {
 
           <div className="flex gap-5 mb-8">
             {[
+              // pricing derives from pitchData.product_pricing — "$499/mo" splits into amount + period
               {
-                name: 'Starter',    price: '$499',   period: '/mo', accent: 'var(--color-gold)', target: 'SMB & Scale-ups',
+                name: 'Starter',    price: pitchData.product_pricing[0].price.split('/')[0], period: '/' + pitchData.product_pricing[0].price.split('/')[1],
+                accent: 'var(--color-gold)', target: 'SMB & Scale-ups',
                 modules: ['AI Chief of Staff', 'Basic decision logging', 'Standard compliance reports', 'Email support'],
                 popular: false,
               },
               {
-                name: 'Growth',     price: '$1,999', period: '/mo', accent: 'var(--color-blue)', target: 'Mid-Market',
+                name: 'Growth',     price: pitchData.product_pricing[1].price.split('/')[0], period: '/' + pitchData.product_pricing[1].price.split('/')[1],
+                accent: 'var(--color-blue)', target: 'Mid-Market',
                 modules: ['All Starter features', 'Full Governance Engine', 'Decision Intelligence Suite', 'API access + integrations', 'Priority support'],
                 popular: true,
               },
               {
-                name: 'Enterprise', price: '$8,500', period: '/mo', accent: 'var(--color-purple)', target: 'Large Enterprise',
+                name: 'Enterprise', price: pitchData.product_pricing[2].price.split('/')[0], period: '/' + pitchData.product_pricing[2].price.split('/')[1],
+                accent: 'var(--color-purple)', target: 'Large Enterprise',
                 modules: ['All Growth features', 'Custom AI training on company data', 'Dedicated success manager', 'White-label options', 'Custom SLA & compliance'],
                 popular: false,
               },
@@ -749,10 +761,10 @@ export default function PitchDeck() {
           {/* Unit economics strip */}
           <div className="grid grid-cols-4 gap-4 slide-in">
             {[
-              { label: 'GROSS MARGIN',   value: '82%',   color: 'var(--color-green)' },
-              { label: 'LTV/CAC RATIO',  value: '8.4×',  color: 'var(--color-gold)' },
-              { label: 'PAYBACK PERIOD', value: '4 mo',  color: 'var(--color-blue)' },
-              { label: 'NET RETENTION',  value: '118%+', color: 'var(--color-purple)' },
+              { label: 'GROSS MARGIN',   value: pitchData.unit_economics.gross_margin, color: 'var(--color-green)' },
+              { label: 'LTV/CAC RATIO',  value: pitchData.unit_economics.ltv_cac,      color: 'var(--color-gold)' },
+              { label: 'PAYBACK PERIOD', value: pitchData.unit_economics.cac_payback,  color: 'var(--color-blue)' },
+              { label: 'NET RETENTION',  value: pitchData.unit_economics.nrr,          color: 'var(--color-purple)' },
             ].map(({ label, value, color }) => (
               <div key={label} className="rounded-lg p-4 text-center"
                 style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 3%, transparent)', border: '1px solid color-mix(in srgb, var(--color-white-1) 7%, transparent)' }}>
@@ -764,7 +776,7 @@ export default function PitchDeck() {
         </section></SlideShell>
 
         {/* ── SLIDE 8: FINANCIALS ── */}
-        <SlideShell><FinancialsSlide onRef={el => sectionRefs.current[7] = el} /></SlideShell>
+        <SlideShell><FinancialsSlide onRef={el => sectionRefs.current[7] = el} isExport={isExport} /></SlideShell>
 
         {/* ── SLIDE 9: COMPETITION ── */}
         <SlideShell><section ref={el => sectionRefs.current[8] = el} id="competition"
@@ -866,7 +878,7 @@ export default function PitchDeck() {
               {
                 phase: 'PHASE 03', name: 'DOMINATE', accent: 'var(--color-green)', target: 'Months 19–36', headline: 'Category Leadership',
                 channels: ['Global enterprise sales motion', 'OEM/White-label licensing deals', 'Platform ecosystem & API economy', 'Series B for international expansion'],
-                metric: '$32.2M ARR target',
+                metric: `${pitchData.financials.arr_y3} ARR target`,
               },
             ].map(({ phase, name, accent, target, headline, channels, metric }) => (
               <div key={phase} className="flex-1 rounded-xl p-6 flex flex-col slide-in"
@@ -893,7 +905,7 @@ export default function PitchDeck() {
           {/* Unit economics strip */}
           <div className="grid grid-cols-4 gap-4 slide-in">
             {[
-              { label: 'AVG DEAL SIZE', value: '$24K',     color: 'var(--color-gold)' },
+              { label: 'AVG DEAL SIZE', value: pitchData.unit_economics.avg_deal_size, color: 'var(--color-gold)' },
               { label: 'SALES CYCLE',  value: '45 days',  color: 'var(--color-blue)' },
               { label: 'TARGET ICP',   value: 'CxO / GC', color: 'var(--color-green)' },
               { label: 'CLOSE RATE',   value: '22%',      color: 'var(--color-purple)' },
@@ -999,16 +1011,16 @@ export default function PitchDeck() {
 
           <p className="font-bold tracking-widest mb-4" style={{ fontSize: '9px', color: 'var(--color-gold)' }}>THE ASK</p>
           <h1 className="font-syne font-bold text-4xl text-white mb-3 tracking-tight slide-in">
-            Raising $1.5M Seed Round
+            Raising {pitchData.round.size} Seed Round
           </h1>
           <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
-            SAFE note at $8M cap. 18-month runway to Series A metrics and category leadership.
+            {pitchData.round.instrument} note at {pitchData.round.cap} cap. 18-month runway to Series A metrics and category leadership.
           </p>
 
           <div className="flex gap-12 mb-10">
             {/* Fund allocation */}
             <div className="flex-1 slide-in">
-              <p className="text-white font-bold tracking-widest mb-4" style={{ fontSize: '10px' }}>FUND ALLOCATION — $1.5M</p>
+              <p className="text-white font-bold tracking-widest mb-4" style={{ fontSize: '10px' }}>FUND ALLOCATION — {pitchData.round.size}</p>
               <div className="space-y-3 mb-6">
                 {[
                   { label: 'Sales & GTM Hiring',    pct: 40, accent: 'var(--color-gold)', amount: '$600K' },
@@ -1031,11 +1043,12 @@ export default function PitchDeck() {
               {/* Round details */}
               <div className="space-y-0">
                 {[
-                  { label: 'Instrument',     value: 'SAFE Note'  },
-                  { label: 'Valuation Cap',  value: '$8M'        },
-                  { label: 'Round Size',     value: '$1.5M'      },
-                  { label: 'Min Ticket',     value: '$25K'       },
-                  { label: 'Target Close',   value: 'Q2 2026'    },
+                  { label: 'Instrument',     value: `${pitchData.round.instrument} Note` },
+                  { label: 'Valuation Cap',  value: pitchData.round.cap                   },
+                  { label: 'Round Size',     value: pitchData.round.size                  },
+                  // $25K minimum ticket is not tracked in pitch-data.json; see docs/03-inventory/deal-size-drift-note.md
+                  { label: 'Min Ticket',     value: '$25K'                                },
+                  { label: 'Target Close',   value: 'Q2 2026'                             },
                 ].map(({ label, value }) => (
                   <div key={label} className="flex justify-between py-2.5"
                     style={{ borderBottom: '1px solid color-mix(in srgb, var(--color-white-1) 5%, transparent)' }}>
@@ -1081,8 +1094,8 @@ export default function PitchDeck() {
               </p>
             </div>
             <a href="/deck.pdf" download="AEXS_InvestorDeck_2026.pdf"
-              className="flex-shrink-0 ml-8 font-bold tracking-widest transition-all hover:bg-gold hover:text-deck"
-              style={{ padding: '12px 24px', border: '1px solid var(--color-gold)', color: 'var(--color-gold)', fontSize: '11px' }}>
+              className="flex-shrink-0 ml-8 border border-gold text-gold font-bold tracking-widest transition-all hover:bg-gold hover:text-deck"
+              style={{ padding: '12px 24px', fontSize: '11px' }}>
               DOWNLOAD DECK →
             </a>
           </div>

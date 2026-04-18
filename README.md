@@ -80,17 +80,23 @@ Prints an actionable error and exits 1 if the public file does not exist yet.
 Running `npm run dev` or `npm run build` creates it automatically.
 To populate it without starting a server: `npm run sync-docs`.
 
-**Pre-commit hook:** A versioned hook at `.githooks/pre-commit` runs `check-docs-sync`
-before every commit. It is enabled automatically when you run `npm install` via the
-`prepare` script (`git config core.hooksPath .githooks`). No manual step required.
+**Pre-commit hook:** A versioned hook at `.githooks/pre-commit` runs two guards
+before every commit:
 
-If the hook does not fire after install, check that the file is executable:
+1. `npm run check-docs-sync` — `docs/` and `public/docs/` stay aligned.
+2. `npm run verify-content-consistency` — every canonical business value in JSX
+   and Python rendering code references `content/pitch-data.json` (ADR-004).
+
+It is enabled automatically when you run `npm install` via the `prepare` script
+(`git config core.hooksPath .githooks`). To install manually on a fresh clone:
 
 ```bash
+npm run setup-hooks     # equivalent to: git config core.hooksPath .githooks
 chmod +x .githooks/pre-commit
 ```
 
-Any commit where source and public copy diverge will be blocked with a clear error.
+Any commit that breaks either guard is blocked with a clear error pointing at
+the offending file and line.
 
 To preview the production build locally before a demo (serves `dist/` at `http://localhost:4173`):
 

@@ -1,4 +1,12 @@
 #!/bin/sh
-# Verify that public/docs/ is in sync with docs/ before every commit.
-# Install: git config core.hooksPath .githooks
+# AEXS pre-commit hook.
+# Install (one-time per clone): npm run setup-hooks
+#   (equivalent to: git config core.hooksPath .githooks)
+#
+# Guards enforced here are the ones that must never ship a broken commit:
+#   1. docs/ ↔ public/docs/ in sync.
+#   2. Content consistency across JSX and Python rendering code (ADR-004).
+
+set -e
 npm run check-docs-sync
+npm run verify-content-consistency

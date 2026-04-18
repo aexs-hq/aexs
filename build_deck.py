@@ -15,6 +15,9 @@ import os
 _ROOT    = os.path.dirname(os.path.abspath(__file__))
 _TOKENS  = json.load(open(os.path.join(_ROOT, 'tokens/design-tokens.json')))
 _FOUNDER = json.load(open(os.path.join(_ROOT, 'content/founder-bio.json')))
+# Canonical business values — every dollar / % / period in the PDF reads from here.
+# ADR-004 enforces this via scripts/verify-content-consistency.js.
+_PITCH   = json.load(open(os.path.join(_ROOT, 'content/pitch-data.json')))
 _F       = _FOUNDER['identity']
 _FC      = _FOUNDER['credentials']
 
@@ -316,7 +319,7 @@ def slide_01(c):
     c.drawString(46, H - 264, "SEED ROUND")
     c.setFillColor(W1)
     c.setFont("Helvetica-Bold", _SZ_HEADLINE)
-    c.drawString(46, H - 290, "$1.5M SAFE  |  $8M CAP")
+    c.drawString(46, H - 290, f"{_PITCH['round']['size']} {_PITCH['round']['instrument']}  |  {_PITCH['round']['cap']} CAP")
     # Right panel — 3 layer cards
     card_w, card_h = 230, 70
     cx = W - card_w - 30
@@ -349,7 +352,7 @@ def slide_01(c):
     c.setFont("Helvetica", _SZ_TINY)
     c.drawString(cx + 12, strip_y + 10, "Persistent context across all three layers")
     # Key metrics row at bottom of left
-    metrics = [("$32.2M", "Y3 ARR"), ("Month 12", "Break-even"), ("$257M", "Implied Val.")]
+    metrics = [(_PITCH['financials']['arr_y3'], "Y3 ARR"), (_PITCH['financials']['breakeven'], "Break-even"), ("$257M", "Implied Val.")]
     for i, (val, lbl) in enumerate(metrics):
         mx = 30 + i * 85
         c.setFillColor(GOLD_L)
@@ -584,17 +587,17 @@ def slide_05(c):
          ["Executive memory — persistent context", "Daily briefing generation",
           "Meeting prep and follow-up tracking", "Stakeholder relationship mapping",
           "Priority queue management"],
-         "$499/mo", "STARTER TIER"),
+         _PITCH['product_pricing'][0]['price'], "STARTER TIER"),
         (RED,   "GOVERNANCE",       "AI Governance Engine",
          ["EU AI Act Article 13 compliance", "ISO 42001 documentation engine",
           "Automated audit report generation", "Real-time policy monitoring",
           "Board-ready compliance dashboards"],
-         "$1,999/mo", "PROFESSIONAL TIER"),
+         _PITCH['product_pricing'][1]['price'], "PROFESSIONAL TIER"),
         (BLUE,  "DECISION INTEL",   "Decision Intelligence",
          ["Structured decision frameworks", "Multi-scenario modeling",
           "Full decision audit trail", "Outcome probability scoring",
           "Executive alignment workflows"],
-         "$8,500/mo", "ENTERPRISE TIER"),
+         _PITCH['product_pricing'][2]['price'], "ENTERPRISE TIER"),
     ]
     cw = (W - 60) // 3 - 6
     cy_top = H - 128
@@ -720,10 +723,11 @@ def slide_06(c):
     bar_mid = 36 + 42 / 2
     c.setFillColor(GOLD)
     c.setFont("Helvetica-Bold", _SZ_BODY_SM)
-    c.drawString(46, bar_mid - 10 * OPTICAL_CENTER_COEFF, "$499 / month — STARTER TIER")
+    _starter_price = _PITCH['product_pricing'][0]['price'].split('/')[0]
+    c.drawString(46, bar_mid - 10 * OPTICAL_CENTER_COEFF, f"{_starter_price} / month — STARTER TIER")
     c.setFillColor(W3)
     c.setFont("Helvetica", _SZ_LABEL)
-    c.drawString(46 + stringWidth("$499 / month — STARTER TIER   ", "Helvetica-Bold", _SZ_BODY_SM),
+    c.drawString(46 + stringWidth(f"{_starter_price} / month — STARTER TIER   ", "Helvetica-Bold", _SZ_BODY_SM),
                  bar_mid - 9 * OPTICAL_CENTER_COEFF, "Included in every AEXS subscription. Expands with Governance and Decision tiers.")
 
 
@@ -935,7 +939,7 @@ def slide_09(c):
         (PURPLE, "Persistent Context",    "Memory compounds with every session — no cold starts"),
         (GOLD,   "Cross-Module Sync",     "Chief of Staff briefs from Governance + Decision data"),
         (BLUE,   "Institutional Memory",  "Leadership changes don't reset context — it persists"),
-        (GREEN,  "Network Effects",       "NRR target 130%+ as context value grows over time"),
+        (GREEN,  "Network Effects",       f"NRR target {_PITCH['unit_economics']['nrr']} as context value grows over time"),
     ]
     rx = cx_c + orbit_r + 60
     mw = W - rx - 30
@@ -952,7 +956,7 @@ def slide_09(c):
         ry -= 64
 
     footer_bar(c,
-        "Expected NRR: 130%+",
+        f"Expected NRR: {_PITCH['unit_economics']['nrr']}",
         "Each added module deepens the memory graph — switching cost grows geometrically, not linearly.",
         label_color=PURPLE, body_color=W3, bar_y=36, bar_h=42)
 
@@ -1148,18 +1152,18 @@ def slide_12(c):
     c.drawString(30, H - 106, "Land with compliance urgency. Expand across the full executive suite.")
 
     tiers = [
-        (BLUE,   "STARTER",    "$499",  "/month",
+        (BLUE,   "STARTER",    _PITCH['product_pricing'][0]['price'].split('/')[0], "/month",
          "AI Chief of Staff",
          ["Executive memory + briefings", "Follow-up tracking",
           "Stakeholder mapping", "Priority queue", "1 user seat"],
          False),
-        (GOLD,   "PROFESSIONAL", "$1,999", "/month",
+        (GOLD,   "PROFESSIONAL", _PITCH['product_pricing'][1]['price'].split('/')[0], "/month",
          "Chief of Staff + Governance",
          ["Everything in Starter", "EU AI Act monitoring",
           "ISO 42001 documentation", "Board audit reports",
           "Up to 5 user seats"],
          True),
-        (GREEN,  "ENTERPRISE",  "$8,500", "/month",
+        (GREEN,  "ENTERPRISE",  _PITCH['product_pricing'][2]['price'].split('/')[0], "/month",
          "Full Suite — All Three Modules",
          ["Everything in Professional", "Decision Intelligence",
           "Full scenario modeling", "Executive audit trail",
@@ -1199,11 +1203,11 @@ def slide_12(c):
                    size=8, color=W3, dot_color=color)
 
     stat_strip(c, [
-        ("$28K",  "Avg Contract Value"),
-        ("130%+", "Target NRR"),
-        ("18mo",  "Payback Period"),
-        ("<12mo", "Break-even"),
-        ("75%+",  "Gross Margin"),
+        (_PITCH['unit_economics']['avg_deal_size'], "Avg Contract Value"),
+        (_PITCH['unit_economics']['nrr'],           "Target NRR"),
+        (_PITCH['unit_economics']['cac_payback'],   "Payback Period"),
+        ("<12mo",                                   "Break-even"),  # DERIVED-BREAKEVEN-RANGE: shorthand for canonical breakeven (Month 12)
+        (_PITCH['unit_economics']['gross_margin'],  "Gross Margin"),
     ], val_color=GREEN, bar_y=36, bar_h=42)
 
 
@@ -1216,18 +1220,18 @@ def slide_13(c):
     section_kicker(c, "FINANCIAL PROJECTIONS", 30, H - 48, BLUE)
     c.setFillColor(W1)
     c.setFont("Helvetica-Bold", _SZ_SLIDE_TITLE)
-    c.drawString(30, H - 82, "Path to $32.2M ARR in 36 Months")
+    c.drawString(30, H - 82, f"Path to {_PITCH['financials']['arr_y3']} ARR in 36 Months")
     c.setFillColor(W3)
     c.setFont("Helvetica", _SZ_BODY)
-    c.drawString(30, H - 106, "Verified model. Suite-tier pricing. Month 12 break-even. $32.17M Y3 ARR confirmed.")
+    c.drawString(30, H - 106, f"Verified model. Suite-tier pricing. {_PITCH['financials']['breakeven']} break-even. {_PITCH['financials']['arr_y3']} Y3 ARR confirmed.")
 
-    # Left: bar chart — ARR at key milestones (scale = $32.2M)
+    # Left: bar chart — ARR at key milestones (scale matches pitch-data arr_y3)
     bars = [
         ("Pre-Rev", 0,     GOLD,   "—"),
-        ("Mo 6",    0.025, GOLD,   "$0.8M"),
-        ("Y1",      0.081, BLUE,   "$2.6M"),
-        ("Y2",      0.286, GREEN,  "$9.2M"),
-        ("Y3",      1.0,   GREEN,  "$32.2M"),
+        ("Mo 6",    0.025, GOLD,   _PITCH['financials']['arr_m6']),
+        ("Y1",      0.081, BLUE,   _PITCH['financials']['arr_y1']),
+        ("Y2",      0.286, GREEN,  _PITCH['financials']['arr_y2']),
+        ("Y3",      1.0,   GREEN,  _PITCH['financials']['arr_y3']),
     ]
     chart_x = 30
     chart_bottom = 92
@@ -1256,7 +1260,7 @@ def slide_13(c):
         c.drawCentredString(bx + bar_w / 2, chart_bottom - 14, lbl)
 
     # Y-axis labels
-    for pct, lbl in [(0, "$0"), (0.25, "$8M"), (0.5, "$16M"), (0.75, "$24M"), (1.0, "$32M")]:
+    for pct, lbl in [(0, "$0"), (0.25, "$8M"), (0.5, "$16M"), (0.75, "$24M"), (1.0, "$32M")]:  # DERIVED-CHART-TICKS: axis ticks on the ARR chart — scale rounds canonical _PITCH['financials']['arr_y3'] ($32.2M) down to $32M for clean quarter intervals.
         ay = chart_bottom + pct * chart_h
         c.setStrokeColor(BORDER2)
         c.setLineWidth(0.3)
@@ -1270,12 +1274,14 @@ def slide_13(c):
     # Right: milestone timeline
     rx = chart_x + 5 * (bar_w + gap) + 50
     milestones = [
-        (GOLD,   "Seed Close",       "Q2 2026",   "$1.5M SAFE at $8M cap"),
+        (GOLD,   "Seed Close",       "Q2 2026",   f"{_PITCH['round']['size']} {_PITCH['round']['instrument']} at {_PITCH['round']['cap']} cap"),
+        # $15K MRR milestone is a tactical GTM target, not in canonical pitch-data.
         (BLUE,   "MVP + 5 Pilots",   "Q3 2026",   "$15K MRR, product validated"),
-        (GREEN,  "Break-even",       "Month 12",  "Cash-flow positive"),
+        (GREEN,  "Break-even",       _PITCH['financials']['breakeven'],  "Cash-flow positive"),
+        # $3M ARR is a Series-A-ready interim target, not in canonical pitch-data.
         (ORANGE, "Series A Ready",   "Q1 2027",   "$3M ARR, 40+ enterprise accounts"),
-        (PURPLE, "Market Leadership","Q4 2027",   "$8M ARR, category defined"),
-        (GOLD,   "Series A",         "Q1 2028",   "Scale phase — $32.2M Y3 target"),
+        (PURPLE, "Market Leadership","Q4 2027",   "$8M ARR, category defined"),  # DERIVED-ARR-TARGET: Q4 2027 interim ARR milestone between _PITCH['financials']['arr_y2'] ($9.2M) and 'arr_y3' ($32.2M). Distinct from _PITCH['round']['cap'] ($8M valuation cap) — shared literal, different concept.
+        (GOLD,   "Series A",         "Q1 2028",   f"Scale phase — {_PITCH['financials']['arr_y3']} Y3 target"),
     ]
     my = H - 128
 
@@ -1298,8 +1304,8 @@ def slide_13(c):
 
     two_line_bar(c,
         "Model assumptions (verified):",
-        "$499/$1,999/$8,500 suite tiers  |  $1.5M seed starting cash  |  Conservative enterprise conversion rates",
-        "All figures derived from calcSuite() unit-tested model. Y3 ARR = $32.17M verified.",
+        f"{_PITCH['product_pricing'][0]['price'].split('/')[0]}/{_PITCH['product_pricing'][1]['price'].split('/')[0]}/{_PITCH['product_pricing'][2]['price'].split('/')[0]} suite tiers  |  {_PITCH['round']['size']} seed starting cash  |  Conservative enterprise conversion rates",
+        f"All figures derived from calcSuite() unit-tested model. Y3 ARR = {_PITCH['financials']['arr_y3']} verified.",
         title_color=W4, body_color=W4, bg_fill=BG2, stroke_color=BORDER,
         bar_y=36, bar_h=52)
 
@@ -1331,12 +1337,12 @@ def slide_14(c):
          "Q2–Q4 2026",
          ["Target: EU-compliant enterprise", "Lead with Governance module",
           "Compliance urgency = fast approval", "5 design partners → 20 accounts",
-          "Avg deal: $1,999/mo Professional"]),
+          f"Avg deal: {_PITCH['product_pricing'][1]['price']} Professional"]),
         (BLUE,  "PHASE 2",    "Expand",
          "Q1–Q3 2027",
          ["Upsell to Decision Intelligence", "Activate Chief of Staff for execs",
-          "Build referral from compliance win", "Target NRR: 130%+",
-          "Avg expanded ACV: $8,500/mo"]),
+          "Build referral from compliance win", f"Target NRR: {_PITCH['unit_economics']['nrr']}",
+          f"Avg expanded ACV: {_PITCH['product_pricing'][2]['price']}"]),
         (GREEN, "PHASE 3",    "Scale",
          "Q4 2027+",
          ["Category leadership established", "Partner channel + resellers",
@@ -1366,11 +1372,11 @@ def slide_14(c):
                    size=8, color=W3, dot_color=color)
 
     stat_strip(c, [
-        ("$28K",  "Avg Contract Value"),
-        ("$12K",  "CAC Target"),
-        ("2.3x",  "LTV/CAC Ratio"),
-        ("18mo",  "Payback Period"),
-        ("130%+", "Target NRR"),
+        (_PITCH['unit_economics']['avg_deal_size'], "Avg Contract Value"),
+        ("$12K",                                    "CAC Target"),  # DERIVED-CAC-TACTICAL: tactical CAC target; canonical cac_payback is 12 months (= 1× avg_deal_size).
+        (_PITCH['unit_economics']['ltv_cac'],       "LTV/CAC Ratio"),
+        (_PITCH['unit_economics']['cac_payback'],   "Payback Period"),
+        (_PITCH['unit_economics']['nrr'],           "Target NRR"),
     ], val_color=BLUE_L, bar_y=36, bar_h=42)
 
 
@@ -1395,7 +1401,7 @@ def slide_15(c):
         (GOLD,   "Investor Deck Live",
          "Cinematic scrollable deck with interactive financial model — available at demo session."),
         (BLUE,   "Model Verified",
-         "$32.17M Y3 ARR confirmed by Vitest-tested calcSuite(). All figures in pitch match live model."),
+         f"{_PITCH['financials']['arr_y3']} Y3 ARR confirmed by Vitest-tested calcSuite(). All figures in pitch match live model."),
         (ORANGE, "0 Open Contradictions",
          "6 business contradictions identified, documented, and resolved. No unresolved discrepancies."),
     ]
@@ -1540,7 +1546,7 @@ def slide_17(c):
     section_kicker(c, "THE ASK", 30, H - 48, GOLD)
     c.setFillColor(W1)
     c.setFont("Helvetica-Bold", _SZ_ASK)
-    c.drawString(30, H - 88, "$1.5M Seed Round")
+    c.drawString(30, H - 88, f"{_PITCH['round']['size']} Seed Round")
     # First close target — right aligned
     c.setFillColor(ORANGE)
     c.setFont("Helvetica-Bold", _SZ_LABEL)
@@ -1548,7 +1554,7 @@ def slide_17(c):
 
     c.setFillColor(W3)
     c.setFont("Helvetica", _SZ_BODY)
-    c.drawString(30, H - 110, "SAFE note at $8M valuation cap. Funds GTM, engineering, and first enterprise pilots.")
+    c.drawString(30, H - 110, f"{_PITCH['round']['instrument']} note at {_PITCH['round']['cap']} valuation cap. Funds GTM, engineering, and first enterprise pilots.")
 
     # Left: stacked use-of-funds bar + legend
     bar_w = 200

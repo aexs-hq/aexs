@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
+import pitchData from '../../content/pitch-data.json';
 import { fmtK, fmtPct } from '../utils/format';
 import { calcSuite, suiteDefaults } from '../utils/suiteCalc';
 
@@ -84,7 +85,7 @@ export default function FinancialModel() {
             AEXS Suite — Financial Model
           </h1>
           <p style={{ fontSize: 11, color: "#555", fontFamily: "monospace", margin: 0 }}>
-            Suite tiers: Starter $499 · Growth $1,999 · Enterprise $8,500
+            Suite tiers: Starter {pitchData.product_pricing[0].price.split('/')[0]} · Growth {pitchData.product_pricing[1].price.split('/')[0]} · Enterprise {pitchData.product_pricing[2].price.split('/')[0]}
           </p>
         </div>
       </div>

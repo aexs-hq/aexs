@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "last_reviewed": "2026-04-18",
+    "reviewed_by": "Mc",
+    "reconciliation_note": "Founder reconciliation closed 2026-04-18. Canonical values: avg_deal_size $24K, gross_margin 82%, cac_payback 12 months, nrr 120%, arr_y3 display $32.2M, ltv_cac 5:1. Prior drift closed: $28K (build_deck.py stat strips) → $24K; 75%+ → 82%; 4 months / 18mo / '4 mo' → 12 months; 130%+ / 118%+ → 120%; $32.17M precision variant discarded (display-only canonical is $32.2M). 8.4× and 2.3x LTV/CAC duplicates removed; both surfaces now render canonical 5:1. See ADR-004 and docs/03-inventory/deal-size-drift-note.md."
+  },
+  "round": {
+    "size": "$1.5M",
+    "cap": "$8M",
+    "instrument": "SAFE"
+  },
+  "financials": {
+    "arr_m6": "$0.8M",
+    "arr_y1": "$2.6M",
+    "arr_y2": "$9.2M",
+    "arr_y3": "$32.2M",
+    "breakeven": "Month 12"
+  },
+  "unit_economics": {
+    "avg_deal_size": "$24K",
+    "cac_payback": "12 months",
+    "gross_margin": "82%",
+    "nrr": "120%",
+    "ltv_cac": "5:1"
+  },
+  "product_pricing": [
+    { "tier": "Starter",    "price": "$499/mo" },
+    { "tier": "Growth",     "price": "$1,999/mo" },
+    { "tier": "Enterprise", "price": "$8,500/mo" }
+  ]
+}
