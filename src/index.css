@@ -293,10 +293,11 @@ body {
   background: var(--color-bg);
 }
 
-:fullscreen body,
-:-webkit-full-screen body {
-  overflow: hidden;
-}
+/* Note: a prior rule locked body { overflow: hidden } inside :fullscreen to
+   hide a scrollbar that was already invisible at 100vh. It was removed because
+   some environments (extensions intercepting Escape, browser quirks) kept the
+   rule pinned after fullscreen exit, disabling user scroll on return to the
+   in-browser deck. Fullscreen background + slide-shell sizing below remain. */
 
 :fullscreen .slide-shell,
 :-webkit-full-screen .slide-shell {
