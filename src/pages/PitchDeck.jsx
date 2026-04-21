@@ -151,6 +151,11 @@ export default function PitchDeck() {
   // the same "no chrome" layout — share one flag so we can't suppress
   // one surface but forget the other.
   const isChromeFree = isExport || isPresenting;
+  // Sidebar collapse is a live-only affordance. It never affects isChromeFree
+  // surfaces (export / fullscreen presentation) because the sidebar itself
+  // is not rendered in those modes.
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const sidebarWidth = sidebarOpen ? 220 : 44;
 
   // Gate appears once per tab. Never in PDF export. Dismissal is sticky
   // within the session so the deck doesn't re-prompt between navigations.
@@ -271,17 +276,36 @@ export default function PitchDeck() {
       </nav>}
 
       {/* ── LEFT SIDEBAR ── */}
-      {!isChromeFree && <aside className="fixed bottom-0 left-0 z-40 flex flex-col"
-        style={{ top: '56px', width: '220px', backgroundColor: 'var(--color-bg)', borderRight: '1px solid color-mix(in srgb, var(--color-white-1) 5%, transparent)' }}>
+      {!isChromeFree && <aside className="fixed bottom-0 left-0 z-40 flex flex-col overflow-hidden"
+        style={{ top: '56px', width: `${sidebarWidth}px`, backgroundColor: 'var(--color-bg)', borderRight: '1px solid color-mix(in srgb, var(--color-white-1) 5%, transparent)', transition: 'width 200ms ease' }}>
 
-        {/* Header */}
-        <div className="px-4 pt-5 pb-3">
-          <p className="font-bold tracking-widest text-gold" style={{ fontSize: '9px' }}>INVESTOR DECK</p>
-          <div className="mt-2 h-px" style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 8%, transparent)' }} />
+        {/* Header + toggle */}
+        <div className="px-4 pt-5 pb-3 flex items-center justify-between" style={{ minHeight: '36px' }}>
+          {sidebarOpen && <p className="font-bold tracking-widest text-gold" style={{ fontSize: '9px' }}>INVESTOR DECK</p>}
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(v => !v)}
+            aria-expanded={sidebarOpen}
+            aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+            title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+            className="flex-shrink-0 flex items-center justify-center rounded transition-colors"
+            style={{
+              width: '24px',
+              height: '24px',
+              color: 'color-mix(in srgb, var(--color-white-1) 55%, transparent)',
+              backgroundColor: 'color-mix(in srgb, var(--color-white-1) 4%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--color-white-1) 8%, transparent)',
+              fontSize: '14px',
+              lineHeight: 1,
+              cursor: 'pointer',
+            }}>
+            {sidebarOpen ? '‹' : '›'}
+          </button>
         </div>
+        {sidebarOpen && <div className="mx-4 h-px" style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 8%, transparent)' }} />}
 
-        {/* Slide list */}
-        <nav className="flex-1 overflow-y-auto">
+        {/* Slide list (hidden when collapsed) */}
+        {sidebarOpen && <nav className="flex-1 overflow-y-auto">
           {SLIDES.map((slide, i) => (
             <button key={slide.id} onClick={() => scrollTo(i)}
               className="w-full flex items-center gap-3 text-left transition-all"
@@ -312,11 +336,12 @@ export default function PitchDeck() {
               </span>
             </button>
           ))}
-        </nav>
+        </nav>}
+        {!sidebarOpen && <div className="flex-1" />}
 
-        {/* Footer: counter + progress bar */}
+        {/* Footer: counter + progress bar (counter hidden when collapsed) */}
         <div className="px-4 pb-4 pt-3" style={{ borderTop: '1px solid color-mix(in srgb, var(--color-white-1) 5%, transparent)' }}>
-          <p className="text-slate-500 mb-2" style={{ fontSize: '10px' }}>{active + 1} / {SLIDES.length}</p>
+          {sidebarOpen && <p className="text-slate-500 mb-2" style={{ fontSize: '10px' }}>{active + 1} / {SLIDES.length}</p>}
           <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: 'color-mix(in srgb, var(--color-white-1) 8%, transparent)' }}>
             <div className="h-full rounded-full transition-all duration-500"
               style={{ width: `${progress}%`, backgroundColor: 'var(--color-gold)' }} />
@@ -325,7 +350,7 @@ export default function PitchDeck() {
       </aside>}
 
       {/* ── MAIN CONTENT ── */}
-      <main style={isChromeFree ? { padding: 0 } : { marginLeft: '220px', paddingTop: '56px' }}>
+      <main style={isChromeFree ? { padding: 0 } : { marginLeft: `${sidebarWidth}px`, paddingTop: '56px', transition: 'margin-left 200ms ease' }}>
 
         {/* ── SLIDE 1: COVER ── */}
         <SlideShell><section ref={el => sectionRefs.current[0] = el} id="cover"
@@ -410,7 +435,7 @@ export default function PitchDeck() {
           </p>
 
           {/* 2×2 stat grid */}
-          <div className="grid grid-cols-2 gap-4 max-w-2xl mb-8">
+          <div className="grid grid-cols-2 gap-4 mb-8">
             {[
               { stat: '73%',  color: 'var(--color-red)', title: 'Executive Overload',      body: 'of C-suite leaders report critical information is missed weekly due to data volume.' },
               { stat: '$3T',  color: 'var(--color-orange)', title: 'Annual Value Destroyed',  body: 'lost globally each year to poor executive decisions and misaligned strategic execution.' },
@@ -429,7 +454,7 @@ export default function PitchDeck() {
           </div>
 
           {/* EU AI Act alert bar */}
-          <div className="max-w-2xl rounded-xl px-5 py-4 flex items-center gap-3 slide-in"
+          <div className="rounded-xl px-5 py-4 flex items-center gap-3 slide-in"
             style={{ backgroundColor: 'color-mix(in srgb, var(--color-red) 8%, transparent)', border: '1px solid color-mix(in srgb, var(--color-red) 35%, transparent)' }}>
             <span className="text-red-400 text-xl flex-shrink-0">⚠</span>
             <p className="text-red-300 text-sm font-semibold leading-relaxed">
