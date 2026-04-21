@@ -18,7 +18,7 @@
 
 import { chromium } from 'playwright';
 import { execSync } from 'child_process';
-import { statSync } from 'fs';
+import { statSync, readFileSync } from 'fs';
 import { preview as vitePreview } from 'vite';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -27,6 +27,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const OUTPUT = resolve(ROOT, 'public/deck.pdf');
 const SLIDE_COUNT_EXPECTED = 12;
+
+// Canonical production origin. Relative anchor hrefs are rewritten to this
+// before page.pdf() so Playwright does not bake the local preview port into
+// embedded PDF link annotations (prior bug: /URI (http://localhost:45159/...)).
+const CANONICAL_ORIGIN = 'https://aexs.ai';
 
 async function main() {
   // 1. Build production bundle
@@ -92,7 +97,26 @@ async function main() {
     }
     console.log('[export-deck] Chrome suppression verified (not in DOM)');
 
-    // 7. Emulate print media and export PDF
+    // 7. Rewrite relative anchor hrefs to the canonical production origin.
+    // Playwright's page.pdf() embeds each <a href> as a /URI annotation
+    // resolved against the current page origin. Without this step, a
+    // relative href like "/deck.pdf" becomes http://localhost:<port>/deck.pdf
+    // inside the PDF — an unreachable link on any user's device. Absolute
+    // URLs and in-page fragment links are left untouched.
+    const rewrittenCount = await page.evaluate((origin) => {
+      let n = 0;
+      document.querySelectorAll('a[href]').forEach((a) => {
+        const href = a.getAttribute('href');
+        if (href && href.startsWith('/') && !href.startsWith('//')) {
+          a.setAttribute('href', origin + href);
+          n += 1;
+        }
+      });
+      return n;
+    }, CANONICAL_ORIGIN);
+    console.log(`[export-deck] Rewrote ${rewrittenCount} relative href(s) to ${CANONICAL_ORIGIN}`);
+
+    // 8. Emulate print media and export PDF
     await page.emulateMedia({ media: 'print' });
     await page.pdf({
       path: OUTPUT,
@@ -103,11 +127,21 @@ async function main() {
       preferCSSPageSize: false,
     });
 
-    // 8. Assert: output file exists and has content
+    // 9. Assert: output file exists and has content
     const stat = statSync(OUTPUT);
     if (stat.size < 50000) {
       throw new Error(`PDF too small (${stat.size} bytes) — possible blank render`);
     }
+
+    // 10. Assert: no localhost URL leaked into embedded link annotations.
+    // This catches any future regression where a new <a href="/..."> on a
+    // slide slips past step 7 (e.g., if a hook misses an element or if a
+    // third-party component injects its own anchors).
+    const raw = readFileSync(OUTPUT).toString('latin1');
+    if (raw.includes('http://localhost') || raw.includes('https://localhost')) {
+      throw new Error('PDF contains an embedded localhost URL — href sanitization did not catch it');
+    }
+
     console.log(`[export-deck] PDF exported: public/deck.pdf (${stat.size} bytes)`);
     console.log('[export-deck] COMPLETE');
 
