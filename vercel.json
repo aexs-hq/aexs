@@ -1,4 +1,7 @@
 {
+  "redirects": [
+    { "source": "/docs/:path*", "destination": "/", "statusCode": 308 }
+  ],
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
