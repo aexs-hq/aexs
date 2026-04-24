@@ -3,6 +3,6 @@
     { "source": "/docs/:path*", "destination": "/", "statusCode": 308 }
   ],
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|google[a-z0-9]+\\.html$).*)", "destination": "/index.html" }
   ]
 }
