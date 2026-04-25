@@ -305,6 +305,41 @@ body {
   height: 100vh !important;
 }
 
+/* In fullscreen, <main> must span the full viewport. The chrome-free
+   render path already sets padding:0 on main inline, but we belt-and-
+   suspender it here in case any inherited margin or layout calc bleeds
+   in from a stale render. */
+:fullscreen main,
+:-webkit-full-screen main {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
+}
+
+/* Slide sections inside main use Tailwind's min-h-screen + flex centering.
+   In fullscreen we force them to span the full viewport width and re-anchor
+   from the left edge. The 100dvh fallback covers browsers where 100vh is
+   calculated against the pre-fullscreen viewport. */
+:fullscreen main > *,
+:-webkit-full-screen main > * {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+:fullscreen main section,
+:-webkit-full-screen main section {
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100vw;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
 /* ── EXPORT MODE — CSS layer (always active) ──────────────────────────
    body[data-export-mode="true"] is set by the useExportMode hook when
    the URL contains ?mode=export. This layer is a belt-and-suspenders
