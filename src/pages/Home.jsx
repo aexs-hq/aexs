@@ -15,9 +15,9 @@ const SECTIONS = [
     to: '/roadmap',
     icon: '⬡',
     label: 'Execution Roadmap',
-    tag: '3 Ventures · 36 Steps',
+    tag: '3 Modules · Phased',
     description:
-      'Phased build playbook for AI Chief of Staff, AI Governance Engine, and Decision Support — from entity setup through Series A prep.',
+      'Phased build playbook for AI Chief of Staff, AI Governance Engine, and Decision Support — from system foundation through enterprise distribution.',
     color: 'var(--color-blue-ui)',
   },
   {
