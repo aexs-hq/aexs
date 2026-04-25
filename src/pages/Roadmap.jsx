@@ -127,7 +127,7 @@ const data = {
               title: "Series A Preparation",
               detail: "At $1M ARR, prepare fundraising materials. Target AI-focused VCs. Highlight retention rate, NPS, and expansion revenue.",
               tasks: ["Build data room (Notion)", "Financial model (3-year projection)", "Pitch deck (10 slides)", "Warm intro to 20 VCs", "Net Revenue Retention metric > 110%"],
-              cost: "$5,000 (advisors/legal)",
+              cost: "$5,000 (legal & deal prep)",
               time: "2 months"
             }
           ]
@@ -210,7 +210,7 @@ const data = {
               title: "ISO 42001 Alignment",
               detail: "Align AEXS's own product with ISO 42001 (AI Management Systems standard). Customers operating under ISO 42001 can ingest AEXS-generated evidence directly into their internal certification workflows. AEXS does not issue certifications and is not a certification body.",
               tasks: ["Map AEXS product features to ISO 42001 clauses", "Self-serve readiness export — customers run it on their own systems", "Document AEXS's own ISO 42001 alignment", "Publish technical alignment notes (engineering documentation)"],
-              cost: "$5,000 (consultant)",
+              cost: "$5,000 (product governance review)",
               time: "2 months"
             },
             {
