@@ -10,7 +10,6 @@ const Home            = lazy(() => import('./pages/Home'));
 const PitchDeck       = lazy(() => import('./pages/PitchDeck'));
 const Roadmap         = lazy(() => import('./pages/Roadmap'));
 const FinancialModel  = lazy(() => import('./pages/FinancialModel'));
-const Contradictions  = lazy(() => import('./pages/Contradictions'));
 const NotFound        = lazy(() => import('./pages/NotFound'));
 
 const fallback = <PageShell loading />;
@@ -29,7 +28,6 @@ export default function App() {
                 <Route path="/"               element={<Home />} />
                 <Route path="/roadmap"        element={<Roadmap />} />
                 <Route path="/model"          element={<FinancialModel />} />
-                <Route path="/contradictions" element={<Contradictions />} />
                 <Route path="*"              element={<NotFound />} />
               </Routes>
             </Suspense>

@@ -151,37 +151,6 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Disclaimer banner */}
-      <div style={{
-        border: '1px solid color-mix(in srgb, var(--color-gold) 20%, transparent)',
-        borderLeft: '3px solid var(--color-gold)',
-        background: 'color-mix(in srgb, var(--color-gold) 3%, transparent)',
-        borderRadius: 3,
-        padding: '14px 18px',
-      }}>
-        <p style={{
-          fontFamily: 'monospace',
-          fontSize: 9,
-          letterSpacing: 3,
-          color: 'var(--color-gold)',
-          textTransform: 'uppercase',
-          margin: '0 0 6px',
-        }}>
-          Review Required
-        </p>
-        <p style={{ fontSize: 12, color: 'var(--color-dim)', lineHeight: 1.7, margin: 0 }}>
-          Several business assumptions in this demo — including pricing tiers, seed capital
-          figure, and one brand color — contain unresolved contradictions between files.
-          None have been changed. See{' '}
-          <Link
-            to="/contradictions"
-            style={{ color: 'var(--color-gold)', fontFamily: 'monospace', textDecoration: 'underline' }}
-          >
-            business-contradictions
-          </Link>{' '}
-          for a full accounting before sharing externally.
-        </p>
-      </div>
     </PageShell>
   );
 }
