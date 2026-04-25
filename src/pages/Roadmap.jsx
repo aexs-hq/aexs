@@ -20,22 +20,14 @@ const data = {
           steps: [
             {
               step: "Step 1",
-              title: "Legal & Entity Setup",
-              detail: "Register LLC/Ltd. Secure domain (e.g. staffai.io). Set up business bank account. Draft founders agreement if co-founding.",
-              tasks: ["Register business entity", "Open business bank account", "Secure domain + trademark check", "Set up accounting (QuickBooks/Xero)"],
-              cost: "$500–$2,000",
-              time: "3–5 days"
-            },
-            {
-              step: "Step 2",
-              title: "Tech Stack Scaffolding",
-              detail: "Initialize Next.js app. Connect Claude API (Anthropic). Set up Postgres DB + Pinecone vector store. Configure auth via Clerk or Auth0.",
-              tasks: ["Next.js + Tailwind setup", "Anthropic API key + billing", "Postgres via Supabase", "Pinecone vector DB account", "Auth0 / Clerk for login"],
+              title: "System Foundation & Architecture",
+              detail: "Establish the AEXS platform's architectural foundation: multi-tenant application core, per-tenant data isolation, authentication and access-token baseline, and the data layer that backs the executive memory engine. Vendor selection follows from the architectural decisions, not the other way around.",
+              tasks: ["Application framework and rendering target", "Per-tenant data isolation model (row-level security)", "Authentication baseline with session and access-token boundary", "Persistent application data store and indexing strategy", "Vector index for executive memory and semantic recall"],
               cost: "$200/mo infrastructure",
               time: "1 week"
             },
             {
-              step: "Step 3",
+              step: "Step 2",
               title: "Core Integrations",
               detail: "Build OAuth connectors to Gmail, Google Calendar, Slack. These are your data sources for the AI's memory and context engine.",
               tasks: ["Gmail API OAuth flow", "Google Calendar read/write", "Slack workspace bot", "Notion API connector"],
@@ -43,7 +35,7 @@ const data = {
               time: "2 weeks"
             },
             {
-              step: "Step 4",
+              step: "Step 3",
               title: "MVP Feature: Daily Briefing",
               detail: "Build the #1 hook feature: AI scans emails + calendar overnight and delivers a 5-bullet executive brief every morning at 7AM.",
               tasks: ["Email summarization prompt", "Calendar conflict detection", "Priority scoring algorithm", "Scheduled delivery (cron job)", "Mobile-friendly brief format"],
@@ -59,7 +51,7 @@ const data = {
           icon: "🚀",
           steps: [
             {
-              step: "Step 5",
+              step: "Step 4",
               title: "Beta Recruitment",
               detail: "Target 20–50 beta CEOs/founders. Offer free 60-day access in exchange for weekly feedback calls. Use LinkedIn + warm network.",
               tasks: ["Write outreach script", "Build waitlist landing page", "Set up Typeform feedback loop", "Schedule weekly calls (Calendly)", "Join CEO/founder Slack communities"],
@@ -67,7 +59,7 @@ const data = {
               time: "1 week"
             },
             {
-              step: "Step 6",
+              step: "Step 5",
               title: "Meeting Intelligence Feature",
               detail: "Integrate with Zoom/Google Meet. AI joins meetings, transcribes, extracts action items, assigns owners, and follows up automatically.",
               tasks: ["Recall.ai or Otter.ai API integration", "Action item extraction prompt", "Slack/email follow-up automation", "Meeting summary dashboard"],
@@ -75,7 +67,7 @@ const data = {
               time: "3 weeks"
             },
             {
-              step: "Step 7",
+              step: "Step 6",
               title: "Feedback Loop & Iteration",
               detail: "Run NPS surveys after each week. Identify top 3 pain points. Sprint-fix the highest-impact issues. Kill features nobody uses.",
               tasks: ["Weekly NPS via Typeform", "Feature usage analytics (Mixpanel)", "User interview recordings", "Prioritize backlog by retention impact"],
@@ -83,7 +75,7 @@ const data = {
               time: "Ongoing"
             },
             {
-              step: "Step 8",
+              step: "Step 7",
               title: "Pricing Page & Payment",
               detail: "Launch Stripe billing. Set 3 tiers: Starter $299, Growth $799, Enterprise $3,500. Offer annual discount (2 months free).",
               tasks: ["Stripe subscription setup", "Pricing page design", "Free trial flow (14 days)", "Cancellation survey", "Invoice automation"],
@@ -99,7 +91,7 @@ const data = {
           icon: "📈",
           steps: [
             {
-              step: "Step 9",
+              step: "Step 8",
               title: "Content Marketing Engine",
               detail: "Publish 2x/week on LinkedIn. Topics: executive productivity, AI leadership, decision-making. Build email newsletter 'The CEO Brief'.",
               tasks: ["LinkedIn content calendar", "Newsletter via Beehiiv", "SEO blog (CEO productivity keywords)", "YouTube: 'AI CEO workflow' series", "Podcast guest appearances"],
@@ -107,7 +99,7 @@ const data = {
               time: "Ongoing"
             },
             {
-              step: "Step 10",
+              step: "Step 9",
               title: "Partnership Channel",
               detail: "Partner with executive coaches, VC firms, and leadership consultancies. They refer clients; you pay 20% recurring commission.",
               tasks: ["Identify 20 target partners", "Build partner portal", "Create co-branded materials", "Set up affiliate tracking (Rewardful)", "Launch partner newsletter"],
@@ -115,7 +107,7 @@ const data = {
               time: "1 month"
             },
             {
-              step: "Step 11",
+              step: "Step 10",
               title: "AI Memory Graph (Differentiator)",
               detail: "Build proprietary 'executive knowledge graph' — AI learns your communication style, priorities, relationships, and decision history over time.",
               tasks: ["RAG architecture with Pinecone", "Executive persona modeling", "Relationship mapping (who matters most)", "Decision history tagging", "Style mimicry for draft emails"],
@@ -123,7 +115,7 @@ const data = {
               time: "3 weeks"
             },
             {
-              step: "Step 12",
+              step: "Step 11",
               title: "Series A Preparation",
               detail: "At $1M ARR, prepare fundraising materials. Target AI-focused VCs. Highlight retention rate, NPS, and expansion revenue.",
               tasks: ["Build data room (Notion)", "Financial model (3-year projection)", "Pitch deck (10 slides)", "Warm intro to 20 VCs", "Net Revenue Retention metric > 110%"],
