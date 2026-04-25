@@ -1,6 +1,7 @@
 {
   "redirects": [
-    { "source": "/docs/:path*", "destination": "/", "statusCode": 308 }
+    { "source": "/docs/:path*", "destination": "/", "statusCode": 308 },
+    { "source": "/contradictions", "destination": "/", "statusCode": 308 }
   ],
   "rewrites": [
     { "source": "/((?!api/|google[a-z0-9]+\\.html$).*)", "destination": "/index.html" }
