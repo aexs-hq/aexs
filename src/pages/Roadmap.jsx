@@ -208,24 +208,24 @@ const data = {
             {
               step: "Step 6",
               title: "ISO 42001 Alignment",
-              detail: "Align your product with ISO 42001 (AI Management Systems standard). Become the easiest path to ISO certification. This is a massive moat.",
-              tasks: ["Map product to ISO 42001 clauses", "Gap analysis tool for clients", "Pre-certification readiness score", "Partner with ISO certification bodies", "Publish alignment white paper"],
+              detail: "Align AEXS's own product with ISO 42001 (AI Management Systems standard). Customers operating under ISO 42001 can ingest AEXS-generated evidence directly into their internal certification workflows. AEXS does not issue certifications and is not a certification body.",
+              tasks: ["Map AEXS product features to ISO 42001 clauses", "Self-serve readiness export — customers run it on their own systems", "Document AEXS's own ISO 42001 alignment", "Publish technical alignment notes (engineering documentation)"],
               cost: "$5,000 (consultant)",
               time: "2 months"
             },
             {
               step: "Step 7",
-              title: "White Label for Big 4",
-              detail: "Package your platform for Deloitte, PwC, KPMG, EY to resell to their enterprise clients. They do the sales; you collect platform fees.",
-              tasks: ["Build white-label portal", "Remove your branding (theirs instead)", "Volume pricing negotiation", "Integration with their GRC tools", "Co-develop industry report"],
+              title: "Embedded Channel Distribution",
+              detail: "Package AEXS as embedded software for enterprise software partners — GRC platforms, ERP systems, compliance-tooling vendors. Partners distribute AEXS under their own brand or as an embedded module. AEXS supplies the platform; partners handle distribution. Software-to-software channel only.",
+              tasks: ["Build embeddable / white-label deployment mode", "Theme-and-brand abstraction for partner branding", "Volume pricing for software resale", "Integration SDK for partner GRC and ERP platforms", "Partner technical onboarding and platform support"],
               cost: "$15,000 dev",
               time: "2 months"
             },
             {
               step: "Step 8",
               title: "Expand to Emerging Markets",
-              detail: "Brazil (LGPD), Singapore (MAS AI rules), UAE (AI regulation 2024) all need compliance solutions. Low competition, high demand.",
-              tasks: ["Regulatory research per market", "Local advisor partnerships", "Localize platform (language + law)", "Virtual launch events per region", "Media outreach to local tech press"],
+              detail: "Adapt AEXS for jurisdictions with active AI regulatory frameworks — Brazil (LGPD), Singapore (MAS AI rules), UAE (AI regulation 2024). Customers in these markets can run AEXS against their local regulatory taxonomy. Low platform competition, high software demand.",
+              tasks: ["Add per-jurisdiction regulatory taxonomy modules to the platform", "Localize platform (language and regulatory mapping)", "Per-region software documentation and onboarding flows", "Virtual launch events for software-buyer audiences", "Technical media outreach (developer / IT press)"],
               cost: "$8,000 per market",
               time: "3 months per market"
             }
