@@ -245,7 +245,7 @@ export default function FinancialModel() {
         </div>
 
         <p style={{ textAlign: "center", fontSize: 9, color: "#2a2a2e", fontFamily: "monospace", letterSpacing: 2, marginTop: 28 }}>
-          BUILT FOR MC · AI EXECUTIVE SUITE · FINANCIAL MODEL 2026–2029
+          Co-created with AI by Mc · AI EXECUTIVE SUITE · FINANCIAL MODEL 2026–2029
         </p>
       </div>
     </div>

@@ -647,7 +647,7 @@ export default function Roadmap() {
         </div>
 
         <p style={{ textAlign: "center", fontSize: 10, color: "#333", fontFamily: "monospace", letterSpacing: 2, marginTop: 32 }}>
-          TAP EACH STEP TO EXPAND · BUILT FOR MC © 2026
+          TAP EACH STEP TO EXPAND · Co-created with AI by Mc © 2026
         </p>
       </div>
     </div>
