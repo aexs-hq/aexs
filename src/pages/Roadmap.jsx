@@ -145,24 +145,24 @@ const data = {
       phases: [
         {
           phase: "PHASE 1",
-          title: "Domain Expertise & Setup",
+          title: "Product Governance & Review Setup",
           duration: "Weeks 1–4",
           icon: "📋",
           steps: [
             {
               step: "Step 1",
               title: "Regulatory Research Sprint",
-              detail: "Deep-dive into EU AI Act, US AI Executive Orders, ISO 42001. Map out which regulations affect which industries. This becomes your product roadmap.",
+              detail: "Deep-dive into EU AI Act, US AI Executive Orders, ISO 42001. Map out which regulations affect which industries. This becomes our product roadmap — input to the Governance Engine's mapping logic, not a commercial advisory offering.",
               tasks: ["Read EU AI Act full text", "Map risk classifications (unacceptable/high/limited)", "Research US NIST AI RMF framework", "Identify top 5 regulated industries", "Create compliance checklist matrix"],
               cost: "$0",
               time: "1 week"
             },
             {
               step: "Step 2",
-              title: "Hire Compliance Advisor",
-              detail: "Bring on a part-time legal/compliance expert as advisor (equity + small retainer). Their credibility becomes your credibility.",
-              tasks: ["Identify ex-regulator or compliance lawyer", "Structure advisor agreement (0.5–1% equity)", "Define scope: review product, co-author reports", "Get introductions to their network"],
-              cost: "$2,000/mo retainer",
+              title: "External Governance Review (Internal Only)",
+              detail: "Engage an external compliance reviewer under a fixed-scope contract to audit the AI Governance Engine itself — verify our regulatory mappings, risk-scoring logic, and evidence-collection outputs are correct. Scope is bounded to reviewing our own software and workflows; the reviewer does not interact with AEXS customers and AEXS does not resell their advice.",
+              tasks: ["Identify reviewer with EU AI Act / ISO 42001 expertise (fixed-scope, non-equity)", "Scope: review regulatory mappings, risk-scoring logic, and evidence-collection outputs", "NDA + bounded engagement; no customer-facing role", "Apply findings as internal product corrections — not as a service to clients"],
+              cost: "$2,000 (fixed-scope review)",
               time: "2 weeks"
             },
             {
