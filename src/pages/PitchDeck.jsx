@@ -371,7 +371,7 @@ export default function PitchDeck() {
                 AI Executive Suite
               </p>
               <p className="text-slate-400 text-sm mb-8 max-w-sm leading-relaxed">
-                The world's first AI-native command layer for enterprise leadership — unifying executive intelligence, regulatory compliance, and decision governance in a single platform.
+                The world's first AI-native operating layer for enterprise leadership — software that automates executive memory, regulatory evidence-collection, and decision logging in a single platform.
               </p>
               <div className="flex gap-6 mb-8 items-center">
                 <div>
@@ -398,9 +398,9 @@ export default function PitchDeck() {
             <div className="flex-shrink-0" style={{ width: '380px' }}>
               <div className="flex flex-col gap-3 mb-4">
                 {[
-                  { n: '01', label: 'LAYER 01', title: 'AI Chief of Staff',    sub: 'Executive memory, briefings, follow-ups', accent: 'var(--color-gold)' },
-                  { n: '02', label: 'LAYER 02', title: 'AI Governance Engine', sub: 'EU AI Act, ISO 42001, board-ready reports', accent: 'var(--color-blue)' },
-                  { n: '03', label: 'LAYER 03', title: 'Decision Intelligence', sub: 'Data-grounded choices with full audit trail', accent: 'var(--color-green)' },
+                  { n: '01', label: 'LAYER 01', title: 'AI Chief of Staff',    sub: 'Persistent executive memory, briefings, follow-ups', accent: 'var(--color-gold)' },
+                  { n: '02', label: 'LAYER 02', title: 'AI Governance Engine', sub: 'AI compliance evidence, automated end-to-end', accent: 'var(--color-blue)' },
+                  { n: '03', label: 'LAYER 03', title: 'Decision Support',     sub: 'Data-grounded choices with full audit trail', accent: 'var(--color-green)' },
                 ].map(({ label, title, sub, accent }) => (
                   <div key={label} className="rounded-xl p-4 slide-in"
                     style={{ border: `1px solid ${ca(accent, 27)}`, backgroundColor: `${ca(accent, 3)}` }}>
@@ -473,7 +473,7 @@ export default function PitchDeck() {
             One Platform. Total Executive Intelligence.
           </h1>
           <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed slide-in">
-            AEXS is the AI-native command layer that unifies executive memory, regulatory compliance, and decision governance.
+            AEXS is the AI-native operating layer that tracks executive memory, automates regulatory evidence-collection, and structures decision logging.
           </p>
 
           <div className="flex gap-4 mb-4">
@@ -495,22 +495,22 @@ export default function PitchDeck() {
                 title: 'AI Governance Engine',
                 bullets: [
                   'EU AI Act article-by-article compliance mapping',
-                  'ISO 42001 automated audit documentation',
-                  'Board-ready governance reports in one click',
+                  'ISO 42001 evidence-collection and documentation tooling',
+                  'Board-report generator — one-click export of compliance documentation from your own data',
                   'Real-time regulatory change monitoring & alerts',
-                  'Risk scoring & remediation action tracking',
+                  'Automated risk flagging and remediation workflow orchestration',
                 ],
-                metric: '90% faster', metricSub: 'regulatory audit preparation',
+                metric: '90% faster', metricSub: 'evidence-collection cycle time',
               },
               {
                 layerLabel: 'LAYER 03', accent: 'var(--color-blue)',
-                title: 'Decision Intelligence',
+                title: 'Decision Support',
                 bullets: [
-                  'Structured decision frameworks with data grounding',
+                  'Decision templates and structured decision logging, grounded in your own data',
                   'Full audit trail for every executive decision',
                   'Scenario modeling with risk/reward analysis',
                   'Cross-functional alignment tracking & approvals',
-                  'Decision quality scoring and retrospective analysis',
+                  'Decision outcome tracking and retrospective pattern analysis',
                 ],
                 metric: '3× improvement', metricSub: 'in decision execution speed',
               },
@@ -748,7 +748,7 @@ export default function PitchDeck() {
               {
                 name: 'Growth',     price: pitchData.product_pricing[1].price.split('/')[0], period: '/' + pitchData.product_pricing[1].price.split('/')[1],
                 accent: 'var(--color-blue)', target: 'Mid-Market',
-                modules: ['All Starter features', 'Full Governance Engine', 'Decision Intelligence Suite', 'API access + integrations', 'Priority support'],
+                modules: ['All Starter features', 'Full Governance Engine', 'Decision Support Suite', 'API access + integrations', 'Priority support'],
                 popular: true,
               },
               {
@@ -841,7 +841,7 @@ export default function PitchDeck() {
                 {[
                   ['Executive Memory & Context',     true,  false, false, false, false, false],
                   ['AI Governance & EU AI Act',       true,  false, true,  true,  false, false],
-                  ['Decision Intelligence Layer',     true,  false, false, true,  false, false],
+                  ['Decision Support Layer',          true,  false, false, true,  false, false],
                   ['Integrated Briefing Engine',      true,  false, false, false, false, false],
                   ['Founder-Led AI Training',         true,  false, false, false, true,  false],
                   ['Real-Time Compliance Alerts',     true,  false, true,  true,  false, false],
@@ -872,7 +872,7 @@ export default function PitchDeck() {
             style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-gold) 6%, transparent), color-mix(in srgb, var(--color-gold) 2%, transparent))', border: '1px solid color-mix(in srgb, var(--color-gold) 28%, transparent)' }}>
             <p className="text-gold font-semibold text-sm mb-1">The Verdict</p>
             <p className="text-slate-300 text-sm leading-relaxed">
-              AEXS is the only platform combining executive memory, AI governance compliance, and decision intelligence in a single product. Every competitor solves at most one dimension — AEXS owns the intersection.
+              AEXS is the only platform combining executive memory, AI compliance evidence-collection, and decision logging in a single product. Every competitor solves at most one dimension — AEXS owns the intersection.
             </p>
           </div>
         </section></SlideShell>
@@ -892,7 +892,7 @@ export default function PitchDeck() {
             {[
               {
                 phase: 'PHASE 01', name: 'LAND',     accent: 'var(--color-gold)', target: 'Months 1–6',   headline: 'Regulatory-Led Entry',
-                channels: ['Direct outreach to compliance officers', 'EU AI Act urgency content marketing', 'Founder-led enterprise pilots', 'Regulatory consultant partnerships'],
+                channels: ['Direct outreach to compliance officers', 'EU AI Act urgency content marketing', 'Founder-led enterprise pilots', 'Channel partnerships with regulatory consultancies (tool resellers)'],
                 metric: '2–5 enterprise pilots',
               },
               {

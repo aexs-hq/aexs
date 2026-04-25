@@ -1,6 +1,6 @@
 # AEXS — AI Executive Suite
 
-Interactive investor demo for three AI ventures: AI Chief of Staff, AI Governance as a Service, and Executive Decision Support.
+Interactive investor demo for three AI ventures: AI Chief of Staff, AI Governance Engine, and Decision Support.
 
 ## Status
 

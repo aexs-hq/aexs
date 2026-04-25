@@ -137,8 +137,8 @@ const data = {
     {
       id: 2,
       emoji: "⚖️",
-      title: "AI Governance as a Service",
-      subtitle: "Compliance is the new infrastructure",
+      title: "AI Governance Engine",
+      subtitle: "AI compliance evidence, automated end-to-end",
       color: 'var(--color-blue-ui)',
       accent: "#080f1a",
       score: 42,
@@ -177,7 +177,7 @@ const data = {
               step: "Step 4",
               title: "Compliance Dashboard MVP",
               detail: "Build a dashboard that shows companies their AI risk score, flagged issues, remediation steps, and regulatory status in real time.",
-              tasks: ["Risk scoring algorithm", "Color-coded compliance heatmap", "Remediation recommendation engine", "Audit trail logging", "Export to PDF for board reports"],
+              tasks: ["Risk scoring algorithm", "Color-coded compliance heatmap", "Remediation workflow automation and tracking", "Audit trail logging", "Export to PDF for board reports"],
               cost: "$5,000 dev",
               time: "3 weeks"
             }
@@ -185,52 +185,28 @@ const data = {
         },
         {
           phase: "PHASE 2",
-          title: "First Clients & Certification",
+          title: "First Clients & Outreach",
           duration: "Weeks 5–12",
           icon: "🏛️",
           steps: [
             {
               step: "Step 5",
-              title: "Free Audit as Lead Gen",
-              detail: "Offer a free 'AI Risk Scan' for any company's existing AI system. Takes 48 hours. Delivers a 10-page report. Converts ~25% to paid.",
-              tasks: ["Build self-serve scan intake form", "Automate report generation", "Sales follow-up sequence (3 emails)", "Case study from first 10 audits", "Post results on LinkedIn"],
-              cost: "$500 (marketing)",
-              time: "2 weeks"
-            },
-            {
-              step: "Step 6",
               title: "Target Fintech & HR AI Firms",
               detail: "These sectors face the most regulatory pressure. Build a hit list of 100 companies using AI in hiring, lending, or insurance.",
               tasks: ["Build prospect list (LinkedIn Sales Nav)", "Personalized cold email sequence", "Attend 2 compliance/fintech conferences", "Publish 'EU AI Act for Fintechs' guide", "Partner with fintech law firms"],
               cost: "$2,000 (events + tools)",
               time: "1 month"
-            },
-            {
-              step: "Step 7",
-              title: "Certification Product",
-              detail: "Launch 'AI Compliance Certified' badge program. Companies pay $25K for a full audit + certification that they can display publicly.",
-              tasks: ["Design certification badge + criteria", "Build verification page (public lookup)", "Legal framework for certification claims", "Press release on first 5 certified companies", "Annual renewal model ($8K/yr)"],
-              cost: "$3,000 (legal + design)",
-              time: "1 month"
-            },
-            {
-              step: "Step 8",
-              title: "Monitoring Subscription Launch",
-              detail: "After audit, offer ongoing monitoring: AI watches their models in production for drift, bias creep, and new regulatory changes.",
-              tasks: ["Model monitoring via MLflow/Evidently", "Regulatory change alert system", "Monthly compliance score report", "Slack/email alert integration", "Tier pricing: $1,500–$8,000/mo"],
-              cost: "$4,000 dev",
-              time: "3 weeks"
             }
           ]
         },
         {
           phase: "PHASE 3",
-          title: "Scale & Government Contracts",
+          title: "Scale & Channel Partnerships",
           duration: "Months 4–12",
           icon: "🏦",
           steps: [
             {
-              step: "Step 9",
+              step: "Step 6",
               title: "ISO 42001 Alignment",
               detail: "Align your product with ISO 42001 (AI Management Systems standard). Become the easiest path to ISO certification. This is a massive moat.",
               tasks: ["Map product to ISO 42001 clauses", "Gap analysis tool for clients", "Pre-certification readiness score", "Partner with ISO certification bodies", "Publish alignment white paper"],
@@ -238,15 +214,7 @@ const data = {
               time: "2 months"
             },
             {
-              step: "Step 10",
-              title: "Government & Public Sector",
-              detail: "Register as government vendor (SAM.gov in US, Find a Tender in UK). Bid on AI governance contracts. Average contract: $500K–$2M.",
-              tasks: ["Register on procurement portals", "Get security clearance if needed", "Write capability statement", "Identify upcoming AI governance tenders", "Partner with a systems integrator (Deloitte, Accenture)"],
-              cost: "$10,000 (legal + registration)",
-              time: "3 months"
-            },
-            {
-              step: "Step 11",
+              step: "Step 7",
               title: "White Label for Big 4",
               detail: "Package your platform for Deloitte, PwC, KPMG, EY to resell to their enterprise clients. They do the sales; you collect platform fees.",
               tasks: ["Build white-label portal", "Remove your branding (theirs instead)", "Volume pricing negotiation", "Integration with their GRC tools", "Co-develop industry report"],
@@ -254,7 +222,7 @@ const data = {
               time: "2 months"
             },
             {
-              step: "Step 12",
+              step: "Step 8",
               title: "Expand to Emerging Markets",
               detail: "Brazil (LGPD), Singapore (MAS AI rules), UAE (AI regulation 2024) all need compliance solutions. Low competition, high demand.",
               tasks: ["Regulatory research per market", "Local advisor partnerships", "Localize platform (language + law)", "Virtual launch events per region", "Media outreach to local tech press"],
@@ -268,8 +236,8 @@ const data = {
     {
       id: 3,
       emoji: "📊",
-      title: "Executive Decision Support",
-      subtitle: "Data-driven leadership, amplified",
+      title: "Decision Support",
+      subtitle: "Structured decision logging with historical context",
       color: 'var(--color-purple-ui)',
       accent: "#0a0812",
       score: 40,
@@ -308,7 +276,7 @@ const data = {
               step: "Step 4",
               title: "Executive Brief Generator",
               detail: "Core product output: a 1-page AI brief delivered before every major meeting or decision point. Digestible in 90 seconds.",
-              tasks: ["Brief template design (1 page max)", "Key metric auto-pull", "Competitor snapshot section", "Risk flags highlighted in red", "Recommended action with confidence score"],
+              tasks: ["Brief template design (1 page max)", "Key metric auto-pull", "Competitor snapshot section", "Risk flags highlighted in red", "Suggested next steps (non-binding) with confidence score — for user review"],
               cost: "$3,000 dev",
               time: "2 weeks"
             }
@@ -481,7 +449,7 @@ export default function Roadmap() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
               <p style={{ fontSize: 10, letterSpacing: 3, color: startup.color, fontFamily: "monospace", margin: "0 0 6px", textTransform: "uppercase" }}>
-                Startup {startup.id} of 3
+                Module {startup.id} of 3
               </p>
               <h2 style={{ fontSize: 22, fontWeight: 400, margin: "0 0 4px" }}>{startup.emoji} {startup.title}</h2>
               <p style={{ fontSize: 13, color: "#888", margin: 0, fontStyle: "italic" }}>{startup.subtitle}</p>
