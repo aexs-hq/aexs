@@ -5,20 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "sync-docs": "mkdir -p public/docs && cp docs/business-contradictions.md public/docs/business-contradictions.md",
-    "predev": "npm run sync-docs",
-    "prebuild": "npm run sync-docs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "check-docs-sync": "test -f public/docs/business-contradictions.md || (echo 'ERROR: public/docs/business-contradictions.md is missing. Run: npm run sync-docs' && exit 1) && diff docs/business-contradictions.md public/docs/business-contradictions.md",
     "verify-theme-sync": "node scripts/verify-theme-sync.js",
     "verify-content-consistency": "node scripts/verify-content-consistency.js",
     "export-deck": "node scripts/export-deck-pdf.js",
     "measure-overflow": "node scripts/measure-slide-overflow.js",
     "preflight": "node scripts/preflight-check.js",
-    "check": "eslint . && vitest run && npm run build && npm run check-docs-sync && npm run verify-theme-sync && npm run verify-content-consistency",
+    "check": "eslint . && vitest run && npm run build && npm run verify-theme-sync && npm run verify-content-consistency",
     "setup-hooks": "git config core.hooksPath .githooks"
   },
   "dependencies": {

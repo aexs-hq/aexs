@@ -29,7 +29,7 @@ npm run test       # vitest
 npm run lint       # eslint
 ```
 
-A pre-commit hook at `.githooks/pre-commit` runs `check-docs-sync` and `verify-content-consistency` on every commit. It is enabled automatically when you run `npm install`.
+A pre-commit hook at `.githooks/pre-commit` runs `verify-content-consistency` on every commit. It is enabled automatically when you run `npm install`.
 
 ## Single source of truth
 

@@ -4,9 +4,7 @@
 #   (equivalent to: git config core.hooksPath .githooks)
 #
 # Guards enforced here are the ones that must never ship a broken commit:
-#   1. docs/ ↔ public/docs/ in sync.
-#   2. Content consistency across JSX and Python rendering code (ADR-004).
+#   1. Content consistency across JSX and Python rendering code (ADR-004).
 
 set -e
-npm run check-docs-sync
 npm run verify-content-consistency
