@@ -38,3 +38,11 @@ public/docs/
 # local scratch / working dirs
 _review/
 mv/
+
+# Internal-only docs — preserved locally, never committed to public repo
+/CLAUDE.md
+/docs/claude-task-base.md
+/docs/founder-decision-sheet.md
+/docs/post-approval-audit-status.md
+/docs/02-phase-1/
+/docs/03-inventory/

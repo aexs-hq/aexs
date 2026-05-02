@@ -14,8 +14,6 @@ This file documents factual contradictions found between the source files in thi
 | BC-005 | ✅ Resolved | Q2 2026 `done: false`; Q1 2026 `done: true` confirmed |
 | BC-006 | ✅ Resolved | ARR revised to $32.2M (verified from suite model); pitch updated at all locations |
 
-See `docs/post-approval-audit-status.md` for full rebuild detail.
-
 ---
 
 ## BC-001 — AI Chief of Staff pricing: Financial Model vs Pitch Deck
@@ -256,4 +254,4 @@ $44M headline needs revision.
 
 **Recommended resolution order: BC-003 → BC-002 → BC-001 → BC-005 → BC-006 → BC-004**
 
-**All contradictions resolved 2026-04-09/2026-04-10. See resolution status table above and `docs/post-approval-audit-status.md` for full detail.**
+**All contradictions resolved 2026-04-09/2026-04-10. See resolution status table above for full detail.**
