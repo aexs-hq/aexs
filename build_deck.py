@@ -113,7 +113,7 @@ def chrome(c, slide_number, total=17):
     # Tagline
     c.setFillColor(W3)
     c.setFont("Helvetica", _SZ_CAPTION)
-    c.drawString(62, 9, "AI EXECUTIVE SUITE  |  CONFIDENTIAL  |  APRIL 2026")
+    c.drawString(62, 9, "AI EXECUTIVE SUITE  |  INVESTOR DEMO  |  APRIL 2026")
     # Slide counter
     c.setFillColor(W4)
     c.setFont("Helvetica", _SZ_CAPTION)
@@ -290,7 +290,7 @@ def slide_01(c):
     left_bar(c, GOLD)
     chrome(c, 1)
     # PRE-SEED tag top-right
-    tag(c, W - 170, H - 22, "PRE-SEED  |  CONFIDENTIAL", GOLD_D, GOLD_L, font_size=7)
+    tag(c, W - 170, H - 22, "PRE-SEED  |  INVESTOR DEMO", GOLD_D, GOLD_L, font_size=7)
     # Wordmark
     c.setFillColor(GOLD)
     c.setFont("Helvetica-Bold", _SZ_WORDMARK)
